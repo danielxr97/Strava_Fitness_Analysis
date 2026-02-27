@@ -30,11 +30,11 @@ You must use a quarto document (.qmd) and render it into `html`.
 
 # Questions
 
--   Could there be a correlation between personal performance and an individual pursuing their favourite activity?
+-   
 
 # What is Fitness?
 
-According to [@Caspersen1985]
+According to @cambridge_nd, the definition of fitness is "the condition of being physically strong and healthy," and @healthlinkbc_2022 expands on that definition by adding the ability to perform physical activity. Therefore, to understand what makes an individual fit, we need to understand what enables an individual to perform physical activity and which metrics can be used to track such performance.
 
 # Importing Strava Data
 
