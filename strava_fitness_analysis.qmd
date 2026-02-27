@@ -1,0 +1,65 @@
+---
+title: "Strava Fitness Analysis"
+format: html
+editor: visual
+embed-resources: true
+bibliography: references/references.bib
+csl: references/apa.csl
+---
+
+# Instructions
+
+```{r, echo=FALSE}
+#devtools::install_github("risktoollib/RTLedu")
+#RTLedu::fitness()
+```
+
+# The Task
+
+1.  Explain how you define fitness.
+
+2.  Tell me about which individual is fitter?
+
+3.  Tell me about which individual has improved more in fitness?
+
+4.  Make a clear and concise recommendation on which individual you would want to coach. There is no `it depends here`, you have to make a decision.
+
+Write a bullet point summary on your findings at the beginning of the document.
+
+You must use a quarto document (.qmd) and render it into `html`.
+
+# Questions
+
+-   Could there be a correlation between personal performance and an individual pursuing their favourite activity?
+
+# What is Fitness?
+
+According to [@Caspersen1985]
+
+# Importing Strava Data
+
+```{r, echo=FALSE}
+library(tidyverse)
+```
+
+```{r, echo=FALSE}
+strava_data <- RTLedu::strava
+
+strava_data
+```
+
+```{r, echo=FALSE}
+clean_strava_data <- strava_data %>% 
+  dplyr::select(- where(~ all(.x == 0))) # The ~ is like lambda in Python and is used to check all of the columns. The .x is for everything is that column that lambda is going to look at
+
+clean_strava_data
+```
+
+```{r, echo=FALSE}
+clean_strava_data %>% 
+  dplyr::filter(Runner == "Hound")
+```
+
+```{r, echo=FALSE}
+
+```
