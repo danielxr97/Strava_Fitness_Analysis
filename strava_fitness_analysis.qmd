@@ -29,36 +29,41 @@ Write a bullet point summary on your findings at the beginning of the document.
 
 You must use a quarto document (.qmd) and render it into `html`.
 
-# Questions
-
--   
-
 # What is Fitness?
 
-According to @cambridge_nd, the definition of fitness is "the condition of being physically strong and healthy," and @healthlinkbc_2022 expands on that definition by adding the ability to perform physical activity. Therefore, to understand what makes an individual fit, we need to understand what enables an individual to perform physical activity and which metrics can be used to track such performance.
+According to @cambridge_nd, the definition of fitness is "the condition of being physically strong and healthy," and @healthlinkbc_2022 expands on that definition by adding the ability to perform physical activity. Therefore, to understand what makes an individual fit, we need to understand what enables an individual to perform physical activity and which metrics we can use to track such performance. Since our analysis focuses on fitness in running, we will focus on running performance and specific running metrics to track a runner's performance.
 
 # Importing Strava Data
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE}
 library(tidyverse)
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, include=FALSE}
 strava_data <- RTLedu::strava
 
 strava_data
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, include=FALSE}
 clean_strava_data <- strava_data %>% 
   dplyr::select(- where(~ all(.x == 0))) # The ~ is like lambda in Python and is used to check all of the columns. The .x is for everything is that column that lambda is going to look at
 
 clean_strava_data
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, include=FALSE}
 clean_strava_data %>% 
   dplyr::filter(Runner == "Hound")
+```
+
+```{r, echo=FALSE}
+# Splitting the data to each runner so we can look at each one individually and compare them
+hound_data <- clean_strava_data %>% 
+  dplyr::filter(Runner == "Hound")
+
+collie_data <- clean_strava_data %>% 
+  dplyr::filter(Runner == "Collie")
 ```
 
 ```{r, echo=FALSE}

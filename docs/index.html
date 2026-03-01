@@ -2223,110 +2223,18 @@ vertical-align: -.125em;
 <p>Write a bullet point summary on your findings at the beginning of the document.</p>
 <p>You must use a quarto document (.qmd) and render it into <code>html</code>.</p>
 </section>
-<section id="questions" class="level1">
-<h1>Questions</h1>
-<ul>
-<li></li>
-</ul>
-</section>
 <section id="what-is-fitness" class="level1">
 <h1>What is Fitness?</h1>
-<p>According to <span class="citation" data-cites="cambridge_nd">Cambridge University Press (<a href="#ref-cambridge_nd" role="doc-biblioref">n.d.</a>)</span>, the definition of fitness is “the condition of being physically strong and healthy,” and <span class="citation" data-cites="healthlinkbc_2022">Healthwise Staff (<a href="#ref-healthlinkbc_2022" role="doc-biblioref">2022</a>)</span> expands on that definition by adding the ability to perform physical activity. Therefore, to understand what makes an individual fit, we need to understand what enables an individual to perform physical activity and which metrics can be used to track such performance.</p>
+<p>According to <span class="citation" data-cites="cambridge_nd">Cambridge University Press (<a href="#ref-cambridge_nd" role="doc-biblioref">n.d.</a>)</span>, the definition of fitness is “the condition of being physically strong and healthy,” and <span class="citation" data-cites="healthlinkbc_2022">Healthwise Staff (<a href="#ref-healthlinkbc_2022" role="doc-biblioref">2022</a>)</span> expands on that definition by adding the ability to perform physical activity. Therefore, to understand what makes an individual fit, we need to understand what enables an individual to perform physical activity and which metrics we can use to track such performance. Since our analysis focuses on fitness in running, we will focus on running performance and specific running metrics to track a runner’s performance.</p>
 </section>
-<section id="importing-strava-data" class="level1">
-<h1>Importing Strava Data</h1>
-<div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.2.0     ✔ readr     2.2.0
-✔ forcats   1.0.1     ✔ stringr   1.6.0
-✔ ggplot2   4.0.2     ✔ tibble    3.3.1
-✔ lubridate 1.9.5     ✔ tidyr     1.3.2
-✔ purrr     1.2.1     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 498 × 41
-   Activity.Type     Date       Favorite Title Distance Calories Time     Avg.HR
-   &lt;chr&gt;             &lt;date&gt;     &lt;lgl&gt;    &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;time&gt;   &lt;chr&gt; 
- 1 Running           2023-09-16 FALSE    Easy…    11.0      1080 01:13:53 164   
- 2 Trail Running     2023-09-13 FALSE    Fran…     7.25      571 00:42:56 153   
- 3 Street Running    2023-08-20 FALSE    Edmo…    42.2      3017 03:42:25 148   
- 4 Track Running     2023-08-03 FALSE    Runl…  2740         293 00:21:52 143   
- 5 Trail Running     2023-07-30 FALSE    Hard…    26.0      2136 03:07:23 149   
- 6 Treadmill Running 2023-07-19 FALSE    Nine…    15.9       986 01:14:11 146   
- 7 Treadmill Running 2023-07-15 FALSE    9.5 …    18.4      1149 01:35:06 144   
- 8 Treadmill Running 2023-07-04 FALSE    Six-…    10.7       677 00:50:17 148   
- 9 Running           2023-07-02 FALSE    Grea…     9.91      780 00:53:39 173   
-10 Street Running    2023-06-29 FALSE    Cool…     6.1       475 00:39:24 143   
-# ℹ 488 more rows
-# ℹ 33 more variables: Max.HR &lt;chr&gt;, Aerobic.TE &lt;chr&gt;, Avg.Run.Cadence &lt;chr&gt;,
-#   Max.Run.Cadence &lt;chr&gt;, Avg.Pace &lt;time&gt;, Best.Pace &lt;time&gt;,
-#   Total.Ascent &lt;chr&gt;, Total.Descent &lt;chr&gt;, Avg.Stride.Length &lt;dbl&gt;,
-#   Avg.Vertical.Ratio &lt;dbl&gt;, Avg.Vertical.Oscillation &lt;dbl&gt;,
-#   Avg.Ground.Contact.Time &lt;dbl&gt;, Training.Stress.Score. &lt;dbl&gt;,
-#   Avg.Power &lt;chr&gt;, Max.Power &lt;chr&gt;, Flow &lt;dbl&gt;, Avg..Swolf &lt;dbl&gt;, …</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 498 × 30
-   Activity.Type     Date       Favorite Title Distance Calories Time     Avg.HR
-   &lt;chr&gt;             &lt;date&gt;     &lt;lgl&gt;    &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;time&gt;   &lt;chr&gt; 
- 1 Running           2023-09-16 FALSE    Easy…    11.0      1080 01:13:53 164   
- 2 Trail Running     2023-09-13 FALSE    Fran…     7.25      571 00:42:56 153   
- 3 Street Running    2023-08-20 FALSE    Edmo…    42.2      3017 03:42:25 148   
- 4 Track Running     2023-08-03 FALSE    Runl…  2740         293 00:21:52 143   
- 5 Trail Running     2023-07-30 FALSE    Hard…    26.0      2136 03:07:23 149   
- 6 Treadmill Running 2023-07-19 FALSE    Nine…    15.9       986 01:14:11 146   
- 7 Treadmill Running 2023-07-15 FALSE    9.5 …    18.4      1149 01:35:06 144   
- 8 Treadmill Running 2023-07-04 FALSE    Six-…    10.7       677 00:50:17 148   
- 9 Running           2023-07-02 FALSE    Grea…     9.91      780 00:53:39 173   
-10 Street Running    2023-06-29 FALSE    Cool…     6.1       475 00:39:24 143   
-# ℹ 488 more rows
-# ℹ 22 more variables: Max.HR &lt;chr&gt;, Aerobic.TE &lt;chr&gt;, Avg.Run.Cadence &lt;chr&gt;,
-#   Max.Run.Cadence &lt;chr&gt;, Avg.Pace &lt;time&gt;, Best.Pace &lt;time&gt;,
-#   Total.Ascent &lt;chr&gt;, Total.Descent &lt;chr&gt;, Avg.Stride.Length &lt;dbl&gt;,
-#   Min.Temp &lt;dbl&gt;, Decompression &lt;chr&gt;, Best.Lap.Time &lt;time&gt;,
-#   Number.of.Laps &lt;dbl&gt;, Max.Temp &lt;dbl&gt;, Avg.Resp &lt;chr&gt;, Min.Resp &lt;chr&gt;,
-#   Max.Resp &lt;chr&gt;, Moving.Time &lt;time&gt;, Elapsed.Time &lt;time&gt;, …</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 299 × 30
-   Activity.Type     Date       Favorite Title Distance Calories Time     Avg.HR
-   &lt;chr&gt;             &lt;date&gt;     &lt;lgl&gt;    &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;time&gt;   &lt;chr&gt; 
- 1 Running           2023-09-16 FALSE    Easy…    11.0      1080 01:13:53 164   
- 2 Trail Running     2023-09-13 FALSE    Fran…     7.25      571 00:42:56 153   
- 3 Street Running    2023-08-20 FALSE    Edmo…    42.2      3017 03:42:25 148   
- 4 Track Running     2023-08-03 FALSE    Runl…  2740         293 00:21:52 143   
- 5 Trail Running     2023-07-30 FALSE    Hard…    26.0      2136 03:07:23 149   
- 6 Treadmill Running 2023-07-19 FALSE    Nine…    15.9       986 01:14:11 146   
- 7 Treadmill Running 2023-07-15 FALSE    9.5 …    18.4      1149 01:35:06 144   
- 8 Treadmill Running 2023-07-04 FALSE    Six-…    10.7       677 00:50:17 148   
- 9 Running           2023-07-02 FALSE    Grea…     9.91      780 00:53:39 173   
-10 Street Running    2023-06-29 FALSE    Cool…     6.1       475 00:39:24 143   
-# ℹ 289 more rows
-# ℹ 22 more variables: Max.HR &lt;chr&gt;, Aerobic.TE &lt;chr&gt;, Avg.Run.Cadence &lt;chr&gt;,
-#   Max.Run.Cadence &lt;chr&gt;, Avg.Pace &lt;time&gt;, Best.Pace &lt;time&gt;,
-#   Total.Ascent &lt;chr&gt;, Total.Descent &lt;chr&gt;, Avg.Stride.Length &lt;dbl&gt;,
-#   Min.Temp &lt;dbl&gt;, Decompression &lt;chr&gt;, Best.Lap.Time &lt;time&gt;,
-#   Number.of.Laps &lt;dbl&gt;, Max.Temp &lt;dbl&gt;, Avg.Resp &lt;chr&gt;, Min.Resp &lt;chr&gt;,
-#   Max.Resp &lt;chr&gt;, Moving.Time &lt;time&gt;, Elapsed.Time &lt;time&gt;, …</code></pre>
-</div>
-</div>
+<section id="importing-strava-data" class="level1 unnumbered">
+
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Importing Strava Data</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-cambridge_nd" class="csl-entry" role="listitem">
-Cambridge University Press. (n.d., n.d.). <em>Fitness</em>. Cambridge Dictionary. <a href="https://dictionary.cambridge.org/dictionary/english/fitness">https://dictionary.cambridge.org/dictionary/english/fitness</a>
+Cambridge University Press. (n.d.). <em>Fitness</em>. Cambridge Dictionary. Retrieved <a href="https://dictionary.cambridge.org/dictionary/english/fitness">https://dictionary.cambridge.org/dictionary/english/fitness</a>
 </div>
 <div id="ref-healthlinkbc_2022" class="csl-entry" role="listitem">
 Healthwise Staff. (2022, October 10). <em>Fitness: Getting and staying active</em>. Health Link BC. <a href="https://www.healthlinkbc.ca/healthwise/fitness-getting-and-staying-active">https://www.healthlinkbc.ca/healthwise/fitness-getting-and-staying-active</a>
