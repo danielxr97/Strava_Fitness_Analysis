@@ -5,6 +5,7 @@ editor: visual
 embed-resources: true
 bibliography: references/references.bib
 csl: references/apa.csl
+output-file: index
 ---
 
 # Instructions
