@@ -31,11 +31,13 @@ You must use a quarto document (.qmd) and render it into `html`.
 
 # Metrics Meaning
 
--   Decompression
+-   Decompression: This means to use running as a personal wellness tool to decompress from stress
 
--   Max.Resp / Min.Resp
+-   Max.Resp: Max.Resp = Maximum respiratory = Max rate of VO2
 
--   Min.Temp
+-   Min.Resp: Min.Resp = Minimum respiratory = Min rate of VO2
+
+-   Min.Temp: The weather's lowest temperature during the exercise
 
 # What is Fitness?
 
@@ -43,13 +45,37 @@ According to @Cambridge_nd, the definition of fitness is "the condition of being
 
 **The performance metrics that we will use are the following:**
 
--   <u>Stride Length:</u>
+-   <u>Stride Length:</u> "The distance you cover with each step of your run" [@Leicht_2023]. Additionally, @Vasudevan_2025 suggests that knowing a person's stride length can help detect a tendency to overstride, which can help prevent injuries, such as knee injuries.
 
--   <u>Cadence:</u>
+-   <u>Cadence:</u> "The number of steps you take in one minute" [@Leicht_2023]. Furthermore, @Nike_2026 explains that cadence is important because it can be used to optimize an athlete's ground contact time, explain abnormal stride length, and running inefficiency. For instance, a lower cadence often means longer contact time with the ground, which in turn means a longer stride length, and that could mean pushing the foot too far ahead of the athlete's body; doing so is what causes knee injuries and results in wasted energy, or, in other words, loss of performance [@Nike_2026].
 
 -   <u>Aerobic Training Effect:</u> According to @Zhao_2019, Training Effect measures how each training session affects VO2 Max (Maximum Volume of Oxygen) improvement. Furthermore, @Harvard_2024 suggests that VO2 Max can indicate an individual's fitness because a high VO2 Max correlates with better physical fitness and is also associated with "a lower risk for cardiovascular disease and increased longevity." The reason VO2 Max correlates with better physical fitness and health is that it measures the amount of oxygen an athlete consumes during exercise [@Harvard_2024]. Oxygen consumption matters because, for a muscle to generate energy as ATP, it needs oxygen; therefore, the more oxygen the athlete can breathe in, the more energy the muscle can produce to perform the exercise [@Harvard_2024].
 
+    @Zhao_2019 suggests the following description for the Training Effect ranges: (Turn this to a GT table later)
+
+    -   0.0 - 0.9: No aerobic effect
+
+    -   1.0 - 1.9: Minor aerobic effect
+
+    -   2.0 - 2.9: Maintaining aerobic effect
+
+    -   3.0 - 3.9: Improving aerobic effect
+
+    -   4.0 - 4.9: Highly improving aerobic effect
+
+    -   5.0: Overreaching aerobic effect
+
+-   <u>Heart Rate:</u>
+
 To determine which individual is the most fit, we will use the current performance on their metrics. However, to determine which individual we will choose to train, we will estimate each individual's potential by forecasting their future metrics and comparing them to choose who we want to train.
+
+# Notes
+
+-   The distance for everything is in Km, but Track Running is in meters.
+
+-   Collie doesn't have any data under Track Running, but I noticed that under Title in Trail Running there's at least 1 observation with a Title description of Track Running - it's on the last page.
+
+-   Collie never ran Street Running or at least he doesn't have any records of running one.
 
 # Importing Strava Data
 
@@ -57,25 +83,26 @@ To determine which individual is the most fit, we will use the current performan
 library(tidyverse)
 ```
 
-```{r, echo=FALSE, include=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 strava_data <- RTLedu::strava
 
 strava_data
 ```
 
-```{r, echo=FALSE, include=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 clean_strava_data <- strava_data %>% 
-  dplyr::select(- where(~ all(.x == 0))) # The ~ is like lambda in Python and is used to check all of the columns. The .x is for everything is that column that lambda is going to look at
+  dplyr::select(- where(~ all(.x == 0))) %>%  # The ~ is like lambda in Python and is used to check all of the columns. The .x is for everything is that column that lambda is going to look at
+  dplyr::select(- "Decompression") # Removing this because it's a no for everyone, so we don't to keep it there
 
 clean_strava_data
 ```
 
-```{r, echo=FALSE, include=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 clean_strava_data %>% 
   dplyr::filter(Runner == "Hound")
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 # Splitting the data to each runner so we can look at each one individually and compare them
 hound_data <- clean_strava_data %>% 
   dplyr::filter(Runner == "Hound")
@@ -84,6 +111,12 @@ collie_data <- clean_strava_data %>%
   dplyr::filter(Runner == "Collie")
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
+collie_data %>% 
+  dplyr::filter(Activity.Type == "Trail Running") %>% 
+  dplyr::select(c(Title, Distance, Time, Avg.Pace, Best.Pace))
+```
+
+```{r, echo=FALSE, eval=FALSE}
 
 ```
