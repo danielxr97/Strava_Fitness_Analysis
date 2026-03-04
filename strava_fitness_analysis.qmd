@@ -91,15 +91,25 @@ strava_data
 
 ```{r, echo=FALSE, eval=FALSE}
 clean_strava_data <- strava_data %>% 
-  dplyr::select(- where(~ all(.x == 0))) %>%  # The ~ is like lambda in Python and is used to check all of the columns. The .x is for everything is that column that lambda is going to look at
+  dplyr::select(- c(18:27, 29)) %>%  # Or we can do: select(- where(~ all(.x == 0))) . The ~ is like lambda in Python and is used to check all of the columns. The .x is for everything is that column that lambda is going to look at.
   dplyr::select(- "Decompression") # Removing this because it's a no for everyone, so we don't to keep it there
 
 clean_strava_data
 ```
 
 ```{r, echo=FALSE, eval=FALSE}
-clean_strava_data %>% 
-  dplyr::filter(Runner == "Hound")
+clean_strava_data <- clean_strava_data %>% 
+  dplyr::mutate(Avg.HR = as.numeric(Avg.HR)) %>% 
+  dplyr::mutate(Max.HR = as.numeric(Max.HR)) %>%
+  dplyr::mutate(Aerobic.TE = as.numeric(Aerobic.TE)) %>%
+  dplyr::mutate(Avg.Run.Cadence = as.numeric(Avg.Run.Cadence)) %>%
+  dplyr::mutate(Max.Run.Cadence = as.numeric(Max.Run.Cadence)) %>%
+  dplyr::mutate(Total.Ascent = as.numeric(Total.Ascent)) %>%
+  dplyr::mutate(Total.Descent = as.numeric(Total.Descent)) %>%
+  dplyr::mutate(Min.Elevation = as.numeric(Min.Elevation)) %>%
+  dplyr::mutate(Max.Elevation = as.numeric(Max.Elevation))
+
+clean_strava_data
 ```
 
 ```{r, echo=FALSE, eval=FALSE}
@@ -115,8 +125,4 @@ collie_data <- clean_strava_data %>%
 collie_data %>% 
   dplyr::filter(Activity.Type == "Trail Running") %>% 
   dplyr::select(c(Title, Distance, Time, Avg.Pace, Best.Pace))
-```
-
-```{r, echo=FALSE, eval=FALSE}
-
 ```
