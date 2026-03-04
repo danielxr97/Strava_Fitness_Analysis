@@ -158,6 +158,21 @@ hound_data %>%
 
 ```{r, echo=FALSE}
 hound_data %>% 
+  dplyr::select(Date, Activity.Type, Distance, Calories, Time, Avg.Pace) %>% 
+  dplyr::group_by(Activity.Type) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = Avg.Pace, col = Activity.Type)) + 
+  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8) +
+  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
+  ggplot2::labs(
+    title = "Hound's Training Effect by Activity",
+    x = "Date",
+    y = "Avg Pace (min/Km)"
+  ) +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+```{r, echo=FALSE}
+hound_data %>% 
   dplyr::select(Date, Activity.Type, Distance, Calories, Time, Avg.Stride.Length) %>% 
   dplyr::group_by(Activity.Type) %>% 
   ggplot2::ggplot(ggplot2::aes(x = Date, y = Avg.Stride.Length, col = Activity.Type)) + 
@@ -176,3 +191,15 @@ hound_data %>%
   dplyr::filter(is.na(Avg.Resp) | Avg.Resp == "--") %>% 
   dplyr::select(Avg.Resp)
 ```
+
+
+```{r, echo=FALSE}
+library(corrplot)
+library(lubridate)
+hound_data %>% 
+  dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60) %>% 
+  dplyr::select(c(Avg.HR, Max.HR, Aerobic.TE, Avg.Run.Cadence, Max.Run.Cadence, Total.Ascent, Total.Descent, Avg.Pace ,Min.Elevation, Avg.Stride.Length ,Max.Elevation)) %>% 
+  cor(use = "complete.obs") %>% 
+  corrplot(method = "number", type = "upper", tl.col = "black", tl.srt = 45, order= "hclust")
+```
+
