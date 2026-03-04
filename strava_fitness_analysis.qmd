@@ -83,13 +83,13 @@ To determine which individual is the most fit, we will use the current performan
 library(tidyverse)
 ```
 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE}
 strava_data <- RTLedu::strava
 
 strava_data
 ```
 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE}
 clean_strava_data <- strava_data %>% 
   dplyr::select(- c(18:27, 29)) %>%  # Or we can do: select(- where(~ all(.x == 0))) . The ~ is like lambda in Python and is used to check all of the columns. The .x is for everything is that column that lambda is going to look at.
   dplyr::select(- "Decompression") # Removing this because it's a no for everyone, so we don't to keep it there
@@ -112,7 +112,7 @@ clean_strava_data <- clean_strava_data %>%
 clean_strava_data
 ```
 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE}
 # Splitting the data to each runner so we can look at each one individually and compare them
 hound_data <- clean_strava_data %>% 
   dplyr::filter(Runner == "Hound")
@@ -121,8 +121,13 @@ collie_data <- clean_strava_data %>%
   dplyr::filter(Runner == "Collie")
 ```
 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE}
 collie_data %>% 
   dplyr::filter(Activity.Type == "Trail Running") %>% 
   dplyr::select(c(Title, Distance, Time, Avg.Pace, Best.Pace))
+```
+
+```{r, echo=FALSE}
+clean_strava_data <- clean_strava_data %>% 
+  dplyr::mutate(Distance = if_else(Activity.Type == "Track Running", Distance / 1000, Distance))
 ```
