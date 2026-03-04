@@ -129,5 +129,5 @@ collie_data %>%
 
 ```{r, echo=FALSE}
 clean_strava_data <- clean_strava_data %>% 
-  dplyr::mutate(Distance = if_else(Activity.Type == "Track Running", Distance / 1000, Distance))
+  dplyr::mutate(Distance = if_else(Activity.Type == "Track Running", Distance / 1000, Distance)) #test
 ```
