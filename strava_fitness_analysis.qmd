@@ -9,7 +9,6 @@ output-file: index
 ---
 
 # Instructions
-123
 
 ```{r, echo=FALSE}
 #devtools::install_github("risktoollib/RTLedu")
