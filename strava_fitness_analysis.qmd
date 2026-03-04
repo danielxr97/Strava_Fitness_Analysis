@@ -94,10 +94,15 @@ clean_strava_data <- strava_data %>%
   dplyr::select(- c(18:27, 29)) %>%  # Or we can do: select(- where(~ all(.x == 0))) . The ~ is like lambda in Python and is used to check all of the columns. The .x is for everything is that column that lambda is going to look at.
   dplyr::select(- "Decompression") # Removing this because it's a no for everyone, so we don't to keep it there
 
+clean_strava_data <- clean_strava_data %>% 
+  dplyr::mutate(Distance = if_else(Activity.Type == "Track Running", Distance / 1000, Distance))
+
+clean_strava_data
+
 clean_strava_data
 ```
 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE}
 clean_strava_data <- clean_strava_data %>% 
   dplyr::mutate(Avg.HR = as.numeric(Avg.HR)) %>% 
   dplyr::mutate(Max.HR = as.numeric(Max.HR)) %>%
@@ -128,6 +133,46 @@ collie_data %>%
 ```
 
 ```{r, echo=FALSE}
-clean_strava_data <- clean_strava_data %>% 
-  dplyr::mutate(Distance = if_else(Activity.Type == "Track Running", Distance / 1000, Distance)) #test
+hound_data %>% 
+  dplyr::select(Date, Activity.Type, Distance, Calories, Time, Aerobic.TE) %>% 
+  dplyr::group_by(Activity.Type) %>% 
+  dplyr::summarise(Aerobic.TE = mean(Aerobic.TE)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Activity.Type, y = Aerobic.TE, fill = Activity.Type)) + 
+  ggplot2::geom_col()
+```
+
+```{r, echo=FALSE}
+hound_data %>% 
+  dplyr::select(Date, Activity.Type, Distance, Calories, Time, Aerobic.TE) %>% 
+  dplyr::group_by(Activity.Type) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = Aerobic.TE, col = Activity.Type)) + 
+  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8) +
+  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
+  ggplot2::labs(
+    title = "Hound's Training Effect by Activity",
+    x = "Date",
+    y = "Aerobic Training Effect"
+  ) +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+```{r, echo=FALSE}
+hound_data %>% 
+  dplyr::select(Date, Activity.Type, Distance, Calories, Time, Avg.Stride.Length) %>% 
+  dplyr::group_by(Activity.Type) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = Avg.Stride.Length, col = Activity.Type)) + 
+  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8) +
+  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
+  ggplot2::labs(
+    title = "Hound's Average Stride by Activity",
+    x = "Date",
+    y = "Average Stride Length"
+  ) +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+```{r, echo=FALSE}
+hound_data %>% 
+  dplyr::filter(is.na(Avg.Resp) | Avg.Resp == "--") %>% 
+  dplyr::select(Avg.Resp)
 ```
