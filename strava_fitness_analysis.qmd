@@ -39,17 +39,23 @@ You must use a quarto document (.qmd) and render it into `html`.
 
 -   Min.Temp: The weather's lowest temperature during the exercise
 
+-   <u>Stride Length:</u>
+
+    "The distance you cover with each step of your run" [@Leicht_2023]. Additionally, @Vasudevan_2025 suggests that knowing a person's stride length can help detect a tendency to overstride, which can help prevent injuries, such as knee injuries.
+
+-   <u>Cadence:</u>
+
+    "The number of steps you take in one minute" [@Leicht_2023]. Furthermore, @Nike_2026 explains that cadence is important because it can be used to optimize an athlete's ground contact time, explain abnormal stride length, and running inefficiency. For instance, a lower cadence often means longer contact time with the ground, which in turn means a longer stride length, and that could mean pushing the foot too far ahead of the athlete's body; doing so is what causes knee injuries and results in wasted energy, or, in other words, loss of performance [@Nike_2026].
+
 # What is Fitness?
 
 According to @Cambridge_nd, the definition of fitness is "the condition of being physically strong and healthy," and @Healthlinkbc_2022 expands on that definition by adding the ability to perform physical activity. Therefore, to understand what makes an individual fit, we need to understand what enables an individual to perform physical activity and which metrics we can use to track such performance. Since our analysis focuses on fitness in running, we will focus on running performance and the specific metrics used to track it.
 
 **The performance metrics that we will use are the following:**
 
--   <u>Stride Length:</u> "The distance you cover with each step of your run" [@Leicht_2023]. Additionally, @Vasudevan_2025 suggests that knowing a person's stride length can help detect a tendency to overstride, which can help prevent injuries, such as knee injuries.
+-   <u>Aerobic Training Effect:</u>
 
--   <u>Cadence:</u> "The number of steps you take in one minute" [@Leicht_2023]. Furthermore, @Nike_2026 explains that cadence is important because it can be used to optimize an athlete's ground contact time, explain abnormal stride length, and running inefficiency. For instance, a lower cadence often means longer contact time with the ground, which in turn means a longer stride length, and that could mean pushing the foot too far ahead of the athlete's body; doing so is what causes knee injuries and results in wasted energy, or, in other words, loss of performance [@Nike_2026].
-
--   <u>Aerobic Training Effect:</u> According to @Zhao_2019, Training Effect measures how each training session affects VO2 Max (Maximum Volume of Oxygen) improvement. Furthermore, @Harvard_2024 suggests that VO2 Max can indicate an individual's fitness because a high VO2 Max correlates with better physical fitness and is also associated with "a lower risk for cardiovascular disease and increased longevity." The reason VO2 Max correlates with better physical fitness and health is that it measures the amount of oxygen an athlete consumes during exercise [@Harvard_2024]. Oxygen consumption matters because, for a muscle to generate energy as ATP, it needs oxygen; therefore, the more oxygen the athlete can breathe in, the more energy the muscle can produce to perform the exercise [@Harvard_2024].
+    According to @Zhao_2019, Training Effect measures how each training session affects VO2 Max (Maximum Volume of Oxygen) improvement. Furthermore, @Harvard_2024 suggests that VO2 Max can indicate an individual's fitness because a high VO2 Max correlates with better physical fitness and is also associated with "a lower risk for cardiovascular disease and increased longevity." The reason VO2 Max correlates with better physical fitness and health is that it measures the amount of oxygen an athlete consumes during exercise [@Harvard_2024]. Oxygen consumption matters because, for a muscle to generate energy as ATP, it needs oxygen; therefore, the more oxygen the athlete can breathe in, the more energy the muscle can produce to perform the exercise [@Harvard_2024].
 
     @Zhao_2019 suggests the following description for the Training Effect ranges: (Turn this to a GT table later)
 
@@ -65,7 +71,7 @@ According to @Cambridge_nd, the definition of fitness is "the condition of being
 
     -   5.0: Overreaching aerobic effect
 
--   <u>Heart Rate:</u>
+-   <u>Efficiency Factor:</u>
 
 To determine which individual is the most fit, we will use the current performance on their metrics. However, to determine which individual we will choose to train, we will estimate each individual's potential by forecasting their future metrics and comparing them to choose who we want to train.
 
@@ -132,6 +138,17 @@ clean_strava_data <- clean_strava_data %>%
     Avg.Cadence = Avg.Run.Cadence,
     Max.Cadence = Max.Run.Cadence,
     Avg.Stride = Avg.Stride.Length
+    )
+
+clean_strava_data
+```
+
+```{r, echo=FALSE}
+clean_strava_data <- clean_strava_data %>% 
+  dplyr::mutate(
+    Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60^2,
+    Best.Pace = period_to_seconds(hms(Best.Pace)) / 60^2,
+    Best.Lap.Time = period_to_seconds(hms(Best.Lap.Time)) / 60^2
     )
 
 clean_strava_data
@@ -216,11 +233,9 @@ hound_data %>%
 
 ```{r, echo=FALSE}
 hound_data %>% 
-  dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60) %>% 
   dplyr::select(c(Avg.HR, Max.HR, Aerobic.TE, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
   stats::cor(use = "complete.obs") %>% 
   corrplot::corrplot(
-    title = "Hound's Upper correlation Matrix",
     method = "color",
     type = "upper",
     tl.col = "black",
@@ -232,7 +247,6 @@ hound_data %>%
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 hound_data %>% 
-  dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60) %>% 
   select(Avg.HR, Max.HR, Aerobic.TE, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
   GGally::ggpairs(title = "Hound's Correlation Matrix on Metrics") +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
@@ -240,11 +254,9 @@ hound_data %>%
 
 ```{r, echo=FALSE}
 collie_data %>% 
-  dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60) %>% 
   dplyr::select(c(Avg.HR, Max.HR, Aerobic.TE, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
   stats::cor(use = "complete.obs") %>% 
   corrplot::corrplot(
-    title = "Collie's Upper correlation Matrix",
     method = "color",
     type = "upper",
     tl.col = "black",
@@ -256,7 +268,6 @@ collie_data %>%
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 collie_data %>% 
-  dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60) %>% 
   select(Avg.HR, Max.HR, Aerobic.TE, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
   GGally::ggpairs(title = "Collie's Correlation Matrix on Metrics") +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
@@ -300,7 +311,6 @@ hound_data %>%
 ```{r, echo=FALSE}
  hound_data %>% 
   dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type) %>%
-  dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60^2) %>%
   dplyr::mutate(Speed.Kph = 3600 / Avg.Pace) %>%
   dplyr::mutate(Avg.Speed = Distance/Speed.Kph) %>%
   dplyr::mutate(EF = (Avg.Speed / Avg.HR)*1000) %>% 
@@ -317,7 +327,6 @@ hound_data %>%
 ```{r}
  collie_data %>% 
   dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type) %>%
-  dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60^2) %>%
   dplyr::mutate(Speed.Kph = 3600 / Avg.Pace) %>%
   dplyr::mutate(Avg.Speed = Distance/Speed.Kph) %>%
   dplyr::mutate(EF = (Avg.Speed / Avg.HR)*1000) %>% 
