@@ -1,3 +1,7 @@
+```{r}
+
+```
+
 ---
 title: "Strava Fitness Analysis"
 format: html
@@ -291,4 +295,14 @@ hound_data %>%
     x = "Date",
     y = "Efficiency (EF)")+
      ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+```{r}
+
+#Reference for Ali: https://www.garmin.com/en-CA/garmin-technology/running-science/physiological-measurements/training-effect/
+
+#Notes for Ali based on: 
+#Note: The training effect scale for both aerobic and anaerobic is: 0 – None, 1 – Minor, 2 – Maintaining, 3 – Improving, 4 – Highly Improving, 5 – Overreaching.
+
+#Use these values for calculating the factor we discussed (Will assign weight later)
 ```
