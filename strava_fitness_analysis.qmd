@@ -166,7 +166,7 @@ hound_data %>%
   ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8) +
   ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
   ggplot2::labs(
-    title = "Hound's Training Effect by Activity",
+    title = "Hound's Average Pace by Activity",
     x = "Date",
     y = "Avg Pace (min/Km)"
   ) +
@@ -197,18 +197,38 @@ hound_data %>%
 ```{r, echo=FALSE}
 hound_data %>% 
   dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60) %>% 
-  dplyr::select(c(Avg.HR, Max.HR, Aerobic.TE, Avg.Run.Cadence, Max.Run.Cadence, Total.Ascent, Total.Descent, Avg.Pace ,Min.Elevation, Avg.Stride.Length ,Max.Elevation)) %>% 
+  dplyr::select(c(Avg.HR, Max.HR, Aerobic.TE, Avg.Run.Cadence, Avg.Pace, Avg.Stride.Length)) %>% 
   stats::cor(use = "complete.obs") %>% 
-  corrplot::corrplot(method = "number", type = "upper", tl.col = "black", tl.srt = 45, order= "hclust")
+  corrplot::corrplot(
+    title = "Hound's Upper correlation Matrix",
+    method = "number",
+    type = "upper",
+    tl.col = "black",
+    tl.srt = 45,
+    order= "hclust"
+    )
 ```
 
 ```{r, echo=FALSE}
 collie_data %>% 
   dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60) %>% 
-  dplyr::select(c(Avg.HR, Max.HR, Aerobic.TE, Avg.Run.Cadence, Max.Run.Cadence, Total.Ascent, Total.Descent, Avg.Pace ,Min.Elevation, Avg.Stride.Length, Max.Elevation)) %>% 
+  dplyr::select(c(Avg.HR, Max.HR, Aerobic.TE, Avg.Run.Cadence, Avg.Pace, Avg.Stride.Length)) %>% 
   stats::cor(use = "complete.obs") %>% 
-  corrplot::corrplot(method = "number", type = "upper", tl.col = "black", tl.srt = 45, order= "hclust")
+  corrplot::corrplot(
+    title = "Collie's Upper correlation Matrix",
+    method = "number",
+    type = "upper",
+    tl.col = "black",
+    tl.srt = 45,
+    order= "hclust"
+    )
 ```
+
+Note that for Collie:
+
+-   The correlation between Avg. HR and TE is 0.62, suggesting of a strong positive relationship.
+
+-   As we expected the correlation between Avg. HR and Avg. Pace is somewhat strong but inverted; this makes sense because when as the individual runs faster its pace value decreases but heart rate increases.
 
 ```{r, echo=FALSE}
 hound_data %>% 
@@ -250,11 +270,12 @@ hound_data %>%
   ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
   ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
   ggplot2::labs(
-    title = "Hound's Efficiency by Activity",
+    title = "Hound's Efficiency Factor by Activity",
     x = "Date",
     y = "Efficiency (EF)")+
      ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
+
 ```{r}
  collie_data %>% 
   dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type) %>%
@@ -266,11 +287,8 @@ hound_data %>%
   ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
   ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
   ggplot2::labs(
-    title = "Collie's Efficiency by Activity",
+    title = "Collie's Efficiency Factor by Activity",
     x = "Date",
     y = "Efficiency (EF)")+
      ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
-
-
-
