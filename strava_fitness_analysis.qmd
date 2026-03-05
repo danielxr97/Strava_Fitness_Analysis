@@ -240,5 +240,37 @@ hound_data %>%
 ```
 
 ```{r, echo=FALSE}
-
+ hound_data %>% 
+  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type) %>%
+  dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60^2) %>%
+  dplyr::mutate(Speed.Kph = 3600 / Avg.Pace) %>%
+  dplyr::mutate(Avg.Speed = Distance/Speed.Kph) %>%
+  dplyr::mutate(EF = (Avg.Speed / Avg.HR)*1000) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
+  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
+  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
+  ggplot2::labs(
+    title = "Hound's Efficiency by Activity",
+    x = "Date",
+    y = "Efficiency (EF)")+
+     ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
+```{r}
+ collie_data %>% 
+  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type) %>%
+  dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60^2) %>%
+  dplyr::mutate(Speed.Kph = 3600 / Avg.Pace) %>%
+  dplyr::mutate(Avg.Speed = Distance/Speed.Kph) %>%
+  dplyr::mutate(EF = (Avg.Speed / Avg.HR)*1000) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
+  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
+  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
+  ggplot2::labs(
+    title = "Collie's Efficiency by Activity",
+    x = "Date",
+    y = "Efficiency (EF)")+
+     ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+
+
