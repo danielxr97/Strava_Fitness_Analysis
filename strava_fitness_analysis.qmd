@@ -81,6 +81,8 @@ To determine which individual is the most fit, we will use the current performan
 
 ```{r, echo=FALSE, message=FALSE}
 library(tidyverse)
+library(corrplot)
+library(lubridate)
 ```
 
 ```{r, echo=FALSE}
@@ -192,22 +194,51 @@ hound_data %>%
   dplyr::select(Avg.Resp)
 ```
 
-
 ```{r, echo=FALSE}
-library(corrplot)
-library(lubridate)
 hound_data %>% 
   dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60) %>% 
   dplyr::select(c(Avg.HR, Max.HR, Aerobic.TE, Avg.Run.Cadence, Max.Run.Cadence, Total.Ascent, Total.Descent, Avg.Pace ,Min.Elevation, Avg.Stride.Length ,Max.Elevation)) %>% 
   cor(use = "complete.obs") %>% 
   corrplot(method = "number", type = "upper", tl.col = "black", tl.srt = 45, order= "hclust")
 ```
+
 ```{r, echo=FALSE}
-library(corrplot)
-library(lubridate)
 collie_data %>% 
   dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60) %>% 
-  dplyr::select(c(Avg.HR, Max.HR, Aerobic.TE, Avg.Run.Cadence, Max.Run.Cadence, Total.Ascent, Total.Descent, Avg.Pace ,Min.Elevation, Avg.Stride.Length ,Max.Elevation)) %>% 
+  dplyr::select(c(Avg.HR, Max.HR, Aerobic.TE, Avg.Run.Cadence, Max.Run.Cadence, Total.Ascent, Total.Descent, Avg.Pace ,Min.Elevation, Avg.Stride.Length, Max.Elevation)) %>% 
   cor(use = "complete.obs") %>% 
   corrplot(method = "number", type = "upper", tl.col = "black", tl.srt = 45, order= "hclust")
+```
+
+```{r, echo=FALSE}
+hound_data %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Avg.HR)) +
+  ggplot2::geom_histogram(
+    ggplot2::aes(y = ggplot2::after_stat(density)),
+    bins = ceiling((max(hound_data$Avg.HR) - min(hound_data$Avg.HR)) / ( 2 * IQR(hound_data$Avg.HR) / length(hound_data$Avg.HR)^(1/3))), # Using Freedman-Diaconis's Rule
+    col = "midnightblue",
+    fill = "midnightblue"
+  ) +
+  ggplot2::geom_vline(
+    ggplot2::aes(xintercept = mean(Avg.HR, na.rm = TRUE)),
+    color = "red",
+    linetype = "longdash",
+    size = 0.8
+  ) +
+  ggplot2::stat_function(
+    fun = dnorm,
+    args = c(mean = mean(hound_data$Avg.HR, na.rm = TRUE), sd = sd(hound_data$Avg.HR, na.rm = TRUE)),
+    col = "red"
+  ) +
+  ggplot2::geom_rug(sides = "b") +
+  ggplot2::labs(
+    title = "Hound's Average Pace Distribution",
+    x = "Average Pace",
+    y = "Density"
+  ) +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+```{r, echo=FALSE}
+
 ```
