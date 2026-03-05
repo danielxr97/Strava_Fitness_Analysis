@@ -199,7 +199,7 @@ hound_data %>%
   dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60) %>% 
   dplyr::select(c(Avg.HR, Max.HR, Aerobic.TE, Avg.Run.Cadence, Max.Run.Cadence, Total.Ascent, Total.Descent, Avg.Pace ,Min.Elevation, Avg.Stride.Length ,Max.Elevation)) %>% 
   cor(use = "complete.obs") %>% 
-  corrplot(method = "number", type = "upper", tl.col = "black", tl.srt = 45, order= "hclust")
+  corrplot::corrplot(method = "number", type = "upper", tl.col = "black", tl.srt = 45, order= "hclust")
 ```
 
 ```{r, echo=FALSE}
@@ -207,7 +207,7 @@ collie_data %>%
   dplyr::mutate(Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60) %>% 
   dplyr::select(c(Avg.HR, Max.HR, Aerobic.TE, Avg.Run.Cadence, Max.Run.Cadence, Total.Ascent, Total.Descent, Avg.Pace ,Min.Elevation, Avg.Stride.Length, Max.Elevation)) %>% 
   cor(use = "complete.obs") %>% 
-  corrplot(method = "number", type = "upper", tl.col = "black", tl.srt = 45, order= "hclust")
+  corrplot::corrplot(method = "number", type = "upper", tl.col = "black", tl.srt = 45, order= "hclust")
 ```
 
 ```{r, echo=FALSE}
