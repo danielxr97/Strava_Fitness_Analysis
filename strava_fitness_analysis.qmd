@@ -73,6 +73,12 @@ According to @Cambridge_nd, the definition of fitness is "the condition of being
 
 -   <u>Efficiency Factor:</u>
 
+    According to @nxtrun_2025, the efficiency factor (EF) is a performance measure that quantifies the speed an individual achieves per heartbeat. The reason EF matters is that an efficient individual uses less oxygen, thereby requiring less of the heart's energy to pump oxygen to the muscles, to maintain a given speed.
+
+    @nxtrun_2025 and @Friel suggest that the efficiency factor calculation is the following:
+
+    $EF = \frac{Speed}{Heart Rate}$
+
 To determine which individual is the most fit, we will use the current performance on their metrics. However, to determine which individual we will choose to train, we will estimate each individual's potential by forecasting their future metrics and comparing them to choose who we want to train.
 
 # Notes
