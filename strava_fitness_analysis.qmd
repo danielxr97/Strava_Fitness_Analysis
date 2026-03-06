@@ -331,6 +331,43 @@ hound_data %>%
 ```
 
 ```{r}
+#graphs for TE
+collie_data %>% 
+  dplyr::select(Date, Runner, Aerobic.TE) %>%
+  dplyr::group_by(Aerobic.TE) %>% 
+  dplyr::count(Aerobic.TE) %>% 
+  dplyr::mutate(proportion = n / nrow(collie_data)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE, y = proportion)) +
+  ggplot2::geom_col(fill = "midnightblue") +
+  ggplot2::labs(
+    title = "Collie's Proportional Training Effect",
+    x = "Training Effect Zone",
+    y = "Proportion (%)"
+  ) +
+  ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
+  ggplot2::scale_y_continuous(labels = scales::percent_format())
+
+```
+
+```{r}
+
+hound_data %>% 
+  dplyr::select(Date, Runner, Aerobic.TE) %>%
+  dplyr::group_by(Aerobic.TE) %>% 
+  dplyr::count(Aerobic.TE) %>% 
+  dplyr::mutate(proportion = n / nrow(hound_data)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE, y = proportion)) +
+  ggplot2::geom_col(fill = "midnightblue") +
+  ggplot2::labs(
+    title = "Hound's Proportional Training Effect",
+    x = "Training Effect Zone",
+    y = "Proportion (%)"
+  ) +
+  ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
+  ggplot2::scale_y_continuous(labels = scales::percent_format())
+```
+
+```{r}
  collie_data %>% 
   dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type) %>%
   dplyr::mutate(Speed.Kph = 3600 / Avg.Pace) %>%
