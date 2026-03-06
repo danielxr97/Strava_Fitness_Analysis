@@ -155,7 +155,16 @@ clean_strava_data <- clean_strava_data %>%
     Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60^2,
     Best.Pace = period_to_seconds(hms(Best.Pace)) / 60^2,
     Best.Lap.Time = period_to_seconds(hms(Best.Lap.Time)) / 60^2
-    )
+    ) %>% 
+  dplyr::mutate(
+    scoring =
+    dplyr::if_else (Aerobic.TE >= 0 & Aerobic.TE < 2,1,
+          dplyr::if_else (Aerobic.TE >= 2 & Aerobic.TE < 4,5,
+                dplyr::if_else (Aerobic.TE >= 4 & Aerobic.TE < 5,10,0)
+    )))  
+  #dplyr::mutate(
+   # scoring_exp =
+    #dplyr::if_else (Aerobic.TE>=0 & Aerobic.TE < 5, exp(Aerobic.TE),0) )       
 
 clean_strava_data
 ```
@@ -317,7 +326,7 @@ hound_data %>%
 ```{r, echo=FALSE}
  hound_data %>% 
   dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type) %>%
-  dplyr::mutate(Speed.Kph = 3600 / Avg.Pace) %>%
+  dplyr::mutate(Speed.Kph = 60 / Avg.Pace) %>%
   dplyr::mutate(Avg.Speed = Distance/Speed.Kph) %>%
   dplyr::mutate(EF = (Avg.Speed / Avg.HR)*1000) %>% 
   ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
@@ -370,10 +379,10 @@ hound_data %>%
 ```{r}
  collie_data %>% 
   dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type) %>%
-  dplyr::mutate(Speed.Kph = 3600 / Avg.Pace) %>%
+  dplyr::mutate(Speed.Kph = 60/ Avg.Pace) %>%
   dplyr::mutate(Avg.Speed = Distance/Speed.Kph) %>%
   dplyr::mutate(EF = (Avg.Speed / Avg.HR)*1000) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
+ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
   ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
   ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
   ggplot2::labs(
