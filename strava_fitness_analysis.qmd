@@ -1,16 +1,23 @@
 ---
 title: "Strava Fitness Analysis"
+author: Shelby Cyr, Daniel Rabi, and Ali Sachwani
+date: March 7, 2026
+backgroundcolor: lightblue
+#theme: Quartz
 format: html
 editor: visual
 embed-resources: true
 bibliography: references/references.bib
 csl: references/apa.csl
 output-file: index
+
+echo: FALSE
+warning: FALSE
 ---
 
 # Instructions
 
-```{r, echo=FALSE}
+```{r}
 #devtools::install_github("risktoollib/RTLedu")
 #RTLedu::fitness()
 ```
@@ -103,20 +110,20 @@ To determine which individual is the most fit, we will use the current performan
 
 # Importing Strava Data
 
-```{r, echo=FALSE, message=FALSE}
+```{r, message=FALSE}
 library(tidyverse)
 library(corrplot)
 library(lubridate)
 library(GGally)
 ```
 
-```{r, echo=FALSE}
+```{r}
 strava_data <- RTLedu::strava
 
 strava_data
 ```
 
-```{r, echo=FALSE}
+```{r}
 clean_strava_data <- strava_data %>% 
   dplyr::select(- c(18:27, 29)) %>%  # Or we can do: select(- where(~ all(.x == 0))) . The ~ is like lambda in Python and is used to check all of the columns. The .x is for everything is that column that lambda is going to look at.
   dplyr::select(- "Decompression") # Removing this because it's a no for everyone, so we don't to keep it there
@@ -127,7 +134,7 @@ clean_strava_data <- clean_strava_data %>%
 clean_strava_data
 ```
 
-```{r, echo=FALSE}
+```{r}
 clean_strava_data <- clean_strava_data %>% 
   dplyr::mutate(Avg.HR = as.numeric(Avg.HR)) %>% 
   dplyr::mutate(Max.HR = as.numeric(Max.HR)) %>%
@@ -142,7 +149,7 @@ clean_strava_data <- clean_strava_data %>%
 clean_strava_data
 ```
 
-```{r, echo=FALSE}
+```{r}
 clean_strava_data <- clean_strava_data %>% 
   dplyr::rename(
     Avg.Cadence = Avg.Run.Cadence,
@@ -153,7 +160,7 @@ clean_strava_data <- clean_strava_data %>%
 clean_strava_data
 ```
 
-```{r, echo=FALSE}
+```{r}
 clean_strava_data <- clean_strava_data %>% 
   dplyr::mutate(
     Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60^2,
@@ -173,7 +180,7 @@ clean_strava_data <- clean_strava_data %>%
 clean_strava_data
 ```
 
-```{r, echo=FALSE}
+```{r}
 clean_strava_data <- clean_strava_data %>% 
   dplyr::mutate(Avg.Speed = 60 / Avg.Pace) %>%
   dplyr::mutate(EF = (Avg.Speed / Avg.HR))
@@ -181,14 +188,14 @@ clean_strava_data <- clean_strava_data %>%
 clean_strava_data
 ```
 
-```{r, echo=FALSE}
+```{r}
 clean_strava_data <- clean_strava_data %>% 
   dplyr::select(- c(Avg.Resp, Min.Resp, Max.Resp))
 
 clean_strava_data
 ```
 
-```{r, echo=FALSE}
+```{r}
 # Splitting the data to each runner so we can look at each one individually and compare them
 hound_data <- clean_strava_data %>% 
   dplyr::filter(Runner == "Hound")
@@ -197,13 +204,13 @@ collie_data <- clean_strava_data %>%
   dplyr::filter(Runner == "Collie")
 ```
 
-```{r, echo=FALSE}
+```{r}
 collie_data %>% 
   dplyr::filter(Activity.Type == "Trail Running") %>% 
   dplyr::select(c(Title, Distance, Time, Avg.Pace, Best.Pace))
 ```
 
-```{r, echo=FALSE}
+```{r}
 hound_data %>% 
   dplyr::select(Date, Activity.Type, Distance, Calories, Time, Aerobic.TE) %>% 
   dplyr::group_by(Activity.Type) %>% 
@@ -212,7 +219,7 @@ hound_data %>%
   ggplot2::geom_col()
 ```
 
-```{r, echo=FALSE}
+```{r}
 hound_data %>% 
   dplyr::select(Date, Activity.Type, Distance, Calories, Time, EF) %>% 
   dplyr::group_by(Activity.Type) %>% 
@@ -221,7 +228,7 @@ hound_data %>%
   ggplot2::geom_col()
 ```
 
-```{r, echo=FALSE}
+```{r}
 hound_data %>% 
   dplyr::select(Date, Activity.Type, Distance, Calories, Time, Aerobic.TE) %>% 
   dplyr::group_by(Activity.Type) %>% 
@@ -236,7 +243,7 @@ hound_data %>%
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
-```{r, echo=FALSE}
+```{r}
 hound_data %>% 
   dplyr::select(Date, Activity.Type, Distance, Calories, Time, Avg.Pace) %>% 
   dplyr::group_by(Activity.Type) %>% 
@@ -251,7 +258,7 @@ hound_data %>%
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
-```{r, echo=FALSE}
+```{r}
 hound_data %>% 
   dplyr::select(Date, Activity.Type, Distance, Calories, Time, Avg.Stride) %>% 
   dplyr::group_by(Activity.Type) %>% 
@@ -268,7 +275,7 @@ hound_data %>%
 
 Observations from the Treadmill Running are very clear and present improvements over time
 
-```{r, echo=FALSE}
+```{r}
 hound_data %>% 
   dplyr::select(c(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
   stats::cor(use = "complete.obs") %>% 
@@ -290,14 +297,14 @@ Hound's correlation:
 
 -   
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, message=FALSE}
 hound_data %>% 
   select(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
   GGally::ggpairs(title = "Hound's Correlation Matrix on Metrics") +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
-```{r, echo=FALSE}
+```{r}
 collie_data %>% 
   dplyr::select(c(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
   stats::cor(use = "complete.obs") %>% 
@@ -311,7 +318,7 @@ collie_data %>%
     )
 ```
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, message=FALSE}
 collie_data %>% 
   select(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
   GGally::ggpairs(title = "Collie's Correlation Matrix on Metrics") +
@@ -324,7 +331,7 @@ Note that for Collie:
 
 -   As we expected the correlation between Avg. HR and Avg. Pace is somewhat strong but inverted; this makes sense because when as the individual runs faster its pace value decreases but heart rate increases.
 
-```{r, echo=FALSE}
+```{r}
 hound_data %>% 
   ggplot2::ggplot(ggplot2::aes(x = EF)) +
   ggplot2::geom_histogram(
@@ -355,7 +362,7 @@ hound_data %>%
 
 Hound's EF distribution is normally distributed, which means he is
 
-```{r, echo=FALSE}
+```{r}
 collie_data %>% 
   ggplot2::ggplot(ggplot2::aes(x = EF)) +
   ggplot2::geom_histogram(
@@ -386,7 +393,7 @@ collie_data %>%
 
 Collie's EF distribution is left-skewed, which means he's mostly very efficient!
 
-```{r, echo=FALSE}
+```{r}
  hound_data %>% 
   dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type) %>%
   dplyr::mutate(Speed.Kph = 60 / Avg.Pace) %>%
