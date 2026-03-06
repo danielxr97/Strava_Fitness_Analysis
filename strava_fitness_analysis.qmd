@@ -82,10 +82,12 @@ clean_strava_data <- clean_strava_data %>%
     ) %>% 
   dplyr::mutate(
     TE.score =
-    dplyr::if_else (Aerobic.TE >= 0 & Aerobic.TE < 2,1,
-          dplyr::if_else (Aerobic.TE >= 2 & Aerobic.TE < 4,5,
-                dplyr::if_else (Aerobic.TE >= 4 & Aerobic.TE < 5,10,0)
-    )))  
+    dplyr::if_else (Aerobic.TE >= 0 & Aerobic.TE < 1,0,
+          dplyr::if_else (Aerobic.TE >= 1 & Aerobic.TE < 2,2,
+              dplyr::if_else (Aerobic.TE >= 2 & Aerobic.TE < 3,4,
+                dplyr::if_else (Aerobic.TE >= 2 & Aerobic.TE < 4,6,
+                  dplyr::if_else (Aerobic.TE >= 4 & Aerobic.TE < 5,10,0)
+    )))))
 
   #dplyr::mutate(
    # scoring_exp =)
