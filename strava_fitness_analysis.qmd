@@ -90,10 +90,6 @@ clean_strava_data <- clean_strava_data %>%
                   dplyr::if_else (Aerobic.TE >= 4 & Aerobic.TE < 5,10,0)
     )))))
 
-  #dplyr::mutate(
-   # scoring_exp =)
-    #dplyr::if_else (Aerobic.TE>=0 & Aerobic.TE < 5, exp(Aerobic.TE),0) )       
-
 clean_strava_data
 ```
 
