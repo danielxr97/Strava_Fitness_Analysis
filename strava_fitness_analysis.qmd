@@ -13,11 +13,11 @@ output-file: index
 
 echo: FALSE
 warning: FALSE
+message: FALSE
 ---
 
-# Instructions
-
 ```{r}
+# Instructions:
 #devtools::install_github("risktoollib/RTLedu")
 #RTLedu::fitness()
 ```
@@ -110,7 +110,7 @@ To determine which individual is the most fit, we will use the current performan
 
 # Importing Strava Data
 
-```{r, message=FALSE}
+```{r}
 library(tidyverse)
 library(corrplot)
 library(lubridate)
@@ -318,7 +318,7 @@ collie_data %>%
     )
 ```
 
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 collie_data %>% 
   select(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
   GGally::ggpairs(title = "Collie's Correlation Matrix on Metrics") +
@@ -395,10 +395,7 @@ Collie's EF distribution is left-skewed, which means he's mostly very efficient!
 
 ```{r}
  hound_data %>% 
-  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type) %>%
-  dplyr::mutate(Speed.Kph = 60 / Avg.Pace) %>%
-  dplyr::mutate(Avg.Speed = Distance/Speed.Kph) %>%
-  dplyr::mutate(EF = (Avg.Speed / Avg.HR)*1000) %>% 
+  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type, EF) %>%
   ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
   ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
   ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
@@ -448,11 +445,8 @@ hound_data %>%
 
 ```{r}
  collie_data %>% 
-  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type) %>%
-  dplyr::mutate(Speed.Kph = 60 / Avg.Pace) %>%
-  dplyr::mutate(Avg.Speed = Distance / Speed.Kph) %>%
-  dplyr::mutate(EF = (Avg.Speed / Avg.HR) * 1000) %>% 
-ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
+  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type, EF) %>%
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
   ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
   ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
   ggplot2::labs(
