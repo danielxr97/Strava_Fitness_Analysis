@@ -228,13 +228,6 @@ hound_data %>%
     )
 ```
 
-```{r, message=FALSE}
-hound_data %>% 
-  select(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
-  GGally::ggpairs(title = "Hound's Correlation Matrix on Metrics") +
-  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
-
 Hound's correlation:
 
 -   There is a strong negative correlation between EF and Avg. Pace of -0.91, which suggests that EF is tracking performance very well
@@ -260,6 +253,8 @@ hound_data %>%
   ggplot2::ggplot(ggplot2::aes(x = Activity.Type, y = EF, fill = Activity.Type)) + 
   ggplot2::geom_col()
 ```
+
+## Boxplots by Activity
 
 ```{r}
 hound_data %>% 
@@ -351,6 +346,8 @@ Observations from the Treadmill Running are very clear and present improvements 
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
+## Efficiency Factor Distribution
+
 ```{r}
 hound_data %>% 
   ggplot2::ggplot(ggplot2::aes(x = EF)) +
@@ -375,6 +372,41 @@ hound_data %>%
   ggplot2::labs(
     title = "Hound's Efficiency Factor Distribution",
     x = "Efficiency Factor",
+    y = "Density"
+  ) +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+```{r}
+cat("Mean:", mean(collie_data$EF), "SD:",sd(collie_data$EF))
+```
+
+It seems like Hound's performance is normally distributed around an average Efficiency Factor of 0.064. The normal distribution of the Efficiency Factor suggests that Hound has approximately as many bad days asgood days, but most days his performance is in the middle at 0.064.
+
+```{r}
+hound_data %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE)) +
+  ggplot2::geom_histogram(
+    ggplot2::aes(y = ggplot2::after_stat(density)),
+    bins = ceiling((max(hound_data$Aerobic.TE) - min(hound_data$Aerobic.TE)) / ( 2 * IQR(hound_data$Aerobic.TE) / length(hound_data$Aerobic.TE)^(1/3))), # Using Freedman-Diaconis's Rule
+    col = "midnightblue",
+    fill = "midnightblue"
+  ) +
+  ggplot2::geom_vline(
+    ggplot2::aes(xintercept = mean(Aerobic.TE, na.rm = TRUE)),
+    color = "red",
+    linetype = "longdash",
+    size = 0.8
+  ) +
+  ggplot2::stat_function(
+    fun = dnorm,
+    args = c(mean = mean(hound_data$Aerobic.TE, na.rm = TRUE), sd = sd(hound_data$Aerobic.TE, na.rm = TRUE)),
+    col = "red"
+  ) +
+  ggplot2::geom_rug(sides = "b") +
+  ggplot2::labs(
+    title = "Hound's Training Effect Distribution",
+    x = "Training Effect",
     y = "Density"
   ) +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
@@ -415,20 +447,13 @@ collie_data %>%
     )
 ```
 
-```{r, message=FALSE, warning=FALSE}
-collie_data %>% 
-  select(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
-  GGally::ggpairs(title = "Collie's Correlation Matrix on Metrics") +
-  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
-
 Note that for Collie:
 
 -   The correlation between Avg. HR and TE is 0.62, suggesting of a strong positive relationship.
 
 -   As we expected the correlation between Avg. HR and Avg. Pace is somewhat strong but inverted; this makes sense because when as the individual runs faster its pace value decreases but heart rate increases.
 
-Hound's EF distribution is normally distributed, which means he is
+## Efficiency Factor Distribution
 
 ```{r}
 collie_data %>% 
@@ -459,7 +484,40 @@ collie_data %>%
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
+```{r}
+cat("Mean:", mean(collie_data$EF), "SD:",sd(collie_data$EF))
+```
+
 Collie's EF distribution is left-skewed, which means he's mostly very efficient!
+
+```{r}
+collie_data %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE)) +
+  ggplot2::geom_histogram(
+    ggplot2::aes(y = ggplot2::after_stat(density)),
+    bins = ceiling((max(collie_data$Aerobic.TE) - min(collie_data$Aerobic.TE)) / ( 2 * IQR(collie_data$Aerobic.TE) / length(collie_data$Aerobic.TE)^(1/3))), # Using Freedman-Diaconis's Rule
+    col = "midnightblue",
+    fill = "midnightblue"
+  ) +
+  ggplot2::geom_vline(
+    ggplot2::aes(xintercept = mean(Aerobic.TE, na.rm = TRUE)),
+    color = "red",
+    linetype = "longdash",
+    size = 0.8
+  ) +
+  ggplot2::stat_function(
+    fun = dnorm,
+    args = c(mean = mean(collie_data$Aerobic.TE, na.rm = TRUE), sd = sd(collie_data$Aerobic.TE, na.rm = TRUE)),
+    col = "red"
+  ) +
+  ggplot2::geom_rug(sides = "b") +
+  ggplot2::labs(
+    title = "Collie's Training Effect Distribution",
+    x = "Training Effect",
+    y = "Density"
+  ) +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
 
 ```{r}
 #graphs for TE
