@@ -456,15 +456,6 @@ collie_roll %>%
   ggplot2::geom_line(ggplot2::aes(y = SAD200), col="blue")
 ```
 
-```{r}
-hound_data %>% 
-  dplyr::select(Date, Activity.Type, Distance, Calories, Time, EF) %>% 
-  dplyr::group_by(Activity.Type) %>% 
-  dplyr::summarise(EF = mean(EF)) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Activity.Type, y = EF, fill = Activity.Type)) + 
-  ggplot2::geom_col()
-```
-
 # The Task
 
 1.  Explain how you define fitness.
@@ -774,6 +765,15 @@ cat("Mean:", mean(collie_data$EF), "SD:",sd(collie_data$EF))
     x = "Date",
     y = "Efficiency Factor") +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+```{r}
+hound_data %>% 
+  dplyr::select(Date, Activity.Type, Distance, Calories, Time, EF) %>% 
+  dplyr::group_by(Activity.Type) %>% 
+  dplyr::summarise(EF = mean(EF)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Activity.Type, y = EF, fill = Activity.Type)) + 
+  ggplot2::geom_col()
 ```
 
 (GRAPH for comparison goes here)
