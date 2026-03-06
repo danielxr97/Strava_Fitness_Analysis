@@ -1,16 +1,23 @@
 ---
 title: "Strava Fitness Analysis"
+author: Shelby Cyr, Daniel Rabi, and Ali Sachwani
+date: March 7, 2026
+backgroundcolor: lightblue
+#theme: Quartz
 format: html
 editor: visual
 embed-resources: true
 bibliography: references/references.bib
 csl: references/apa.csl
 output-file: index
+
+echo: FALSE
+warning: FALSE
+message: FALSE
 ---
 
-# Instructions
-
-```{r, echo=FALSE}
+```{r}
+# Instructions:
 #devtools::install_github("risktoollib/RTLedu")
 #RTLedu::fitness()
 ```
@@ -73,13 +80,19 @@ According to @Cambridge_nd, the definition of fitness is "the condition of being
 
 -   <u>Efficiency Factor:</u>
 
-    According to @nxtrun_2025, the efficiency factor (EF) is a performance measure that quantifies the speed an individual achieves per heartbeat. The reason EF matters is that an efficient individual uses less oxygen, thereby requiring less of the heart's energy to pump oxygen to the muscles, to maintain a given speed.
+    According to @nxtrun_2025, the efficiency factor (EF) is a performance measure that quantifies the speed an individual achieves per heartbeat. The reason EF matters is that an efficient individual uses less oxygen, thereby requiring less energy from the heart to pump oxygen to the muscles to maintain a given speed.
 
     @nxtrun_2025 and @Friel suggest that the efficiency factor calculation is the following:
 
-    $EF = \frac{Speed}{Heart Rate}$
+    $$ EF = \frac{\text{Speed}}{\text{Heart Rate}} $$
 
-To determine which individual is the most fit, we will use the current performance on their metrics. However, to determine which individual we will choose to train, we will estimate each individual's potential by forecasting their future metrics and comparing them to choose who we want to train.
+    Since we have an average pace, we can use it to find the average speed, since pace and speed are inverses. That means that:
+
+    $$ \text{Speed} = \frac{1}{\text{Pace}} $$
+
+It is important to note that Training Effect is a short-term performance measure since it only tracks the Max VO2 improvement from a single workout, the last exercise the individual performed. In contrast, the Efficiency Factor is useful for long-term performance tracking because it relates speed to heart rate, allowing us to observe improvements in running efficiency over time.
+
+To determine which individual is the most fit, we will use the current performance on their metrics. However, to determine which individual we will train, we will estimate each individual's potential by forecasting their future metrics and comparing them to select the one we want to train.
 
 # Notes
 
@@ -97,33 +110,31 @@ To determine which individual is the most fit, we will use the current performan
 
 # Importing Strava Data
 
-```{r, echo=FALSE, message=FALSE}
+```{r}
 library(tidyverse)
 library(corrplot)
 library(lubridate)
 library(GGally)
 ```
 
-```{r, echo=FALSE}
+```{r}
 strava_data <- RTLedu::strava
 
 strava_data
 ```
 
-```{r, echo=FALSE}
+```{r}
 clean_strava_data <- strava_data %>% 
   dplyr::select(- c(18:27, 29)) %>%  # Or we can do: select(- where(~ all(.x == 0))) . The ~ is like lambda in Python and is used to check all of the columns. The .x is for everything is that column that lambda is going to look at.
   dplyr::select(- "Decompression") # Removing this because it's a no for everyone, so we don't to keep it there
 
 clean_strava_data <- clean_strava_data %>% 
-  dplyr::mutate(Distance = dplyr::if_else(Activity.Type == "Track Running", Distance / 1000, Distance))
-
-clean_strava_data
+  dplyr::mutate(Distance = dplyr::if_else(Activity.Type == "Track Running", Distance / 1000, Distance)) # Converting meters to Km
 
 clean_strava_data
 ```
 
-```{r, echo=FALSE}
+```{r}
 clean_strava_data <- clean_strava_data %>% 
   dplyr::mutate(Avg.HR = as.numeric(Avg.HR)) %>% 
   dplyr::mutate(Max.HR = as.numeric(Max.HR)) %>%
@@ -138,7 +149,7 @@ clean_strava_data <- clean_strava_data %>%
 clean_strava_data
 ```
 
-```{r, echo=FALSE}
+```{r}
 clean_strava_data <- clean_strava_data %>% 
   dplyr::rename(
     Avg.Cadence = Avg.Run.Cadence,
@@ -149,7 +160,7 @@ clean_strava_data <- clean_strava_data %>%
 clean_strava_data
 ```
 
-```{r, echo=FALSE}
+```{r}
 clean_strava_data <- clean_strava_data %>% 
   dplyr::mutate(
     Avg.Pace = period_to_seconds(hms(Avg.Pace)) / 60^2,
@@ -169,7 +180,22 @@ clean_strava_data <- clean_strava_data %>%
 clean_strava_data
 ```
 
-```{r, echo=FALSE}
+```{r}
+clean_strava_data <- clean_strava_data %>% 
+  dplyr::mutate(Avg.Speed = 60 / Avg.Pace) %>%
+  dplyr::mutate(EF = (Avg.Speed / Avg.HR))
+
+clean_strava_data
+```
+
+```{r}
+clean_strava_data <- clean_strava_data %>% 
+  dplyr::select(- c(Avg.Resp, Min.Resp, Max.Resp))
+
+clean_strava_data
+```
+
+```{r}
 # Splitting the data to each runner so we can look at each one individually and compare them
 hound_data <- clean_strava_data %>% 
   dplyr::filter(Runner == "Hound")
@@ -178,13 +204,46 @@ collie_data <- clean_strava_data %>%
   dplyr::filter(Runner == "Collie")
 ```
 
-```{r, echo=FALSE}
+```{r}
 collie_data %>% 
   dplyr::filter(Activity.Type == "Trail Running") %>% 
   dplyr::select(c(Title, Distance, Time, Avg.Pace, Best.Pace))
 ```
 
-```{r, echo=FALSE}
+# Hound
+
+## Correlation Matrix
+
+```{r}
+hound_data %>% 
+  dplyr::select(c(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
+  stats::cor(use = "complete.obs") %>% 
+  corrplot::corrplot(
+    method = "color",
+    type = "upper",
+    tl.col = "black",
+    tl.srt = 45,
+    order= "hclust",
+    addCoef.col = "black"
+    )
+```
+
+```{r, message=FALSE}
+hound_data %>% 
+  select(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
+  GGally::ggpairs(title = "Hound's Correlation Matrix on Metrics") +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+Hound's correlation:
+
+-   There is a strong negative correlation between EF and Avg. Pace of -0.91, which suggests that EF is tracking performance very well
+
+-   Strong positive correlation between EF and Cadence of 0.61 and EF and Stride of 0.60, suggesting a higher efficiency as cadence and stride increase.
+
+-   
+
+```{r}
 hound_data %>% 
   dplyr::select(Date, Activity.Type, Distance, Calories, Time, Aerobic.TE) %>% 
   dplyr::group_by(Activity.Type) %>% 
@@ -193,7 +252,46 @@ hound_data %>%
   ggplot2::geom_col()
 ```
 
-```{r, echo=FALSE}
+```{r}
+hound_data %>% 
+  dplyr::select(Date, Activity.Type, Distance, Calories, Time, EF) %>% 
+  dplyr::group_by(Activity.Type) %>% 
+  dplyr::summarise(EF = mean(EF)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Activity.Type, y = EF, fill = Activity.Type)) + 
+  ggplot2::geom_col()
+```
+
+```{r}
+hound_data %>% 
+  plotly::plot_ly(
+    x = ~Activity.Type,
+    y = ~Aerobic.TE,
+    type = "box",
+    boxmean = "sd"
+    ) %>% 
+  plotly::layout(
+    title = list(text = "Hound's TE Boxplots by Activity", x = 0.5),
+    xaxis = list(title = "Activity Type"),
+    yaxis = list(title = "Training Effect")
+  )
+```
+
+```{r}
+hound_data %>% 
+  plotly::plot_ly(
+    x = ~Activity.Type,
+    y = ~EF,
+    type = "box",
+    boxmean = "sd"
+    ) %>% 
+  plotly::layout(
+    title = list(text = "Hound's EF Boxplots by Activity", x = 0.5),
+    xaxis = list(title = "Activity Type"),
+    yaxis = list(title = "Efficiency Factor")
+  )
+```
+
+```{r}
 hound_data %>% 
   dplyr::select(Date, Activity.Type, Distance, Calories, Time, Aerobic.TE) %>% 
   dplyr::group_by(Activity.Type) %>% 
@@ -208,7 +306,7 @@ hound_data %>%
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
-```{r, echo=FALSE}
+```{r}
 hound_data %>% 
   dplyr::select(Date, Activity.Type, Distance, Calories, Time, Avg.Pace) %>% 
   dplyr::group_by(Activity.Type) %>% 
@@ -223,7 +321,7 @@ hound_data %>%
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
-```{r, echo=FALSE}
+```{r}
 hound_data %>% 
   dplyr::select(Date, Activity.Type, Distance, Calories, Time, Avg.Stride) %>% 
   dplyr::group_by(Activity.Type) %>% 
@@ -240,36 +338,72 @@ hound_data %>%
 
 Observations from the Treadmill Running are very clear and present improvements over time
 
-```{r, echo=FALSE}
-hound_data %>% 
-  dplyr::filter(is.na(Avg.Resp) | Avg.Resp == "--") %>% 
-  dplyr::select(Avg.Resp)
-```
-
-```{r, echo=FALSE}
-hound_data %>% 
-  dplyr::select(c(Avg.HR, Max.HR, Aerobic.TE, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
-  stats::cor(use = "complete.obs") %>% 
-  corrplot::corrplot(
-    method = "color",
-    type = "upper",
-    tl.col = "black",
-    tl.srt = 45,
-    order= "hclust",
-    addCoef.col = "black"
-    )
-```
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-hound_data %>% 
-  select(Avg.HR, Max.HR, Aerobic.TE, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
-  GGally::ggpairs(title = "Hound's Correlation Matrix on Metrics") +
+```{r}
+ hound_data %>% 
+  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type, EF) %>%
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
+  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
+  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
+  ggplot2::labs(
+    title = "Hound's Efficiency Factor by Activity",
+    x = "Date",
+    y = "Efficiency Factor") +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
-```{r, echo=FALSE}
+```{r}
+hound_data %>% 
+  ggplot2::ggplot(ggplot2::aes(x = EF)) +
+  ggplot2::geom_histogram(
+    ggplot2::aes(y = ggplot2::after_stat(density)),
+    bins = ceiling((max(hound_data$EF) - min(hound_data$EF)) / ( 2 * IQR(hound_data$EF) / length(hound_data$EF)^(1/3))), # Using Freedman-Diaconis's Rule
+    col = "midnightblue",
+    fill = "midnightblue"
+  ) +
+  ggplot2::geom_vline(
+    ggplot2::aes(xintercept = mean(EF, na.rm = TRUE)),
+    color = "red",
+    linetype = "longdash",
+    size = 0.8
+  ) +
+  ggplot2::stat_function(
+    fun = dnorm,
+    args = c(mean = mean(hound_data$EF, na.rm = TRUE), sd = sd(hound_data$EF, na.rm = TRUE)),
+    col = "red"
+  ) +
+  ggplot2::geom_rug(sides = "b") +
+  ggplot2::labs(
+    title = "Hound's Efficiency Factor Distribution",
+    x = "Efficiency Factor",
+    y = "Density"
+  ) +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+```{r}
+hound_data %>% 
+  dplyr::select(Date, Runner, Aerobic.TE) %>%
+  dplyr::group_by(Aerobic.TE) %>% 
+  dplyr::count(Aerobic.TE) %>% 
+  dplyr::mutate(proportion = n / nrow(hound_data)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE, y = proportion)) +
+  ggplot2::geom_col(fill = "midnightblue") +
+  ggplot2::labs(
+    title = "Hound's Proportional Training Effect",
+    x = "Training Effect Zone",
+    y = "Proportion (%)"
+  ) +
+  ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
+  ggplot2::scale_y_continuous(labels = scales::percent_format())
+```
+
+# Collie
+
+## Correlation Matrix
+
+```{r}
 collie_data %>% 
-  dplyr::select(c(Avg.HR, Max.HR, Aerobic.TE, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
+  dplyr::select(c(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
   stats::cor(use = "complete.obs") %>% 
   corrplot::corrplot(
     method = "color",
@@ -281,9 +415,9 @@ collie_data %>%
     )
 ```
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE}
 collie_data %>% 
-  select(Avg.HR, Max.HR, Aerobic.TE, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
+  select(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
   GGally::ggpairs(title = "Collie's Correlation Matrix on Metrics") +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
@@ -294,50 +428,38 @@ Note that for Collie:
 
 -   As we expected the correlation between Avg. HR and Avg. Pace is somewhat strong but inverted; this makes sense because when as the individual runs faster its pace value decreases but heart rate increases.
 
-```{r, echo=FALSE}
-hound_data %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Avg.HR)) +
+Hound's EF distribution is normally distributed, which means he is
+
+```{r}
+collie_data %>% 
+  ggplot2::ggplot(ggplot2::aes(x = EF)) +
   ggplot2::geom_histogram(
     ggplot2::aes(y = ggplot2::after_stat(density)),
-    bins = ceiling((max(hound_data$Avg.HR) - min(hound_data$Avg.HR)) / ( 2 * IQR(hound_data$Avg.HR) / length(hound_data$Avg.HR)^(1/3))), # Using Freedman-Diaconis's Rule
+    bins = ceiling((max(collie_data$EF) - min(collie_data$EF)) / ( 2 * IQR(collie_data$EF) / length(collie_data$EF)^(1/3))), # Using Freedman-Diaconis's Rule
     col = "midnightblue",
     fill = "midnightblue"
   ) +
   ggplot2::geom_vline(
-    ggplot2::aes(xintercept = mean(Avg.HR, na.rm = TRUE)),
+    ggplot2::aes(xintercept = mean(EF, na.rm = TRUE)),
     color = "red",
     linetype = "longdash",
     size = 0.8
   ) +
   ggplot2::stat_function(
     fun = dnorm,
-    args = c(mean = mean(hound_data$Avg.HR, na.rm = TRUE), sd = sd(hound_data$Avg.HR, na.rm = TRUE)),
+    args = c(mean = mean(collie_data$EF, na.rm = TRUE), sd = sd(collie_data$EF, na.rm = TRUE)),
     col = "red"
   ) +
   ggplot2::geom_rug(sides = "b") +
   ggplot2::labs(
-    title = "Hound's Average Pace Distribution",
-    x = "Average Pace",
+    title = "Collie's Efficiency Factor Distribution",
+    x = "Efficiency Factor",
     y = "Density"
   ) +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
-```{r, echo=FALSE}
- hound_data %>% 
-  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type) %>%
-  dplyr::mutate(Speed.Kph = 60 / Avg.Pace) %>%
-  dplyr::mutate(Avg.Speed = Distance/Speed.Kph) %>%
-  dplyr::mutate(EF = (Avg.Speed / Avg.HR)*1000) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
-  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
-  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
-  ggplot2::labs(
-    title = "Hound's Efficiency Factor by Activity",
-    x = "Date",
-    y = "Efficiency (EF)")+
-     ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
+Collie's EF distribution is left-skewed, which means he's mostly very efficient!
 
 ```{r}
 #graphs for TE
@@ -359,30 +481,9 @@ collie_data %>%
 ```
 
 ```{r}
-
-hound_data %>% 
-  dplyr::select(Date, Runner, Aerobic.TE) %>%
-  dplyr::group_by(Aerobic.TE) %>% 
-  dplyr::count(Aerobic.TE) %>% 
-  dplyr::mutate(proportion = n / nrow(hound_data)) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE, y = proportion)) +
-  ggplot2::geom_col(fill = "midnightblue") +
-  ggplot2::labs(
-    title = "Hound's Proportional Training Effect",
-    x = "Training Effect Zone",
-    y = "Proportion (%)"
-  ) +
-  ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
-  ggplot2::scale_y_continuous(labels = scales::percent_format())
-```
-
-```{r}
  collie_data %>% 
-  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type) %>%
-  dplyr::mutate(Speed.Kph = 60/ Avg.Pace) %>%
-  dplyr::mutate(Avg.Speed = Distance/Speed.Kph) %>%
-  dplyr::mutate(EF = (Avg.Speed / Avg.HR)*1000) %>% 
-ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
+  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type, EF) %>%
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
   ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
   ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
   ggplot2::labs(
@@ -390,14 +491,4 @@ ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +
     x = "Date",
     y = "Efficiency (EF)")+
      ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
-
-```{r}
-
-#Reference for Ali: https://www.garmin.com/en-CA/garmin-technology/running-science/physiological-measurements/training-effect/
-
-#Notes for Ali based on: 
-#Note: The training effect scale for both aerobic and anaerobic is: 0 – None, 1 – Minor, 2 – Maintaining, 3 – Improving, 4 – Highly Improving, 5 – Overreaching.
-
-#Use these values for calculating the factor we discussed (Will assign weight later)
 ```
