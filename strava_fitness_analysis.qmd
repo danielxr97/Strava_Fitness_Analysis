@@ -73,13 +73,19 @@ According to @Cambridge_nd, the definition of fitness is "the condition of being
 
 -   <u>Efficiency Factor:</u>
 
-    According to @nxtrun_2025, the efficiency factor (EF) is a performance measure that quantifies the speed an individual achieves per heartbeat. The reason EF matters is that an efficient individual uses less oxygen, thereby requiring less of the heart's energy to pump oxygen to the muscles, to maintain a given speed.
+    According to @nxtrun_2025, the efficiency factor (EF) is a performance measure that quantifies the speed an individual achieves per heartbeat. The reason EF matters is that an efficient individual uses less oxygen, thereby requiring less energy from the heart to pump oxygen to the muscles to maintain a given speed.
 
     @nxtrun_2025 and @Friel suggest that the efficiency factor calculation is the following:
 
-    $EF = \frac{Speed}{Heart Rate}$
+    $$ EF = \frac{\text{Speed}}{\text{Heart Rate}} $$
 
-To determine which individual is the most fit, we will use the current performance on their metrics. However, to determine which individual we will choose to train, we will estimate each individual's potential by forecasting their future metrics and comparing them to choose who we want to train.
+    Since we have an average pace, we can use it to find the average speed, since pace and speed are inverses. That means that:
+
+    $$ \text{Speed} = \frac{1}{\text{Pace}} $$
+
+It is important to note that Training Effect is a short-term performance measure since it only tracks the Max VO2 improvement from a single workout, the last exercise the individual performed. In contrast, the Efficiency Factor is useful for long-term performance tracking because it relates speed to heart rate, allowing us to observe improvements in running efficiency over time.
+
+To determine which individual is the most fit, we will use the current performance on their metrics. However, to determine which individual we will train, we will estimate each individual's potential by forecasting their future metrics and comparing them to select the one we want to train.
 
 # Notes
 
