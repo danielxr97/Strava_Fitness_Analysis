@@ -168,11 +168,12 @@ clean_strava_data <- clean_strava_data %>%
     Best.Lap.Time = period_to_seconds(hms(Best.Lap.Time)) / 60^2
     ) %>% 
   dplyr::mutate(
-    scoring =
+    TE.score =
     dplyr::if_else (Aerobic.TE >= 0 & Aerobic.TE < 2,1,
           dplyr::if_else (Aerobic.TE >= 2 & Aerobic.TE < 4,5,
                 dplyr::if_else (Aerobic.TE >= 4 & Aerobic.TE < 5,10,0)
     )))  
+
   #dplyr::mutate(
    # scoring_exp =
     #dplyr::if_else (Aerobic.TE>=0 & Aerobic.TE < 5, exp(Aerobic.TE),0) )       
@@ -185,6 +186,15 @@ clean_strava_data <- clean_strava_data %>%
   dplyr::mutate(Avg.Speed = 60 / Avg.Pace) %>%
   dplyr::mutate(EF = (Avg.Speed / Avg.HR))
 
+clean_strava_data
+```
+```{r}
+clean_strava_data <- clean_strava_data %>% 
+dplyr::mutate(
+  zEF = (EF-mean(EF))/sd(EF),
+  zTE = (TE.score-mean(TE.score))/sd(TE.score),
+  SAD.FIT = 0.8*EF+0.2*zTE
+)
 clean_strava_data
 ```
 
@@ -378,7 +388,8 @@ hound_data %>%
 ```
 
 ```{r}
-cat("Mean:", mean(collie_data$EF), "SD:",sd(collie_data$EF))
+
+
 ```
 
 It seems like Hound's performance is normally distributed around an average Efficiency Factor of 0.064. The normal distribution of the Efficiency Factor suggests that Hound has approximately as many bad days asgood days, but most days his performance is in the middle at 0.064.
