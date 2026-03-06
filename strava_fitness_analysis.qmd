@@ -22,126 +22,6 @@ message: FALSE
 #RTLedu::fitness()
 ```
 
-# The Task
-
-1.  Explain how you define fitness.
-
-2.  Tell me about which individual is fitter?
-
-3.  Tell me about which individual has improved more in fitness?
-
-4.  Make a clear and concise recommendation on which individual you would want to coach. There is no `it depends here`, you have to make a decision.
-
-Write a bullet point summary on your findings at the beginning of the document.
-
-You must use a quarto document (.qmd) and render it into `html`.
-
-# Metrics Meaning
-
--   Decompression: This means to use running as a personal wellness tool to decompress from stress
-
--   Max.Resp: Max.Resp = Maximum respiratory = Max rate of VO2
-
--   Min.Resp: Min.Resp = Minimum respiratory = Min rate of VO2
-
--   Min.Temp: The weather's lowest temperature during the exercise
-
--   <u>Stride Length:</u>
-
-    "The distance you cover with each step of your run" [@Leicht_2023]. Additionally, @Vasudevan_2025 suggests that knowing a person's stride length can help detect a tendency to overstride, which can help prevent injuries, such as knee injuries.
-
--   <u>Cadence:</u>
-
-    "The number of steps you take in one minute" [@Leicht_2023]. Furthermore, @Nike_2026 explains that cadence is important because it can be used to optimize an athlete's ground contact time, explain abnormal stride length, and running inefficiency. For instance, a lower cadence often means longer contact time with the ground, which in turn means a longer stride length, and that could mean pushing the foot too far ahead of the athlete's body; doing so is what causes knee injuries and results in wasted energy, or, in other words, loss of performance [@Nike_2026].
-
-# What is Fitness?
-
-According to @Cambridge_nd, the definition of fitness is "the condition of being physically strong and healthy," and @Healthlinkbc_2022 expands on that definition by adding the ability to perform physical activity. Therefore, to understand what makes an individual fit, we need to understand what enables an individual to perform physical activity and which metrics we can use to track such performance. Since our analysis focuses on fitness in running, we will focus on running performance and the specific metrics used to track it.
-
-**The performance metrics that we will use are the following:**
-
--   <u>Aerobic Training Effect:</u>
-
-    According to @Zhao_2019, Training Effect measures how each training session affects VO2 Max (Maximum Volume of Oxygen) improvement. Furthermore, @Harvard_2024 suggests that VO2 Max can indicate an individual's fitness because a high VO2 Max correlates with better physical fitness and is also associated with "a lower risk for cardiovascular disease and increased longevity." The reason VO2 Max correlates with better physical fitness and health is that it measures the amount of oxygen an athlete consumes during exercise [@Harvard_2024]. Oxygen consumption matters because, for a muscle to generate energy as ATP, it needs oxygen; therefore, the more oxygen the athlete can breathe in, the more energy the muscle can produce to perform the exercise [@Harvard_2024].
-
-    @Zhao_2019 suggests the following description for the Training Effect ranges: (Turn this to a GT table later)
-
-    -   0.0 - 0.9: No aerobic effect
-
-    -   1.0 - 1.9: Minor aerobic effect
-
-    -   2.0 - 2.9: Maintaining aerobic effect
-
-    -   3.0 - 3.9: Improving aerobic effect
-
-    -   4.0 - 4.9: Highly improving aerobic effect
-
-    -   5.0: Overreaching aerobic effect
-
--   <u>Efficiency Factor:</u>
-
-    According to @nxtrun_2025, the efficiency factor (EF) is a performance measure that quantifies the speed an individual achieves per heartbeat. The reason EF matters is that an efficient individual uses less oxygen, thereby requiring less energy from the heart to pump oxygen to the muscles to maintain a given speed.
-
-    @nxtrun_2025 and @Friel suggest that the efficiency factor calculation is the following:
-
-    $$ EF = \frac{\text{Speed}}{\text{Heart Rate}} $$
-
-    Since we have an average pace, we can use it to find the average speed, since pace and speed are inverses. That means that:
-
-    $$ \text{Speed} = \frac{1}{\text{Pace}} $$
-
-It is important to note that Training Effect is a short-term performance measure since it only tracks the Max VO2 improvement from a single workout, the last exercise the individual performed. In contrast, the Efficiency Factor is useful for long-term performance tracking because it relates speed to heart rate, allowing us to observe improvements in running efficiency over time.
-
-To determine which individual is the most fit, we will use the current performance on their metrics. However, to determine which individual we will train, we will estimate each individual's potential by forecasting their future metrics and comparing them to select the one we want to train.
-
-# Comparison of Aerobic Training Effect between the runners:
-
-(GRAPH for comparison goes here)
-
-(commentary on graphs for each runner)
-
-(either second set of charts if they are more insightful here or conclusion for AE)
-
-# Comparison of Efficiency Factor between the runners:
-
-GRAPH for comparison goes here)
-
-(commentary on graphs for each runner)
-
-(either second set of charts if they are more insightful here or conclusion for EF)
-
-# Our thoughts on the use of each metric for determining who is more fit:
-
-Summary of each metric here, how impactful each is for determining fitness.
-
-We may want to use out metric for fitness here or we might want to use that metric for who we want to train.
-
-We say here who is more fit by out definition.
-
-# Our thoughts on the use of each metric for determining who has improved more:
-
-unsure how to approach this at the moment.
-
-# Our recommendation on who we want to train:
-
-We make a choice here presumably based on the metric we have come up with.
-
-# Notes
-
--   The distance for everything is in Km, but Track Running is in meters.
-
--   Collie doesn't have any data under Track Running, but I noticed that under Title in Trail Running there's at least 1 observation with a Title description of Track Running - it's on the last page.
-
--   Collie never ran Street Running or at least he doesn't have any records of running one.
-
--   Observations from the Treadmill Running are very clear and present improvements over time
-
-# Assumptions
-
--   We are assuming that Collie mistakenly entered the "Track Run" as the title for one of his Trail Running data, primarly because he does not have any data on Track Running so we do not expect him to have only one.
-
-# Importing Strava Data
-
 ```{r}
 library(tidyverse)
 library(corrplot)
@@ -151,13 +31,13 @@ library(GGally)
 
 ```{r}
 strava_data <- RTLedu::strava
-
+#Initial data import
 strava_data
 ```
 
 ```{r}
 clean_strava_data <- strava_data %>% 
-  dplyr::select(- c(18:27, 29)) %>%  # Or we can do: select(- where(~ all(.x == 0))) . The ~ is like lambda in Python and is used to check all of the columns. The .x is for everything is that column that lambda is going to look at.
+  dplyr::select(- c(18:27, 29)) %>%  #Removal of empty columns
   dplyr::select(- "Decompression") # Removing this because it's a no for everyone, so we don't to keep it there
 
 clean_strava_data <- clean_strava_data %>% 
@@ -177,7 +57,7 @@ clean_strava_data <- clean_strava_data %>%
   dplyr::mutate(Total.Descent = as.numeric(Total.Descent)) %>%
   dplyr::mutate(Min.Elevation = as.numeric(Min.Elevation)) %>%
   dplyr::mutate(Max.Elevation = as.numeric(Max.Elevation))
-
+#ensuring data will be easy to work with for future calculations in terms of format.
 clean_strava_data
 ```
 
@@ -228,6 +108,7 @@ dplyr::mutate(
   zTE = (TE.score-mean(TE.score))/sd(TE.score),
   SAD.FIT = 0.8*EF+0.2*zTE
 )
+#Calculation of our unique metric
 clean_strava_data
 ```
 
@@ -591,3 +472,121 @@ collie_data %>%
     y = "Efficiency (EF)")+
      ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
+
+# The Task
+
+1.  Explain how you define fitness.
+
+2.  Tell me about which individual is fitter?
+
+3.  Tell me about which individual has improved more in fitness?
+
+4.  Make a clear and concise recommendation on which individual you would want to coach. There is no `it depends here`, you have to make a decision.
+
+Write a bullet point summary on your findings at the beginning of the document.
+
+You must use a quarto document (.qmd) and render it into `html`.
+
+# Metrics Meaning
+
+-   Decompression: This means to use running as a personal wellness tool to decompress from stress
+
+-   Max.Resp: Max.Resp = Maximum respiratory = Max rate of VO2
+
+-   Min.Resp: Min.Resp = Minimum respiratory = Min rate of VO2
+
+-   Min.Temp: The weather's lowest temperature during the exercise
+
+-   <u>Stride Length:</u>
+
+    "The distance you cover with each step of your run" [@Leicht_2023]. Additionally, @Vasudevan_2025 suggests that knowing a person's stride length can help detect a tendency to overstride, which can help prevent injuries, such as knee injuries.
+
+-   <u>Cadence:</u>
+
+    "The number of steps you take in one minute" [@Leicht_2023]. Furthermore, @Nike_2026 explains that cadence is important because it can be used to optimize an athlete's ground contact time, explain abnormal stride length, and running inefficiency. For instance, a lower cadence often means longer contact time with the ground, which in turn means a longer stride length, and that could mean pushing the foot too far ahead of the athlete's body; doing so is what causes knee injuries and results in wasted energy, or, in other words, loss of performance [@Nike_2026].
+
+# What is Fitness?
+
+According to @Cambridge_nd, the definition of fitness is "the condition of being physically strong and healthy," and @Healthlinkbc_2022 expands on that definition by adding the ability to perform physical activity. Therefore, to understand what makes an individual fit, we need to understand what enables an individual to perform physical activity and which metrics we can use to track such performance. Since our analysis focuses on fitness in running, we will focus on running performance and the specific metrics used to track it.
+
+**The performance metrics that we will use are the following:**
+
+-   <u>Aerobic Training Effect:</u>
+
+    According to @Zhao_2019, Training Effect measures how each training session affects VO2 Max (Maximum Volume of Oxygen) improvement. Furthermore, @Harvard_2024 suggests that VO2 Max can indicate an individual's fitness because a high VO2 Max correlates with better physical fitness and is also associated with "a lower risk for cardiovascular disease and increased longevity." The reason VO2 Max correlates with better physical fitness and health is that it measures the amount of oxygen an athlete consumes during exercise [@Harvard_2024]. Oxygen consumption matters because, for a muscle to generate energy as ATP, it needs oxygen; therefore, the more oxygen the athlete can breathe in, the more energy the muscle can produce to perform the exercise [@Harvard_2024].
+
+    @Zhao_2019 suggests the following description for the Training Effect ranges: (Turn this to a GT table later)
+
+    -   0.0 - 0.9: No aerobic effect
+
+    -   1.0 - 1.9: Minor aerobic effect
+
+    -   2.0 - 2.9: Maintaining aerobic effect
+
+    -   3.0 - 3.9: Improving aerobic effect
+
+    -   4.0 - 4.9: Highly improving aerobic effect
+
+    -   5.0: Overreaching aerobic effect
+
+-   <u>Efficiency Factor:</u>
+
+    According to @nxtrun_2025, the efficiency factor (EF) is a performance measure that quantifies the speed an individual achieves per heartbeat. The reason EF matters is that an efficient individual uses less oxygen, thereby requiring less energy from the heart to pump oxygen to the muscles to maintain a given speed.
+
+    @nxtrun_2025 and @Friel suggest that the efficiency factor calculation is the following:
+
+    $$ EF = \frac{\text{Speed}}{\text{Heart Rate}} $$
+
+    Since we have an average pace, we can use it to find the average speed, since pace and speed are inverses. That means that:
+
+    $$ \text{Speed} = \frac{1}{\text{Pace}} $$
+
+It is important to note that Training Effect is a short-term performance measure since it only tracks the Max VO2 improvement from a single workout, the last exercise the individual performed. In contrast, the Efficiency Factor is useful for long-term performance tracking because it relates speed to heart rate, allowing us to observe improvements in running efficiency over time.
+
+To determine which individual is the most fit, we will use the current performance on their metrics. However, to determine which individual we will train, we will estimate each individual's potential by forecasting their future metrics and comparing them to select the one we want to train.
+
+# Comparison of Aerobic Training Effect between the runners:
+
+(GRAPH for comparison goes here)
+
+(commentary on graphs for each runner)
+
+(either second set of charts if they are more insightful here or conclusion for AE)
+
+# Comparison of Efficiency Factor between the runners:
+
+GRAPH for comparison goes here)
+
+(commentary on graphs for each runner)
+
+(either second set of charts if they are more insightful here or conclusion for EF)
+
+# Our thoughts on the use of each metric for determining who is more fit:
+
+Summary of each metric here, how impactful each is for determining fitness.
+
+We may want to use out metric for fitness here or we might want to use that metric for who we want to train.
+
+We say here who is more fit by out definition.
+
+# Our thoughts on the use of each metric for determining who has improved more:
+
+unsure how to approach this at the moment.
+
+# Our recommendation on who we want to train:
+
+We make a choice here presumably based on the metric we have come up with.
+
+# Notes
+
+-   The distance for everything is in Km, but Track Running is in meters.
+
+-   Collie doesn't have any data under Track Running, but I noticed that under Title in Trail Running there's at least 1 observation with a Title description of Track Running - it's on the last page.
+
+-   Collie never ran Street Running or at least he doesn't have any records of running one.
+
+-   Observations from the Treadmill Running are very clear and present improvements over time
+
+# Assumptions
+
+-   We are assuming that Collie mistakenly entered the "Track Run" as the title for one of his Trail Running data, primarly because he does not have any data on Track Running so we do not expect him to have only one.
