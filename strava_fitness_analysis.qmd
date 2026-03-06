@@ -86,7 +86,7 @@ clean_strava_data <- clean_strava_data %>%
     dplyr::if_else (Aerobic.TE >= 0 & Aerobic.TE < 1,0,
           dplyr::if_else (Aerobic.TE >= 1 & Aerobic.TE < 2,2,
               dplyr::if_else (Aerobic.TE >= 2 & Aerobic.TE < 3,4,
-                dplyr::if_else (Aerobic.TE >= 2 & Aerobic.TE < 4,6,
+                dplyr::if_else (Aerobic.TE >= 3 & Aerobic.TE < 4,6,
                   dplyr::if_else (Aerobic.TE >= 4 & Aerobic.TE < 5,10,0)
     )))))
 
@@ -138,6 +138,8 @@ collie_data %>%
   dplyr::select(c(Title, Distance, Time, Avg.Pace, Best.Pace))
 ```
 
+Graphs start below here
+
 # Hound
 
 ## Correlation Matrix
@@ -163,39 +165,6 @@ Hound's correlation:
 -   There is a strong negative correlation between EF and Avg. Pace of -0.91, which suggests that EF is tracking performance very well
 
 -   Strong positive correlation between EF and Cadence of 0.61 and EF and Stride of 0.60, suggesting a higher performance when the running basics are also improving.
-
-```{r}
-hound_data %>% 
-  dplyr::select(Date, Activity.Type, Distance, Calories, Time, Aerobic.TE) %>% 
-  dplyr::group_by(Activity.Type) %>% 
-  dplyr::summarise(Aerobic.TE = mean(Aerobic.TE)) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Activity.Type, y = Aerobic.TE, fill = Activity.Type)) + 
-  ggplot2::geom_col()
-```
-
-```{r}
-hound_data %>% 
-  dplyr::select(Date, Activity.Type, Distance, Calories, Time, EF) %>% 
-  dplyr::group_by(Activity.Type) %>% 
-  dplyr::summarise(EF = mean(EF)) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Activity.Type, y = EF, fill = Activity.Type)) + 
-  ggplot2::geom_col()
-```
-
-```{r}
-hound_data %>% 
-  dplyr::select(Date, Activity.Type, Distance, Calories, Time, Aerobic.TE) %>% 
-  dplyr::group_by(Activity.Type) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Date, y = Aerobic.TE, col = Activity.Type)) + 
-  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8) +
-  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
-  ggplot2::labs(
-    title = "Hound's Training Effect by Activity",
-    x = "Date",
-    y = "Aerobic Training Effect"
-  ) +
-  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
 
 ```{r}
 hound_data %>% 
@@ -479,19 +448,6 @@ collie_data %>%
 ```
 
 ```{r}
- collie_data %>% 
-  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type, EF) %>%
-  ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
-  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
-  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
-  ggplot2::labs(
-    title = "Collie's Efficiency Factor by Activity",
-    x = "Date",
-    y = "Efficiency (EF)")+
-     ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
-
-```{r}
 collie_roll <- collie_data %>%
   dplyr::arrange(Date) %>%
   dplyr::mutate(
@@ -515,6 +471,15 @@ collie_roll %>%
   ggplot2::ggplot(ggplot2::aes(x = Date, y = SAD20)) +
   ggplot2::geom_line(col="red") +
   ggplot2::geom_line(ggplot2::aes(y = SAD200), col="blue")
+```
+
+```{r}
+hound_data %>% 
+  dplyr::select(Date, Activity.Type, Distance, Calories, Time, EF) %>% 
+  dplyr::group_by(Activity.Type) %>% 
+  dplyr::summarise(EF = mean(EF)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Activity.Type, y = EF, fill = Activity.Type)) + 
+  ggplot2::geom_col()
 ```
 
 # The Task
@@ -589,7 +554,9 @@ It is important to note that Training Effect is a short-term performance measure
 
 To determine which individual is the most fit, we will use the current performance on their metrics. However, to determine which individual we will train, we will estimate each individual's potential by forecasting their future metrics and comparing them to select the one we want to train.
 
-We need to mention that EF is our primary performance measure with a weight of 80% and TE is our improvement mesure. Therefore to track the entire performance on an individual we created a fitness metric using the weighted average.
+In order to determine who is more fit we will be primarily using Efficiency Factor. Aerobic Training Effect will be a more important effect in our analysis of rate of improvement.
+
+As we saw the importance of both factors in determining who to train we used these factors to create our own metric which we have named the "SAD" metric. The name comes from the initials of each of our names. This metric hopes to combine the strengths of both Aerobic TE and Efficiency Factor to make a definitive choice of which runner we will train.
 
 # Comparison of Aerobic Training Effect between the runners:
 
@@ -621,6 +588,15 @@ collie_data %>%
     y = "Aerobic Training Effect"
   ) +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+```{r}
+hound_data %>% 
+  dplyr::select(Date, Activity.Type, Distance, Calories, Time, Aerobic.TE) %>% 
+  dplyr::group_by(Activity.Type) %>% 
+  dplyr::summarise(Aerobic.TE = mean(Aerobic.TE)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Activity.Type, y = Aerobic.TE, fill = Activity.Type)) + 
+  ggplot2::geom_col()
 ```
 
 ```{r}
@@ -791,6 +767,19 @@ collie_data %>%
 cat("Mean:", mean(collie_data$EF), "SD:",sd(collie_data$EF))
 ```
 
+```{r}
+ collie_data %>% 
+  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type, EF) %>%
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
+  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
+  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
+  ggplot2::labs(
+    title = "Collie's Efficiency Factor by Activity",
+    x = "Date",
+    y = "Efficiency (EF)")+
+     ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
 (GRAPH for comparison goes here)
 
 (commentary on graphs for each runner)
@@ -807,11 +796,13 @@ We say here who is more fit by out definition.
 
 # Our thoughts on the use of each metric for determining who has improved more:
 
-unsure how to approach this at the moment.
+Aerobic TE will be useful here.
 
-# Our recommendation on who we want to train:
+# Our recommendation on who we want to coach:
 
-We make a choice here presumably based on the metric we have come up with.
+While both of the above metrics discussed above were useful in determine who we wanted to train, we decided that multiple factors should go into our choice. In order to make our choice we created our own unique fitness metric. Deemed the "SAD" fitness metric. (define the metric here and have it go into how we created this) (Also state the 80-20 weighting)
+
+Using our SAD metric we would want to coach **CONCLUSION HERE.**
 
 # Notes
 
