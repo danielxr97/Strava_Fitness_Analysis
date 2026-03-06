@@ -94,6 +94,38 @@ It is important to note that Training Effect is a short-term performance measure
 
 To determine which individual is the most fit, we will use the current performance on their metrics. However, to determine which individual we will train, we will estimate each individual's potential by forecasting their future metrics and comparing them to select the one we want to train.
 
+# Comparison of Aerobic Training Effect between the runners:
+
+(GRAPH for comparison goes here)
+
+(commentary on graphs for each runner)
+
+(either second set of charts if they are more insightful here or conclusion for AE)
+
+# Comparison of Efficiency Factor between the runners:
+
+GRAPH for comparison goes here)
+
+(commentary on graphs for each runner)
+
+(either second set of charts if they are more insightful here or conclusion for EF)
+
+# Our thoughts on the use of each metric for determining who is more fit: 
+
+Summary of each metric here, how impactful each is for determining fitness.
+
+We may want to use out metric for fitness here or we might want to use that metric for who we want to train.
+
+We say here who is more fit by out definition.
+
+# Our thoughts on the use of each metric for determining who has improved more:
+
+unsure how to approach this at the moment.
+
+# Our recommendation on who we want to train:
+
+We make a choice here presumably based on the metric we have come up with.
+
 # Notes
 
 -   The distance for everything is in Km, but Track Running is in meters.
@@ -188,6 +220,7 @@ clean_strava_data <- clean_strava_data %>%
 
 clean_strava_data
 ```
+
 ```{r}
 clean_strava_data <- clean_strava_data %>% 
 dplyr::mutate(
