@@ -194,19 +194,6 @@ hound_data %>%
 
 Observations from the Treadmill Running are very clear and present improvements over time
 
-```{r}
- hound_data %>% 
-  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type, EF) %>%
-  ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
-  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
-  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
-  ggplot2::labs(
-    title = "Hound's Efficiency Factor by Activity",
-    x = "Date",
-    y = "Efficiency Factor") +
-  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
-
 ## Efficiency Factor Distribution
 
 ```{r}
@@ -774,6 +761,19 @@ cat("Mean:", mean(collie_data$EF), "SD:",sd(collie_data$EF))
     x = "Date",
     y = "Efficiency (EF)")+
      ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+```{r}
+ hound_data %>% 
+  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type, EF) %>%
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
+  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
+  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
+  ggplot2::labs(
+    title = "Hound's Efficiency Factor by Activity",
+    x = "Date",
+    y = "Efficiency Factor") +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
 (GRAPH for comparison goes here)
