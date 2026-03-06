@@ -162,36 +162,6 @@ Hound's correlation:
 
 -   Strong positive correlation between EF and Cadence of 0.61 and EF and Stride of 0.60, suggesting a higher performance when the running basics are also improving.
 
-```{r}
-hound_data %>% 
-  dplyr::select(Date, Activity.Type, Distance, Calories, Time, Avg.Pace) %>% 
-  dplyr::group_by(Activity.Type) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Date, y = Avg.Pace, col = Activity.Type)) + 
-  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8) +
-  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
-  ggplot2::labs(
-    title = "Hound's Average Pace by Activity",
-    x = "Date",
-    y = "Avg Pace (min/Km)"
-  ) +
-  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
-
-```{r}
-hound_data %>% 
-  dplyr::select(Date, Activity.Type, Distance, Calories, Time, Avg.Stride) %>% 
-  dplyr::group_by(Activity.Type) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Date, y = Avg.Stride, col = Activity.Type)) + 
-  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8) +
-  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
-  ggplot2::labs(
-    title = "Hound's Average Stride by Activity",
-    x = "Date",
-    y = "Average Stride Length"
-  ) +
-  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
-
 Observations from the Treadmill Running are very clear and present improvements over time
 
 ## Efficiency Factor Distribution
@@ -413,24 +383,6 @@ collie_data %>%
 ```
 
 ```{r}
-#graphs for TE
-collie_data %>% 
-  dplyr::select(Date, Runner, Aerobic.TE) %>%
-  dplyr::group_by(Aerobic.TE) %>% 
-  dplyr::count(Aerobic.TE) %>% 
-  dplyr::mutate(proportion = n / nrow(collie_data)) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE, y = proportion)) +
-  ggplot2::geom_col(fill = "midnightblue") +
-  ggplot2::labs(
-    title = "Collie's Proportional Training Effect",
-    x = "Training Effect Zone",
-    y = "Proportion (%)"
-  ) +
-  ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
-  ggplot2::scale_y_continuous(labels = scales::percent_format())
-```
-
-```{r}
 collie_roll <- collie_data %>%
   dplyr::arrange(Date) %>%
   dplyr::mutate(
@@ -562,6 +514,24 @@ collie_data %>%
     y = "Aerobic Training Effect"
   ) +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+```{r}
+#graphs for TE
+collie_data %>% 
+  dplyr::select(Date, Runner, Aerobic.TE) %>%
+  dplyr::group_by(Aerobic.TE) %>% 
+  dplyr::count(Aerobic.TE) %>% 
+  dplyr::mutate(proportion = n / nrow(collie_data)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE, y = proportion)) +
+  ggplot2::geom_col(fill = "midnightblue") +
+  ggplot2::labs(
+    title = "Collie's Proportional Training Effect",
+    x = "Training Effect Zone",
+    y = "Proportion (%)"
+  ) +
+  ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
+  ggplot2::scale_y_continuous(labels = scales::percent_format())
 ```
 
 ```{r}
