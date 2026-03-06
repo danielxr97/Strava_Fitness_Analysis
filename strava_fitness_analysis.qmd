@@ -210,6 +210,39 @@ collie_data %>%
   dplyr::select(c(Title, Distance, Time, Avg.Pace, Best.Pace))
 ```
 
+# Hound
+
+## Correlation Matrix
+
+```{r}
+hound_data %>% 
+  dplyr::select(c(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
+  stats::cor(use = "complete.obs") %>% 
+  corrplot::corrplot(
+    method = "color",
+    type = "upper",
+    tl.col = "black",
+    tl.srt = 45,
+    order= "hclust",
+    addCoef.col = "black"
+    )
+```
+
+```{r, message=FALSE}
+hound_data %>% 
+  select(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
+  GGally::ggpairs(title = "Hound's Correlation Matrix on Metrics") +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+Hound's correlation:
+
+-   There is a strong negative correlation between EF and Avg. Pace of -0.91, which suggests that EF is tracking performance very well
+
+-   Strong positive correlation between EF and Cadence of 0.61 and EF and Stride of 0.60, suggesting a higher efficiency as cadence and stride increase.
+
+-   
+
 ```{r}
 hound_data %>% 
   dplyr::select(Date, Activity.Type, Distance, Calories, Time, Aerobic.TE) %>% 
@@ -226,6 +259,36 @@ hound_data %>%
   dplyr::summarise(EF = mean(EF)) %>% 
   ggplot2::ggplot(ggplot2::aes(x = Activity.Type, y = EF, fill = Activity.Type)) + 
   ggplot2::geom_col()
+```
+
+```{r}
+hound_data %>% 
+  plotly::plot_ly(
+    x = ~Activity.Type,
+    y = ~Aerobic.TE,
+    type = "box",
+    boxmean = "sd"
+    ) %>% 
+  plotly::layout(
+    title = list(text = "Hound's TE Boxplots by Activity", x = 0.5),
+    xaxis = list(title = "Activity Type"),
+    yaxis = list(title = "Training Effect")
+  )
+```
+
+```{r}
+hound_data %>% 
+  plotly::plot_ly(
+    x = ~Activity.Type,
+    y = ~EF,
+    type = "box",
+    boxmean = "sd"
+    ) %>% 
+  plotly::layout(
+    title = list(text = "Hound's EF Boxplots by Activity", x = 0.5),
+    xaxis = list(title = "Activity Type"),
+    yaxis = list(title = "Efficiency Factor")
+  )
 ```
 
 ```{r}
@@ -276,60 +339,17 @@ hound_data %>%
 Observations from the Treadmill Running are very clear and present improvements over time
 
 ```{r}
-hound_data %>% 
-  dplyr::select(c(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
-  stats::cor(use = "complete.obs") %>% 
-  corrplot::corrplot(
-    method = "color",
-    type = "upper",
-    tl.col = "black",
-    tl.srt = 45,
-    order= "hclust",
-    addCoef.col = "black"
-    )
-```
-
-Hound's correlation:
-
--   There is a strong negative correlation between EF and Avg. Pace of -0.91, which suggests that EF is tracking performance very well
-
--   Strong positive correlation between EF and Cadence of 0.61 and EF and Stride of 0.60, suggesting a higher efficiency as cadence and stride increase.
-
--   
-
-```{r, message=FALSE}
-hound_data %>% 
-  select(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
-  GGally::ggpairs(title = "Hound's Correlation Matrix on Metrics") +
+ hound_data %>% 
+  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type, EF) %>%
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
+  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
+  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
+  ggplot2::labs(
+    title = "Hound's Efficiency Factor by Activity",
+    x = "Date",
+    y = "Efficiency Factor") +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
-
-```{r}
-collie_data %>% 
-  dplyr::select(c(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
-  stats::cor(use = "complete.obs") %>% 
-  corrplot::corrplot(
-    method = "color",
-    type = "upper",
-    tl.col = "black",
-    tl.srt = 45,
-    order= "hclust",
-    addCoef.col = "black"
-    )
-```
-
-```{r, message=FALSE, warning=FALSE}
-collie_data %>% 
-  select(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
-  GGally::ggpairs(title = "Collie's Correlation Matrix on Metrics") +
-  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
-
-Note that for Collie:
-
--   The correlation between Avg. HR and TE is 0.62, suggesting of a strong positive relationship.
-
--   As we expected the correlation between Avg. HR and Avg. Pace is somewhat strong but inverted; this makes sense because when as the individual runs faster its pace value decreases but heart rate increases.
 
 ```{r}
 hound_data %>% 
@@ -359,6 +379,54 @@ hound_data %>%
   ) +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
+
+```{r}
+hound_data %>% 
+  dplyr::select(Date, Runner, Aerobic.TE) %>%
+  dplyr::group_by(Aerobic.TE) %>% 
+  dplyr::count(Aerobic.TE) %>% 
+  dplyr::mutate(proportion = n / nrow(hound_data)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE, y = proportion)) +
+  ggplot2::geom_col(fill = "midnightblue") +
+  ggplot2::labs(
+    title = "Hound's Proportional Training Effect",
+    x = "Training Effect Zone",
+    y = "Proportion (%)"
+  ) +
+  ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
+  ggplot2::scale_y_continuous(labels = scales::percent_format())
+```
+
+# Collie
+
+## Correlation Matrix
+
+```{r}
+collie_data %>% 
+  dplyr::select(c(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
+  stats::cor(use = "complete.obs") %>% 
+  corrplot::corrplot(
+    method = "color",
+    type = "upper",
+    tl.col = "black",
+    tl.srt = 45,
+    order= "hclust",
+    addCoef.col = "black"
+    )
+```
+
+```{r, message=FALSE, warning=FALSE}
+collie_data %>% 
+  select(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride) %>% 
+  GGally::ggpairs(title = "Collie's Correlation Matrix on Metrics") +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+Note that for Collie:
+
+-   The correlation between Avg. HR and TE is 0.62, suggesting of a strong positive relationship.
+
+-   As we expected the correlation between Avg. HR and Avg. Pace is somewhat strong but inverted; this makes sense because when as the individual runs faster its pace value decreases but heart rate increases.
 
 Hound's EF distribution is normally distributed, which means he is
 
@@ -394,19 +462,6 @@ collie_data %>%
 Collie's EF distribution is left-skewed, which means he's mostly very efficient!
 
 ```{r}
- hound_data %>% 
-  dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type, EF) %>%
-  ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
-  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
-  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
-  ggplot2::labs(
-    title = "Hound's Efficiency Factor by Activity",
-    x = "Date",
-    y = "Efficiency (EF)")+
-     ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
-
-```{r}
 #graphs for TE
 collie_data %>% 
   dplyr::select(Date, Runner, Aerobic.TE) %>%
@@ -426,24 +481,6 @@ collie_data %>%
 ```
 
 ```{r}
-
-hound_data %>% 
-  dplyr::select(Date, Runner, Aerobic.TE) %>%
-  dplyr::group_by(Aerobic.TE) %>% 
-  dplyr::count(Aerobic.TE) %>% 
-  dplyr::mutate(proportion = n / nrow(hound_data)) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE, y = proportion)) +
-  ggplot2::geom_col(fill = "midnightblue") +
-  ggplot2::labs(
-    title = "Hound's Proportional Training Effect",
-    x = "Training Effect Zone",
-    y = "Proportion (%)"
-  ) +
-  ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
-  ggplot2::scale_y_continuous(labels = scales::percent_format())
-```
-
-```{r}
  collie_data %>% 
   dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type, EF) %>%
   ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
@@ -454,14 +491,4 @@ hound_data %>%
     x = "Date",
     y = "Efficiency (EF)")+
      ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
-
-```{r}
-
-#Reference for Ali: https://www.garmin.com/en-CA/garmin-technology/running-science/physiological-measurements/training-effect/
-
-#Notes for Ali based on: 
-#Note: The training effect scale for both aerobic and anaerobic is: 0 – None, 1 – Minor, 2 – Maintaining, 3 – Improving, 4 – Highly Improving, 5 – Overreaching.
-
-#Use these values for calculating the factor we discussed (Will assign weight later)
 ```
