@@ -644,6 +644,8 @@ collie_data %>%
 
 Each metric captures a different aspect of running performance, so no single measure should be treated as a complete definition of fitness. Efficiency Factor (EF) is useful because it reflects how much speed is being produced for a given heart rate, making it a practical indicator of cardiovascular efficiency. Training Effect (TE) is useful for describing the physiological impact of a run, but on its own it reflects session stimulus more than underlying fitness. The custom combined metric is useful because it incorporates both efficiency and training stimulus, giving a broader session-quality measure than either variable alone. The moving averages add further value by smoothing short-term fluctuations and making the metric easier to interpret over time. Taken together, these measures are better viewed as complementary indicators rather than standalone tests of fitness.
 
+Since our definition of fitness emphasizes current running efficiency, Efficiency Factor is the most important metric for determining which runner is presently fitter. Training Effect is informative, but because it reflects the effect of an individual session, it is better suited to evaluating workout quality than current overall fitness. For that reason, our assessment of who is more fit is based primarily on Efficiency Factor, with the other metrics serving a supporting role.
+
 Summary of each metric here, how impactful each is for determining fitness.
 
 We may want to use out metric for fitness here or we might want to use that metric for who we want to train.
@@ -653,6 +655,8 @@ We say here who is more fit by out definition.
 # Our thoughts on the use of each metric for determining who has improved more:
 
 For assessing improvement, trend-based measures are more useful than single-run values. Raw EF and TE from one session may be influenced by daily conditions such as fatigue, route, weather, or workout intensity, so they are limited as direct measures of improvement on their own. The custom combined metric is more helpful because it summarizes both efficiency and training quality in one score, but its interpretation is stronger when viewed across multiple runs rather than in isolation. For this reason, the moving averages are especially useful for evaluating improvement, since they smooth out short-term noise and highlight the direction of the metric over time. This makes them more appropriate for comparing change in running performance across longer periods.
+
+Because improvement is better understood through patterns over time rather than isolated observations, the SAD metric and its moving averages are the most useful tools for determining which runner has improved more. EF remains important because it captures efficiency, but the combined metric is better suited to measuring change because it includes both performance efficiency and the quality of aerobic stimulus. The moving averages then help clarify whether the metric is trending upward, downward, or remaining stable.
 
 # Our recommendation on who we want to coach:
 
@@ -720,7 +724,7 @@ We used moving averages to smooth out short-term fluctuations in the custom perf
 
 To examine the custom metric over time, moving averages based on 20 and 200 observations were computed. The 20-observation moving average provides a short-run view of the metric and responds more quickly to recent fluctuations, whereas the 200-observation moving average provides a smoother long-run representation of the series. Plotting both moving averages helps reduce short-term noise and makes the time-series behavior of the metric easier to visualize.
 
-Our recommendation is to coach Collie. Based on the moving-average graphs, Collie shows the stronger upward pattern in the custom metric over time, especially in the longer-run 200-observation average, which gradually rises across the sample. The shorter-run 20-observation average also spends much of the later period above the longer-run average, indicating stronger recent performance relative to Collie’s own longer-term trend. In contrast, Hound’s 200-observation average trends downward over time, and the 20-observation average is more volatile, with larger swings above and below the longer-run line. Taken together, the graphs suggest that Collie provides the clearer case for coaching support because the recent trajectory of the metric is more favorable and shows stronger momentum in the underlying performance trend.
+Our recommendation is to coach **"Collie"**. Based on the moving-average graphs, Collie shows the stronger upward pattern in the custom metric over time, especially in the longer-run 200-observation average, which gradually rises across the sample. The shorter-run 20-observation average also spends much of the later period above the longer-run average, indicating stronger recent performance relative to Collie’s own longer-term trend. In contrast, Hound’s 200-observation average trends downward over time, and the 20-observation average is more volatile, with larger swings above and below the longer-run line. Taken together, the graphs suggest that Collie provides the clearer case for coaching support because the recent trajectory of the metric is more favorable and shows stronger momentum in the underlying performance trend.
 
 Notes
 
