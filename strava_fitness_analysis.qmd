@@ -490,19 +490,17 @@ The Efficiency Factor activity-specific plots reinforce the earlier interpretati
 
 ## Current Fitness Level
 
-To assess the current fitness level of the two runners, Hound and Collie, we will primarily use the Efficiency Factor. Therefore, based on our analysis of the Efficiency Factor, we found that Hound's EF is normally distributed around an average of 0.064. In contrast, Collie's EF is left-skewed around an average of 0.081. The findings from the EF distributions suggest that Collie is clearly more fit than Hound, as his distribution is highly consistent around a higher average Efficiency Factor.
+To assess the current fitness level of the two runners, Hound and Collie, we will primarily use the Efficiency Factor. Therefore, based on our analysis of the Efficiency Factor, we found that Hound's EF is normally distributed around an average of 0.064. In contrast, Collie's EF is left-skewed around an average of 0.081. The findings from the EF distributions suggest that **Collie is clearly more fit** than Hound, as his distribution is highly consistent around a higher average Efficiency Factor.
 
 ## Best Improvement
 
-To determine who improved the most, we initially looked at the efficiency factor over time. Based on this, we found that Hound was inconsistent in its improvement, while Collie consistently showed improvement. However, the difference was not large enough for us to make a conclusive decision based solely on the efficiency factor. For this reason, we also decided to look at both of their Training Effects.
+To determine who improved the most, we initially looked at the Efficiency Factor over time. Based on this, we found that Hound was inconsistent in his improvement, showing improvement in some activity types and a decline in others. Collie consistently showed improvement across all activity types. However, the difference in overall Efficiency Factor improvement was not large enough for us to make a conclusive decision based solely on the efficiency factor. For this reason, we also decided to look at both of their Training Effects. Our analysis of Aerobic Training Effects shows that Hound consistently maintains a TE in the 3-4 zone. While this does indicate that according to Aerobic TE scores he will be consistently improving it will be at a smaller magnitude when compared to someone who's Aerobic TE scores are higher. Looking at Collie's Aerobic TE scores we can see that he consistently has scores in the 3.5-5 range with a large amount of observations on the higher end. This indicates that according to Aerobic TE his improvement after each workout will be greater. Based on these factors **Collie has improved more in fitness.**
 
 ## Coaching Decision
 
 For assessing improvement, trend-based measures are more useful than single-run values. Raw EF and TE from a single session may be influenced by daily factors such as fatigue, route, weather, or workout intensity, so they are limited as direct measures of improvement on their own. Our custom combined metric is again more helpful here because it summarizes both efficiency and training quality in one score.
 
 Because improvement is better understood through patterns over time rather than isolated observations, the SAD metric and its moving averages is the most useful tools for determining which runner has improved more. EF remains important because it captures efficiency, as a result it does have heavy weighting in the calculation of our metric. Additionally, the moving averages help to clarify whether the metric is trending upward, downward, or remaining stable.
-
-# WHO HAS IMPROVED MORE
 
 # Our recommendation on who we want to coach:
 
