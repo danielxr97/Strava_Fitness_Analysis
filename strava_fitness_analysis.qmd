@@ -280,15 +280,6 @@ collie_data %>%
 
 ```{r}
 hound_data %>% 
-  dplyr::select(Date, Activity.Type, Distance, Calories, Time, Aerobic.TE) %>% 
-  dplyr::group_by(Activity.Type) %>% 
-  dplyr::summarise(Aerobic.TE = mean(Aerobic.TE)) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Activity.Type, y = Aerobic.TE, fill = Activity.Type)) + 
-  ggplot2::geom_col()
-```
-
-```{r}
-hound_data %>% 
   dplyr::select(Date, Runner, Aerobic.TE) %>%
   dplyr::group_by(Aerobic.TE) %>% 
   dplyr::count(Aerobic.TE) %>% 
@@ -480,24 +471,6 @@ cat("Mean:", mean(collie_data$EF), "SD:",sd(collie_data$EF))
     y = "Efficiency (EF)")+
      ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
  
-```
-
-```{r}
-hound_data %>% 
-  dplyr::select(Date, Activity.Type, Distance, Calories, Time, EF) %>% 
-  dplyr::group_by(Activity.Type) %>% 
-  dplyr::summarise(EF = mean(EF)) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Activity.Type, y = EF, fill = Activity.Type)) + 
-  ggplot2::geom_col()
-```
-
-```{r}
-collie_data %>% 
-  dplyr::select(Date, Activity.Type, Distance, Calories, Time, EF) %>% 
-  dplyr::group_by(Activity.Type) %>% 
-  dplyr::summarise(EF = mean(EF)) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Activity.Type, y = EF, fill = Activity.Type)) + 
-  ggplot2::geom_col()
 ```
 
 The Efficiency Factor charts suggest that Collie has the stronger overall running efficiency. Hound’s Efficiency Factor is centered around a lower average, approximately 0.064, and is spread more broadly across observations, indicating more variability in performance. In contrast, Collie’s distribution is shifted to the right, with most observations concentrated around roughly 0.08, which implies that Collie is generally able to produce more speed per heartbeat than Hound. The activity-specific plots support this pattern: Hound’s Efficiency Factor varies more across activity types and includes several lower-efficiency periods, while Collie’s values are typically higher and more tightly clustered, especially in running and trail running. Overall, the comparison suggests that Collie is the more efficient runner, while Hound shows lower and more variable efficiency across sessions.
