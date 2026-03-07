@@ -91,7 +91,7 @@ clean_strava_data <- clean_strava_data %>%
 ```{r}
 clean_strava_data <- clean_strava_data %>% 
   dplyr::mutate(Avg.Speed = 60 / Avg.Pace) %>%
-  dplyr::mutate(EF = (Avg.Speed / Avg.HR))
+  dplyr::mutate(EF = Avg.Speed / Avg.HR)
 
 ```
 
@@ -130,24 +130,6 @@ Graphs start below here
 
 # Hound
 
-## Correlation Matrix
-
-```{r}
-cor_hound <- hound_data %>% 
-  dplyr::select(c(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
-  stats::cor(use = "complete.obs") %>% 
-  corrplot::corrplot(
-    method = "color",
-    type = "upper",
-    tl.col = "black",
-    tl.srt = 45,
-    order= "hclust",
-    addCoef.col = "black"
-    )
-
-cor_hound
-```
-
 Hound's correlation:
 
 -   There is a strong negative correlation between EF and Avg. Pace of -0.91, which suggests that EF is tracking performance very well
@@ -155,37 +137,6 @@ Hound's correlation:
 -   Strong positive correlation between EF and Cadence of 0.61 and EF and Stride of 0.60, suggesting a higher performance when the running basics are also improving.
 
 Observations from the Treadmill Running are very clear and present improvements over time
-
-## Efficiency Factor Distribution
-
-```{r}
-hound_data %>% 
-  ggplot2::ggplot(ggplot2::aes(x = EF)) +
-  ggplot2::geom_histogram(
-    ggplot2::aes(y = ggplot2::after_stat(density)),
-    bins = ceiling((max(hound_data$EF) - min(hound_data$EF)) / ( 2 * IQR(hound_data$EF) / length(hound_data$EF)^(1/3))), # Using Freedman-Diaconis's Rule
-    col = "midnightblue",
-    fill = "midnightblue"
-  ) +
-  ggplot2::geom_vline(
-    ggplot2::aes(xintercept = mean(EF, na.rm = TRUE)),
-    color = "red",
-    linetype = "longdash",
-    size = 0.8
-  ) +
-  ggplot2::stat_function(
-    fun = dnorm,
-    args = c(mean = mean(hound_data$EF, na.rm = TRUE), sd = sd(hound_data$EF, na.rm = TRUE)),
-    col = "red"
-  ) +
-  ggplot2::geom_rug(sides = "b") +
-  ggplot2::labs(
-    title = "Hound's Efficiency Factor Distribution",
-    x = "Efficiency Factor",
-    y = "Density"
-  ) +
-  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
 
 It seems like Hound's performance is normally distributed around an average Efficiency Factor of 0.064. The normal distribution of the Efficiency Factor suggests that Hound has approximately as many bad days asgood days, but most days his performance is in the middle at 0.064.
 
@@ -252,24 +203,6 @@ collie_data %>%
     y = "Aerobic Training Effect"
   ) +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
-
-## Correlation Matrix
-
-```{r}
-cor_collie <- collie_data %>% 
-  dplyr::select(c(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
-  stats::cor(use = "complete.obs") %>% 
-  corrplot::corrplot(
-    method = "color",
-    type = "upper",
-    tl.col = "black",
-    tl.srt = 45,
-    order= "hclust",
-    addCoef.col = "black"
-    )
-
-cor_collie
 ```
 
 Note that for Collie:
@@ -417,6 +350,40 @@ According to @Cambridge_nd, the definition of fitness is "the condition of being
     $$ \text{Speed} = \frac{1}{\text{Pace}} $$
 
 It is important to note that Training Effect is a short-term performance measure since it only tracks the Max VO2 improvement from a single workout, the last exercise the individual performed. In contrast, the Efficiency Factor is useful for long-term performance tracking because it relates speed to heart rate, allowing us to observe improvements in running efficiency over time.
+
+To better understand how different running metrics affect performance, we computed correlation matrices for each runner.
+
+**Hound's Correlation Matrix:**
+
+```{r}
+hound_data %>% 
+  dplyr::select(c(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
+  stats::cor(use = "complete.obs") %>% 
+  corrplot::corrplot(
+    method = "color",
+    type = "upper",
+    tl.col = "black",
+    tl.srt = 45,
+    order= "hclust",
+    addCoef.col = "black"
+    )
+```
+
+```{r}
+collie_data %>% 
+  dplyr::select(c(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
+  stats::cor(use = "complete.obs") %>% 
+  corrplot::corrplot(
+    method = "color",
+    type = "upper",
+    tl.col = "black",
+    tl.srt = 45,
+    order= "hclust",
+    addCoef.col = "black"
+    )
+```
+
+Looking at the matrices, we can see that Hound shows a strong positive correlation between Efficiency Factor and both Cadence and Stride, with coefficients of 0.61 and 0.60, respectively. On the other hand, Collies show an even stronger positive correlation between Efficiency Factor and both Cadence and Stride, with coefficients of 0.88 and 0.86, respectively. The correlation strength suggests that Collie’s efficiency is more strongly associated with consistent running basics, the Cadence and Stride, which may help later explain why Collie’s overall EF is higher. In contrast, as expected, the Training Effect showed relatively weak correlations with most of the dataset, since it is a short-term measure.
 
 To determine which individual is the most fit, we will use the current performance on their metrics. However, to determine which individual we will train, we will estimate each individual's potential by forecasting their future metrics and comparing them to select the one we want to train.
 
