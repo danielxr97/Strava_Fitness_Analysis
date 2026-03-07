@@ -152,13 +152,13 @@ According to @Cambridge_nd, the definition of fitness is "the condition of being
 
 -   <u>Cadence:</u>
 
-    "The number of steps you take in one minute" [@Leicht_2023]. Furthermore, @Nike_2026 explains that cadence is important because it can be used to optimize an athlete's ground contact time, explain abnormal stride length, and running inefficiency. For instance, a lower cadence often means longer contact time with the ground, which in turn means a longer stride length, and that could mean pushing the foot too far ahead of the athlete's body; doing so is what causes knee injuries and results in wasted energy, or, in other words, loss of performance [@Nike_2026].
+    "The number of steps you take in one minute" [@Leicht_2023]. Furthermore, @Nike_2026 explains that cadence is important because it can be used to optimize an athlete's ground contact time, explain abnormal stride length, and running inefficiency. For instance, a lower cadence often means longer contact time with the ground, which in turn means a longer stride length. A longer stride length could mean pushing the foot too far ahead of the athlete's body, which can cause knee injuries and result in wasted energy and loss of performance [@Nike_2026].
 
 ## Performance measures:
 
 -   <u>Training Effect:</u>
 
-    According to @Zhao_2019, Training Effect measures how each training session affects VO2 Max (Maximum Volume of Oxygen) improvement. Furthermore, @Harvard_2024 suggests that VO2 Max can indicate an individual's fitness because a high VO2 Max correlates with better physical fitness and is also associated with "a lower risk for cardiovascular disease and increased longevity." The reason VO2 Max correlates with better physical fitness and health is that it measures the amount of oxygen an athlete consumes during exercise [@Harvard_2024]. Oxygen consumption matters because, for a muscle to generate energy as ATP, it needs oxygen; therefore, the more oxygen the athlete can breathe in, the more energy the muscle can produce to perform the exercise [@Harvard_2024].
+    According to @Zhao_2019, Training Effect measures how each training session affects VO2 Max (Maximum Volume of Oxygen) improvement. Furthermore, @Harvard_2024 suggests that VO2 Max can indicate an individual's fitness because a high VO2 Max correlates with better physical fitness and is also associated with "a lower risk for cardiovascular disease and increased longevity." The reason VO2 Max correlates with better physical fitness and health is that it measures the amount of oxygen an athlete consumes during exercise [@Harvard_2024]. Oxygen consumption matters, for muscles to generate energy as ATP, the more oxygen the athlete can breathe in, the more energy the muscle can produce to perform the exercise [@Harvard_2024].
 
     @Zhao_2019 suggests the following description for the Training Effect ranges:
 
@@ -174,19 +174,21 @@ According to @Cambridge_nd, the definition of fitness is "the condition of being
 
     -   5.0: Overreaching aerobic effect
 
+    Aerobic Training Effect will be a more important measurement in our analysis of the rate of improvement.
+
 -   <u>Efficiency Factor:</u>
 
-    According to @nxtrun_2025, the efficiency factor (EF) is a performance measure that quantifies the speed an individual achieves per heartbeat. The reason EF matters is that an efficient individual uses less oxygen, thereby requiring less energy from the heart to pump oxygen to the muscles to maintain a given speed.
+    According to @nxtrun_2025, the efficiency factor (EF) is a performance measure that quantifies the speed an individual achieves per heartbeat. EF matters because an efficient individual uses less oxygen, therefore, they need less energy from the heart to pump oxygen to the muscles to maintain a given speed.
 
     @nxtrun_2025 and @Friel suggest that the efficiency factor calculation is the following:
 
     $$ EF = \frac{\text{Speed}}{\text{Heart Rate}} $$
 
-    Since we have an average pace, we can use it to find the average speed, since pace and speed are inverses. That means that:
+    Since we have an average pace, we can use it to find the average speed, because pace and speed are inverses. This means that:
 
     $$ \text{Speed} = \frac{1}{\text{Pace}} $$
 
-It is important to note that Training Effect is a short-term performance measure since it only tracks the Max VO2 improvement from a single workout, the last exercise the individual performed. In contrast, the Efficiency Factor is useful for long-term performance tracking because it relates speed to heart rate, allowing us to observe improvements in running efficiency over time. Therefore, to determine who is more fit, we will primarily use the Efficiency Factor. However, Aerobic Training Effect will be a more important measurement in our analysis of the rate of improvement.
+It is important to note that Training Effect is a short-term performance measure which only tracks the Max VO2 improvement from a single workout. In contrast, the Efficiency Factor is useful for long-term performance tracking because it relates speed to heart rate. This allows us to observe improvements in running efficiency over time. Therefore, to determine who is more fit, we will primarily use the Efficiency Factor.
 
 -   <u>SAD:</u>
 
@@ -497,7 +499,7 @@ The Efficiency Factor activity-specific plots reinforce the earlier interpretati
 
 To assess the current fitness level of the two runners, Hound and Collie, we will primarily use the Efficiency Factor. Therefore, based on our analysis of the Efficiency Factor, we found that Hound's EF is normally distributed around an average of 0.064. In contrast, Collie's EF is left-skewed around an average of 0.081. The findings from the EF distributions suggest that **Collie is clearly more fit** than Hound, as his distribution is highly consistent around a higher average Efficiency Factor.
 
-## Best Improvement
+## Most Improved In Fitness
 
 To determine who improved the most, we initially looked at the Efficiency Factor over time. Based on this, we found that Hound was inconsistent in his improvement, showing improvement in some activity types and a decline in others. Collie consistently showed improvement across all activity types. However, the difference in overall Efficiency Factor improvement was not large enough for us to make a conclusive decision based solely on the efficiency factor. For this reason, we also decided to look at both of their Training Effects. Our analysis of Aerobic Training Effects shows that Hound consistently maintains a TE in the 3-4 zone with his average being 3.56. While this does indicate that according to Aerobic TE scores he will be consistently improving it will be at a smaller magnitude when compared to someone who's Aerobic TE scores are higher. Looking at Collie's Aerobic TE scores we can see that he consistently has scores in the 3.5-5 range with an average of 4.25. This indicates that according to Aerobic TE his improvement after each workout will be greater. Based on these factors **Collie has improved more in fitness.**
 
