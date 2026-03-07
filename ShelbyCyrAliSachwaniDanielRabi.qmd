@@ -6,7 +6,7 @@ backgroundcolor: lightblue
 format: html
 editor: visual
 embed-resources: true
-output-file: index
+output-file: ShelbyCyrAliSachwaniDanielRabi
 
 echo: FALSE
 warning: FALSE
