@@ -34,7 +34,6 @@ library(patchwork)
 ```{r}
 strava_data <- RTLedu::strava
 #Initial data import
-strava_data
 ```
 
 ```{r}
@@ -45,7 +44,6 @@ clean_strava_data <- strava_data %>%
 clean_strava_data <- clean_strava_data %>% 
   dplyr::mutate(Distance = dplyr::if_else(Activity.Type == "Track Running", Distance / 1000, Distance)) # Converting meters to Km
 
-clean_strava_data
 ```
 
 ```{r}
@@ -60,7 +58,6 @@ clean_strava_data <- clean_strava_data %>%
   dplyr::mutate(Min.Elevation = as.numeric(Min.Elevation)) %>%
   dplyr::mutate(Max.Elevation = as.numeric(Max.Elevation))
 #ensuring data will be easy to work with for future calculations in terms of format.
-clean_strava_data
 ```
 
 ```{r}
@@ -71,7 +68,6 @@ clean_strava_data <- clean_strava_data %>%
     Avg.Stride = Avg.Stride.Length
     )
 
-clean_strava_data
 ```
 
 ```{r}
@@ -90,7 +86,6 @@ clean_strava_data <- clean_strava_data %>%
                   dplyr::if_else (Aerobic.TE >= 4 & Aerobic.TE < 5,10,0)
     )))))
 
-clean_strava_data
 ```
 
 ```{r}
@@ -98,7 +93,6 @@ clean_strava_data <- clean_strava_data %>%
   dplyr::mutate(Avg.Speed = 60 / Avg.Pace) %>%
   dplyr::mutate(EF = (Avg.Speed / Avg.HR))
 
-clean_strava_data
 ```
 
 ```{r}
@@ -109,14 +103,12 @@ dplyr::mutate(
   SAD.FIT = 0.8*EF+0.2*zTE
 )
 #Calculation of our unique metric
-clean_strava_data
 ```
 
 ```{r}
 clean_strava_data <- clean_strava_data %>% 
   dplyr::select(- c(Avg.Resp, Min.Resp, Max.Resp))
 
-clean_strava_data
 ```
 
 ```{r}
@@ -749,19 +741,21 @@ collie_roll %>%
   ggplot2::geom_line(ggplot2::aes(y = SAD200), col="blue")
 ```
 
-The fitness metric we came up with is a custom performance measure that is designed to combine efficiency and aerobic training effect into a single score.
+The fitness metric we developed is a custom performance measure designed to combine efficiency and aerobic training effect into a single score.
 
-The first component is Efficiency Factor (EF), which captures how much speed is being produced relative to heart rate. In this case, pace is converted into speed, and EF is calculated as speed divided by average heart rate. A higher EF suggests the runner is moving faster for a given cardiovascular effort, which can be interpreted as better efficiency.
+The first component is Efficiency Factor (EF), which captures how much speed is being produced relative to heart rate. In this case, pace is converted into speed, and EF is calculated as speed divided by average heart rate. A higher EF suggests that the runner is moving faster for a given cardiovascular effort, which can be interpreted as better efficiency.
 
-The second component is Aerobic Training Effect (TE), which reflects the physiological impact of the run. Based on the TE interpretation ranges already provided in the document, TE is converted into a custom score that increases as the aerobic effect becomes more meaningful, with the highest reward assigned to strongly improving aerobic effect levels. A TE of 5 is assigned a score of 0, since it represents an overreaching effect and is treated in this metric as excessively fatiguing rather than ideal for regular training. This scoring structure is intended to reward productive aerobic stimulus without automatically rewarding maximal effort. Since, EF and the TE score are measured on different scales, they are first scaled before being combined.
+The second component is Aerobic Training Effect (TE), which reflects the physiological impact of the run. Based on the TE interpretation ranges already provided in the document, TE is converted into a custom score that increases as the aerobic effect becomes more meaningful, with the highest reward assigned to strongly improving aerobic effect levels. A TE of 5 is assigned a score of 0, since it represents an overreaching effect and is treated in this metric as excessively fatiguing rather than ideal for regular training. This scoring structure is intended to reward productive aerobic stimulus without automatically rewarding maximal effort. Since EF and the TE score are measured on different scales, they are first scaled before being combined.
 
-The final metric is therefore intended to summarize both how efficiently the run was performed and how productive the training stimulus, it is weighted using an 80/20 ratio, with 80% assigned to EF and 20% assigned to the TE score. The goal of this metric is not to create a perfect universal measure of performance, but to build a practical session-quality indicator that can be tracked over time to identify whether recent running performance and training quality are improving, declining, or remaining stable.
+The final metric is intended to summarize both how efficiently the run was performed and how productive the training stimulus was. It is weighted using an 80/20 ratio, with 80% assigned to EF and 20% assigned to the TE score. The goal of this metric is not to create a perfect universal measure of performance, but rather to build a practical session-quality indicator that can be tracked over time to identify whether recent running performance and training quality are improving, declining, or remaining stable.
+
+We used moving averages to smooth out short-term fluctuations in the custom performance metric and make the underlying trend easier to see. Because individual run scores can vary from session to session due to factors such as fatigue, conditions, or workout type, the raw series can be noisy and harder to interpret. The shorter moving average captures more recent changes, while the longer moving average provides a broader view of the overall pattern over time. Together, they make it easier to evaluate how the metric is changing across runs rather than focusing too heavily on isolated observations.
 
 To examine the custom metric over time, moving averages based on 20 and 200 observations were computed. The 20-observation moving average provides a short-run view of the metric and responds more quickly to recent fluctuations, whereas the 200-observation moving average provides a smoother long-run representation of the series. Plotting both moving averages helps reduce short-term noise and makes the time-series behavior of the metric easier to visualize.
 
 Our recommendation is to coach Collie. Based on the moving-average graphs, Collie shows the stronger upward pattern in the custom metric over time, especially in the longer-run 200-observation average, which gradually rises across the sample. The shorter-run 20-observation average also spends much of the later period above the longer-run average, indicating stronger recent performance relative to Collie’s own longer-term trend. In contrast, Hound’s 200-observation average trends downward over time, and the 20-observation average is more volatile, with larger swings above and below the longer-run line. Taken together, the graphs suggest that Collie provides the clearer case for coaching support because the recent trajectory of the metric is more favorable and shows stronger momentum in the underlying performance trend.
 
-# Notes
+Notes
 
 -   The distance for everything is in Km, but Track Running is in meters.
 
