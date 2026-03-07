@@ -735,6 +735,16 @@ collie_data %>%
 
 # Our thoughts on the use of each metric for determining who is more fit:
 
+The fitness metric we came up with is a custom performance measure that is designed to combine efficiency and aerobic training effect into a single score.
+
+The first component is Efficiency Factor (EF), which captures how much speed is being produced relative to heart rate. In this case, pace is converted into speed, and EF is calculated as speed divided by average heart rate. A higher EF suggests the runner is moving faster for a given cardiovascular effort, which can be interpreted as better efficiency.
+
+The second component is Aerobic Training Effect (TE), which reflects the physiological impact of the run. Based on the TE interpretation ranges already provided in the document, TE is converted into a custom score that increases as the aerobic effect becomes more meaningful, with the highest reward assigned to strongly improving aerobic effect levels. A TE of 5 is assigned a score of 0, since it represents an overreaching effect and is treated in this metric as excessively fatiguing rather than ideal for regular training. This scoring structure is intended to reward productive aerobic stimulus without automatically rewarding maximal effort. Since, EF and the TE score are measured on different scales, they are first scaled before being combined.
+
+The final metric is therefore intended to summarize both how efficiently the run was performed and how productive the training stimulus, it is weighted using an 80/20 ratio, with 80% assigned to EF and 20% assigned to the TE score. The goal of this metric is not to create a perfect universal measure of performance, but to build a practical session-quality indicator that can be tracked over time to identify whether recent running performance and training quality are improving, declining, or remaining stable.
+
+To examine the custom metric over time, moving averages based on 20 and 200 observations were computed. The 20-observation moving average provides a short-run view of the metric and responds more quickly to recent fluctuations, whereas the 200-observation moving average provides a smoother long-run representation of the series. Plotting both moving averages helps reduce short-term noise and makes the time-series behavior of the metric easier to visualize.
+
 Summary of each metric here, how impactful each is for determining fitness.
 
 We may want to use out metric for fitness here or we might want to use that metric for who we want to train.
