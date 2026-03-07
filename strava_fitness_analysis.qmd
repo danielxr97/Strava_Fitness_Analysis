@@ -226,12 +226,12 @@ To determine which individual is the most fit, we will use the current performan
 
 In order to determine who is more fit we will be primarily using Efficiency Factor. Aerobic Training Effect will be a more important effect in our analysis of rate of improvement.
 
-As we saw the importance of both factors in determining who to train we used these factors to create our own metric which we have named the "SAD" metric. The name comes from the initials of each of our names. This metric hopes to combine the strengths of both Aerobic TE and Efficiency Factor to make a definitive choice of which runner we will train.
+As we saw the importance of both factors in determining who to train we used these factors to create our own metric which we have named the "SAD" metric. The name comes from the initials of each of our names. This metric hopes to combine the strengths of both Aerobic TE and Efficiency Factor to make a definitive choice of which runner we will train. We will go more in depth on this matrix later in the report.
 
 # Comparison of Training Effect between the runners:
 
 ```{r}
-hound_data %>% 
+hound_TE_activity <- hound_data %>% 
   dplyr::select(Date, Activity.Type, Distance, Calories, Time, Aerobic.TE) %>% 
   dplyr::group_by(Activity.Type) %>% 
   ggplot2::ggplot(ggplot2::aes(x = Date, y = Aerobic.TE, col = Activity.Type)) + 
@@ -246,7 +246,7 @@ hound_data %>%
 ```
 
 ```{r}
-collie_data %>% 
+collie_TE_activity <- collie_data %>% 
   dplyr::select(Date, Activity.Type, Distance, Calories, Time, Aerobic.TE) %>% 
   dplyr::group_by(Activity.Type) %>% 
   ggplot2::ggplot(ggplot2::aes(x = Date, y = Aerobic.TE, col = Activity.Type)) + 
@@ -260,12 +260,17 @@ collie_data %>%
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
+```{r}
+hound_TE_activity
+collie_TE_activity
+```
+
 The Training Effect charts show that both runners frequently achieve moderate to high aerobic stimulus, but the pattern differs meaningfully between them. Hound’s Training Effect is spread across a wider range of activity types and appears more varied over time. In Hound’s case, running and street running often sit in the upper-middle to high range, with many observations around roughly 3.0 to 5.0, while track running tends to be lower and more uneven, and trail running fluctuates noticeably between moderate and very high values. Treadmill running also shows a wider swing, including lower values earlier and stronger values later. This suggests that Hound’s aerobic stimulus is less concentrated and more dependent on the type of session being performed, with some activities generating clearly stronger training responses than others.
 
 Collie’s pattern looks more concentrated at the higher end of the Training Effect scale. Trail running, which makes up a large share of Collie’s observed sessions, is frequently clustered between about 4.0 and 5.0, indicating consistently strong aerobic stimulus. Running also remains at a relatively high level, despite a brief dip, while treadmill values are somewhat lower and more variable but still generally remain in the moderate-to-high range. Compared with Hound, Collie’s Training Effect appears less dispersed across the observed activities and more consistently positioned near the upper end of the scale. Overall, the comparison suggests that Collie more regularly produces stronger aerobic training stimulus, whereas Hound shows a broader mix of moderate and high training effects depending on activity type and period.
 
 ```{r}
-hound_data %>% 
+hound_prop <- hound_data %>% 
   dplyr::select(Date, Runner, Aerobic.TE) %>%
   dplyr::group_by(Aerobic.TE) %>% 
   dplyr::count(Aerobic.TE) %>% 
@@ -283,7 +288,7 @@ hound_data %>%
 ```
 
 ```{r}
-collie_data %>% 
+collie_prop <- collie_data %>% 
   dplyr::select(Date, Runner, Aerobic.TE) %>%
   dplyr::group_by(Aerobic.TE) %>% 
   dplyr::count(Aerobic.TE) %>% 
@@ -298,6 +303,10 @@ collie_data %>%
   ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
   ggplot2::scale_y_continuous(labels = scales::percent_format())
 
+```
+
+```{r}
+hound_prop | collie_prop
 ```
 
 These proportional Training Effect charts reinforce the idea that Collie’s aerobic stimulus is concentrated at a higher level than Hound’s. Hound’s distribution is centered more heavily in the middle of the Training Effect scale, with the greatest mass appearing around roughly 3.0 to 4.0. This suggests that many of Hound’s sessions produce moderate to improving aerobic effects, but the distribution is more spread out, including some lower values and a smaller share of very high-end observations. In other words, Hound’s training effect profile appears broader and more mixed, with sessions ranging from relatively weak aerobic stimulus to strong stimulus, but with most observations clustered in the middle range rather than at the very top.
@@ -368,7 +377,7 @@ Hound and Collie both record generally high Aerobic Training Effect values, but 
 # Comparison of Efficiency Factor between the runners:
 
 ```{r}
-hound_data %>% 
+hound_ef <- hound_data %>% 
   ggplot2::ggplot(ggplot2::aes(x = EF)) +
   ggplot2::geom_histogram(
     ggplot2::aes(y = ggplot2::after_stat(density)),
@@ -401,7 +410,7 @@ cat("Mean:", mean(hound_data$EF), "SD:",sd(hound_data$EF))
 ```
 
 ```{r}
-collie_data %>% 
+collie_ef <- collie_data %>% 
   ggplot2::ggplot(ggplot2::aes(x = EF)) +
   ggplot2::geom_histogram(
     ggplot2::aes(y = ggplot2::after_stat(density)),
@@ -427,6 +436,10 @@ collie_data %>%
     y = "Density"
   ) +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+```{r}
+hound_ef / collie_ef
 ```
 
 ```{r, include=FALSE}
