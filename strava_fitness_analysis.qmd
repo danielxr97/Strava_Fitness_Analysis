@@ -245,32 +245,6 @@ hound_data %>%
   ggplot2::scale_y_continuous(labels = scales::percent_format())
 ```
 
-```{r}
-hound_roll <- hound_data %>%
-  dplyr::arrange(Date) %>%
-  dplyr::mutate(
-    SAD20 = slider::slide_dbl(
-      .x = SAD.FIT,
-      .f = mean,
-      .before = 20,
-      .after = 0,
-      .complete = FALSE
-    ),
-    SAD200 = slider::slide_dbl(
-      .x = SAD.FIT,
-      .f = mean,
-      .before = 200,
-      .after = 0,
-      .complete = FALSE
-    )
-  )
-
-hound_roll %>%
-  ggplot2::ggplot(ggplot2::aes(x = Date, y = SAD20)) +
-  ggplot2::geom_line(col="red") +
-  ggplot2::geom_line(ggplot2::aes(y = SAD200), col="blue")
-```
-
 # Collie
 
 ```{r}
@@ -380,32 +354,6 @@ collie_data %>%
     y = "Density"
   ) +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
-
-```{r}
-collie_roll <- collie_data %>%
-  dplyr::arrange(Date) %>%
-  dplyr::mutate(
-    SAD20 = slider::slide_dbl(
-      .x = SAD.FIT,
-      .f = mean,
-      .before = 20,
-      .after = 0,
-      .complete = FALSE
-    ),
-    SAD200 = slider::slide_dbl(
-      .x = SAD.FIT,
-      .f = mean,
-      .before = 200,
-      .after = 0,
-      .complete = FALSE
-    )
-  )
-
-collie_roll %>%
-  ggplot2::ggplot(ggplot2::aes(x = Date, y = SAD20)) +
-  ggplot2::geom_line(col="red") +
-  ggplot2::geom_line(ggplot2::aes(y = SAD200), col="blue")
 ```
 
 # The Task
@@ -748,6 +696,58 @@ We say here who is more fit by out definition.
 For assessing improvement, trend-based measures are more useful than single-run values. Raw EF and TE from one session may be influenced by daily conditions such as fatigue, route, weather, or workout intensity, so they are limited as direct measures of improvement on their own. The custom combined metric is more helpful because it summarizes both efficiency and training quality in one score, but its interpretation is stronger when viewed across multiple runs rather than in isolation. For this reason, the moving averages are especially useful for evaluating improvement, since they smooth out short-term noise and highlight the direction of the metric over time. This makes them more appropriate for comparing change in running performance across longer periods.
 
 # Our recommendation on who we want to coach:
+
+```{r}
+hound_roll <- hound_data %>%
+  dplyr::arrange(Date) %>%
+  dplyr::mutate(
+    SAD20 = slider::slide_dbl(
+      .x = SAD.FIT,
+      .f = mean,
+      .before = 20,
+      .after = 0,
+      .complete = FALSE
+    ),
+    SAD200 = slider::slide_dbl(
+      .x = SAD.FIT,
+      .f = mean,
+      .before = 200,
+      .after = 0,
+      .complete = FALSE
+    )
+  )
+
+hound_roll %>%
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = SAD20)) +
+  ggplot2::geom_line(col="red") +
+  ggplot2::geom_line(ggplot2::aes(y = SAD200), col="blue")
+```
+
+```{r}
+collie_roll <- collie_data %>%
+  dplyr::arrange(Date) %>%
+  dplyr::mutate(
+    SAD20 = slider::slide_dbl(
+      .x = SAD.FIT,
+      .f = mean,
+      .before = 20,
+      .after = 0,
+      .complete = FALSE
+    ),
+    SAD200 = slider::slide_dbl(
+      .x = SAD.FIT,
+      .f = mean,
+      .before = 200,
+      .after = 0,
+      .complete = FALSE
+    )
+  )
+
+collie_roll %>%
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = SAD20)) +
+  ggplot2::geom_line(col="red") +
+  ggplot2::geom_line(ggplot2::aes(y = SAD200), col="blue")
+```
 
 The fitness metric we came up with is a custom performance measure that is designed to combine efficiency and aerobic training effect into a single score.
 
