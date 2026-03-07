@@ -120,24 +120,6 @@ collie_data <- clean_strava_data %>%
   dplyr::filter(Runner == "Collie")
 ```
 
-# Hound
-
-Hound's correlation:
-
--   There is a strong negative correlation between EF and Avg. Pace of -0.91, which suggests that EF is tracking performance very well
-
--   Strong positive correlation between EF and Cadence of 0.61 and EF and Stride of 0.60, suggesting a higher performance when the running basics are also improving.
-
-Observations from the Treadmill Running are very clear and present improvements over time
-
-Note that for Collie:
-
--   The correlation between EF and Cadence of 0.88 and EF and Stride of 0.86 is a strong positive correlation that suggests an improvement in performance when the running basics are also improving
-
--   The correlation between Avg. HR and TE is 0.62, suggesting of a strong positive relationship.
-
--   As we expected the correlation between Avg. HR and Avg. Pace is somewhat strong but inverted; this makes sense because when as the individual runs faster its pace value decreases but heart rate increases.
-
 # The Task
 
 1.  Explain how you define fitness.
@@ -176,7 +158,7 @@ According to @Cambridge_nd, the definition of fitness is "the condition of being
 
     According to @Zhao_2019, Training Effect measures how each training session affects VO2 Max (Maximum Volume of Oxygen) improvement. Furthermore, @Harvard_2024 suggests that VO2 Max can indicate an individual's fitness because a high VO2 Max correlates with better physical fitness and is also associated with "a lower risk for cardiovascular disease and increased longevity." The reason VO2 Max correlates with better physical fitness and health is that it measures the amount of oxygen an athlete consumes during exercise [@Harvard_2024]. Oxygen consumption matters because, for a muscle to generate energy as ATP, it needs oxygen; therefore, the more oxygen the athlete can breathe in, the more energy the muscle can produce to perform the exercise [@Harvard_2024].
 
-    @Zhao_2019 suggests the following description for the Training Effect ranges: (Turn this to a GT table later)
+    @Zhao_2019 suggests the following description for the Training Effect ranges:
 
     -   0.0 - 0.9: No aerobic effect
 
@@ -278,6 +260,10 @@ collie_data %>%
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
+The Training Effect charts show that both runners frequently achieve moderate to high aerobic stimulus, but the pattern differs meaningfully between them. Hound’s Training Effect is spread across a wider range of activity types and appears more varied over time. In Hound’s case, running and street running often sit in the upper-middle to high range, with many observations around roughly 3.0 to 5.0, while track running tends to be lower and more uneven, and trail running fluctuates noticeably between moderate and very high values. Treadmill running also shows a wider swing, including lower values earlier and stronger values later. This suggests that Hound’s aerobic stimulus is less concentrated and more dependent on the type of session being performed, with some activities generating clearly stronger training responses than others.
+
+Collie’s pattern looks more concentrated at the higher end of the Training Effect scale. Trail running, which makes up a large share of Collie’s observed sessions, is frequently clustered between about 4.0 and 5.0, indicating consistently strong aerobic stimulus. Running also remains at a relatively high level, despite a brief dip, while treadmill values are somewhat lower and more variable but still generally remain in the moderate-to-high range. Compared with Hound, Collie’s Training Effect appears less dispersed across the observed activities and more consistently positioned near the upper end of the scale. Overall, the comparison suggests that Collie more regularly produces stronger aerobic training stimulus, whereas Hound shows a broader mix of moderate and high training effects depending on activity type and period.
+
 ```{r}
 hound_data %>% 
   dplyr::select(Date, Runner, Aerobic.TE) %>%
@@ -293,7 +279,30 @@ hound_data %>%
   ) +
   ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
   ggplot2::scale_y_continuous(labels = scales::percent_format())
+
 ```
+
+```{r}
+collie_data %>% 
+  dplyr::select(Date, Runner, Aerobic.TE) %>%
+  dplyr::group_by(Aerobic.TE) %>% 
+  dplyr::count(Aerobic.TE) %>% 
+  dplyr::mutate(proportion = n / nrow(collie_data)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE, y = proportion)) +
+  ggplot2::geom_col(fill = "midnightblue") +
+  ggplot2::labs(
+    title = "Collie's Proportional Training Effect",
+    x = "Training Effect Zone",
+    y = "Proportion (%)"
+  ) +
+  ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
+  ggplot2::scale_y_continuous(labels = scales::percent_format())
+
+```
+
+These proportional Training Effect charts reinforce the idea that Collie’s aerobic stimulus is concentrated at a higher level than Hound’s. Hound’s distribution is centered more heavily in the middle of the Training Effect scale, with the greatest mass appearing around roughly 3.0 to 4.0. This suggests that many of Hound’s sessions produce moderate to improving aerobic effects, but the distribution is more spread out, including some lower values and a smaller share of very high-end observations. In other words, Hound’s training effect profile appears broader and more mixed, with sessions ranging from relatively weak aerobic stimulus to strong stimulus, but with most observations clustered in the middle range rather than at the very top.
+
+Collie’s proportional distribution, by contrast, is shifted more toward the upper end of the scale. A substantial share of Collie’s observations falls between about 4.0 and 5.0, and there is a particularly noticeable concentration at 5.0. This indicates that Collie more frequently records highly improving or even overreaching aerobic effects compared with Hound. Relative to Hound, Collie has fewer observations in the lower and middle parts of the Training Effect range and a larger proportion in the highest zones. Taken together, these charts suggest that Collie’s runs more consistently generate stronger aerobic training stimulus, whereas Hound’s runs are distributed more evenly across moderate and high Training Effect levels.
 
 ```{r}
 hound_data %>% 
@@ -322,9 +331,8 @@ hound_data %>%
     y = "Density"
   ) +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
 
-It seems like Hound's performance is normally distributed around an average Efficiency Factor of 0.064. The normal distribution of the Efficiency Factor suggests that Hound has approximately as many bad days as good days, but most days his performance is in the middle at 0.064.
+```
 
 ```{r}
 collie_data %>% 
@@ -353,25 +361,6 @@ collie_data %>%
     y = "Density"
   ) +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
-
-It seems Collie's performance distribution according to the Efficiency Factor is around an average of 0.081. The left-skewed distribution of the Efficiency Factor suggests that Collie is a high-performing runner, as he is consistently performing around his average of 0.081.
-
-```{r}
-collie_data %>% 
-  dplyr::select(Date, Runner, Aerobic.TE) %>%
-  dplyr::group_by(Aerobic.TE) %>% 
-  dplyr::count(Aerobic.TE) %>% 
-  dplyr::mutate(proportion = n / nrow(collie_data)) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE, y = proportion)) +
-  ggplot2::geom_col(fill = "midnightblue") +
-  ggplot2::labs(
-    title = "Collie's Proportional Training Effect",
-    x = "Training Effect Zone",
-    y = "Proportion (%)"
-  ) +
-  ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
-  ggplot2::scale_y_continuous(labels = scales::percent_format())
 ```
 
 Hound and Collie both record generally high Aerobic Training Effect values, but their patterns differ in level, spread, and consistency. Hound’s Training Effect is distributed more broadly across activities and over time, with many observations concentrated in the moderate-to-high range around 3.0 to 4.0, along with some lower values and occasional values near 5.0. This suggests Hound’s runs produce a wider range of aerobic stimulus, from moderate sessions to very demanding ones. In contrast, Collie’s Training Effect is more concentrated at the upper end of the scale. The activity plots and distribution charts show that many of Collie’s observations lie between roughly 4.0 and 5.0, with a noticeable mass at 5.0, indicating more frequent highly improving or overreaching aerobic effects. Overall, compared with Hound, Collie appears to generate stronger aerobic stimulus more consistently, while Hound shows more variation across sessions and activity types.
@@ -411,8 +400,6 @@ hound_data %>%
 cat("Mean:", mean(hound_data$EF), "SD:",sd(hound_data$EF))
 ```
 
-It seems like Hound's performance is normally distributed around an average Efficiency Factor of 0.064. The normal distribution of the Efficiency Factor suggests that Hound has approximately as many bad days asgood days, but most days his performance is in the middle at 0.064.
-
 ```{r}
 collie_data %>% 
   ggplot2::ggplot(ggplot2::aes(x = EF)) +
@@ -446,6 +433,8 @@ collie_data %>%
 cat("Mean:", mean(collie_data$EF), "SD:",sd(collie_data$EF))
 ```
 
+The Efficiency Factor charts indicate that Collie demonstrates the stronger overall running efficiency when compared with Hound. Since Efficiency Factor measures the amount of speed produced per heartbeat, a higher value suggests that a runner is able to generate greater running output for a given cardiovascular effort. Hound’s distribution appears centered at a lower level, around 0.064, and is spread more widely across the sample, which suggests both lower average efficiency and greater variation from run to run. The wider spread implies that Hound’s performance is less stable, with sessions ranging from relatively efficient to noticeably less efficient outcomes. By contrast, Collie’s distribution is shifted clearly to the right, with most observations concentrated closer to 0.08. This indicates that Collie is generally able to maintain a higher level of speed relative to heart rate across runs, which is consistent with better running efficiency.
+
 ```{r}
  hound_data %>% 
   dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type, EF) %>%
@@ -473,7 +462,7 @@ cat("Mean:", mean(collie_data$EF), "SD:",sd(collie_data$EF))
  
 ```
 
-The Efficiency Factor charts suggest that Collie has the stronger overall running efficiency. Hound’s Efficiency Factor is centered around a lower average, approximately 0.064, and is spread more broadly across observations, indicating more variability in performance. In contrast, Collie’s distribution is shifted to the right, with most observations concentrated around roughly 0.08, which implies that Collie is generally able to produce more speed per heartbeat than Hound. The activity-specific plots support this pattern: Hound’s Efficiency Factor varies more across activity types and includes several lower-efficiency periods, while Collie’s values are typically higher and more tightly clustered, especially in running and trail running. Overall, the comparison suggests that Collie is the more efficient runner, while Hound shows lower and more variable efficiency across sessions.
+The activity-specific plots reinforce this interpretation. Hound’s Efficiency Factor varies substantially across activity types, with visible dips in track, trail, and some treadmill periods, suggesting less consistency in maintaining efficient performance under different running conditions. Although Hound does record some stronger values, these are mixed with more frequent lower-efficiency sessions. Collie, on the other hand, shows Efficiency Factor values that are not only higher overall but also more concentrated within a narrower range in several activities, especially in running and trail running. Even where there are temporary declines, the general level remains above Hound’s typical values. Taken together, the distributional and activity-based evidence suggests that Collie is the more efficient runner overall, while Hound exhibits lower average efficiency and greater variability across sessions.
 
 # Our thoughts on the use of each metric for determining who is more fit:
 
