@@ -481,7 +481,7 @@ The activity-specific plots reinforce this interpretation. Hound’s Efficiency 
 
 # Our thoughts on the use of each metric for determining who is more fit:
 
-Each metric captures a different aspect of running performance, so no single measure should be treated as a complete definition of fitness. Efficiency Factor (EF) is useful because it reflects how much speed is being produced for a given heart rate, making it a practical indicator of cardiovascular efficiency. Training Effect (TE) is useful for describing the physiological impact of a run, but on its own it reflects session stimulus more than underlying fitness. The custom combined metric is useful because it incorporates both efficiency and training stimulus, giving a broader session-quality measure than either variable alone. The moving averages add further value by smoothing short-term fluctuations and making the metric easier to interpret over time. Taken together, these measures are better viewed as complementary indicators rather than standalone tests of fitness.
+Each metric captures a different aspect of running performance, so no single measure should be treated as a complete definition of fitness. Efficiency Factor (EF) is useful because it reflects how much speed is being produced for a given heart rate, making it a practical indicator of cardiovascular efficiency. Training Effect (TE) is useful for describing the physiological impact of a run, but on its own it reflects session stimulus more than underlying fitness. Our custom combined metric is useful because it incorporates both efficiency and training stimulus, giving a broader session-quality measure than either variable alone. The moving averages we use add further value by smoothing short-term fluctuations and making the metric easier to interpret over time. Taken together, these measures are better viewed as complementary indicators rather than standalone tests of fitness.
 
 Since our definition of fitness emphasizes current running efficiency, Efficiency Factor is the most important metric for determining which runner is presently fitter. Training Effect is informative, but because it reflects the effect of an individual session, it is better suited to evaluating workout quality than current overall fitness. For that reason, our assessment of who is more fit is based primarily on Efficiency Factor, with the other metrics serving a supporting role.
 
@@ -489,9 +489,9 @@ Since our definition of fitness emphasizes current running efficiency, Efficienc
 
 # Our thoughts on the use of each metric for determining who has improved more:
 
-For assessing improvement, trend-based measures are more useful than single-run values. Raw EF and TE from one session may be influenced by daily conditions such as fatigue, route, weather, or workout intensity, so they are limited as direct measures of improvement on their own. The custom combined metric is more helpful because it summarizes both efficiency and training quality in one score, but its interpretation is stronger when viewed across multiple runs rather than in isolation. For this reason, the moving averages are especially useful for evaluating improvement, since they smooth out short-term noise and highlight the direction of the metric over time. This makes them more appropriate for comparing change in running performance across longer periods.
+For assessing improvement, trend-based measures are more useful than single-run values. Raw EF and TE from one session may be influenced by daily conditions such as fatigue, route, weather, or workout intensity, so they are limited as direct measures of improvement on their own. Our custom combined metric is again more helpful here because it summarizes both efficiency and training quality in one score.
 
-Because improvement is better understood through patterns over time rather than isolated observations, the SAD metric and its moving averages are the most useful tools for determining which runner has improved more. EF remains important because it captures efficiency, but the combined metric is better suited to measuring change because it includes both performance efficiency and the quality of aerobic stimulus. The moving averages then help clarify whether the metric is trending upward, downward, or remaining stable.
+Because improvement is better understood through patterns over time rather than isolated observations, the SAD metric and its moving averages is the most useful tools for determining which runner has improved more. EF remains important because it captures efficiency, as a result it does have heavy weighting in the calculation of our metric. Additionally, the moving averages help to clarify whether the metric is trending upward, downward, or remaining stable.
 
 # WHO HAS IMPROVED MORE
 
@@ -573,7 +573,7 @@ collie_plot <- collie_roll %>%
 hound_plot / collie_plot
 ```
 
-The fitness metric we developed is a custom performance measure designed to combine efficiency and aerobic training effect into a single score.
+The fitness metric we developed is a custom performance measure designed to combine efficiency and aerobic training effect into a single score. It is made up of the following components:
 
 The first component is Efficiency Factor (EF), which captures how much speed is being produced relative to heart rate. In this case, pace is converted into speed, and EF is calculated as speed divided by average heart rate. A higher EF suggests that the runner is moving faster for a given cardiovascular effort, which can be interpreted as better efficiency.
 
