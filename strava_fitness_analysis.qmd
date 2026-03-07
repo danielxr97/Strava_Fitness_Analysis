@@ -130,8 +130,6 @@ Hound's correlation:
 
 Observations from the Treadmill Running are very clear and present improvements over time
 
-It seems like Hound's performance is normally distributed around an average Efficiency Factor of 0.064. The normal distribution of the Efficiency Factor suggests that Hound has approximately as many bad days asgood days, but most days his performance is in the middle at 0.064.
-
 Note that for Collie:
 
 -   The correlation between EF and Cadence of 0.88 and EF and Stride of 0.86 is a strong positive correlation that suggests an improvement in performance when the running basics are also improving
@@ -139,10 +137,6 @@ Note that for Collie:
 -   The correlation between Avg. HR and TE is 0.62, suggesting of a strong positive relationship.
 
 -   As we expected the correlation between Avg. HR and Avg. Pace is somewhat strong but inverted; this makes sense because when as the individual runs faster its pace value decreases but heart rate increases.
-
-    Collie’s correlations between Efficiency Factor and both cadence (0.88) and stride length (0.86) are substantially stronger than Hound’s (0.61 and 0.60). The correlation strength suggests that Collie’s efficiency is more strongly associated with consistent running mechanics, which may help explain why Collie’s overall EF is higher
-
-It seems Collie's performance distribution according to the Efficiency Factor is around an average of 0.081. The left-skewed distribution of the Efficiency Factor suggests that Collie is a high-performing runner, as he is consistently performing around his average of 0.081.
 
 # The Task
 
@@ -311,6 +305,37 @@ hound_data %>%
 ```
 
 ```{r}
+hound_data %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE)) +
+  ggplot2::geom_histogram(
+    ggplot2::aes(y = ggplot2::after_stat(density)),
+    bins = ceiling((max(hound_data$Aerobic.TE) - min(hound_data$Aerobic.TE)) / ( 2 * IQR(hound_data$Aerobic.TE) / length(hound_data$Aerobic.TE)^(1/3))), # Using Freedman-Diaconis's Rule
+    col = "midnightblue",
+    fill = "midnightblue"
+  ) +
+  ggplot2::geom_vline(
+    ggplot2::aes(xintercept = mean(Aerobic.TE, na.rm = TRUE)),
+    color = "red",
+    linetype = "longdash",
+    size = 0.8
+  ) +
+  ggplot2::stat_function(
+    fun = dnorm,
+    args = c(mean = mean(hound_data$Aerobic.TE, na.rm = TRUE), sd = sd(hound_data$Aerobic.TE, na.rm = TRUE)),
+    col = "red"
+  ) +
+  ggplot2::geom_rug(sides = "b") +
+  ggplot2::labs(
+    title = "Hound's Training Effect Distribution",
+    x = "Training Effect",
+    y = "Density"
+  ) +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+It seems like Hound's performance is normally distributed around an average Efficiency Factor of 0.064. The normal distribution of the Efficiency Factor suggests that Hound has approximately as many bad days as good days, but most days his performance is in the middle at 0.064.
+
+```{r}
 collie_data %>% 
   ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE)) +
   ggplot2::geom_histogram(
@@ -338,6 +363,8 @@ collie_data %>%
   ) +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
+
+It seems Collie's performance distribution according to the Efficiency Factor is around an average of 0.081. The left-skewed distribution of the Efficiency Factor suggests that Collie is a high-performing runner, as he is consistently performing around his average of 0.081.
 
 ```{r}
 collie_data %>% 
