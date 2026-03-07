@@ -356,11 +356,7 @@ collie_data %>%
   ggplot2::scale_y_continuous(labels = scales::percent_format())
 ```
 
-(GRAPH for comparison goes here)
-
-(commentary on graphs for each runner)
-
-(either second set of charts if they are more insightful here or conclusion for AE)
+Hound and Collie both record generally high Aerobic Training Effect values, but their patterns differ in level, spread, and consistency. Hound’s Training Effect is distributed more broadly across activities and over time, with many observations concentrated in the moderate-to-high range around 3.0 to 4.0, along with some lower values and occasional values near 5.0. This suggests Hound’s runs produce a wider range of aerobic stimulus, from moderate sessions to very demanding ones. In contrast, Collie’s Training Effect is more concentrated at the upper end of the scale. The activity plots and distribution charts show that many of Collie’s observations lie between roughly 4.0 and 5.0, with a noticeable mass at 5.0, indicating more frequent highly improving or overreaching aerobic effects. Overall, compared with Hound, Collie appears to generate stronger aerobic stimulus more consistently, while Hound shows more variation across sessions and activity types.
 
 # Comparison of Efficiency Factor between the runners:
 
@@ -477,11 +473,7 @@ collie_data %>%
   ggplot2::geom_col()
 ```
 
-(GRAPH for comparison goes here)
-
-(commentary on graphs for each runner)
-
-(either second set of charts if they are more insightful here or conclusion for EF)
+The Efficiency Factor charts suggest that Collie has the stronger overall running efficiency. Hound’s Efficiency Factor is centered around a lower average, approximately 0.064, and is spread more broadly across observations, indicating more variability in performance. In contrast, Collie’s distribution is shifted to the right, with most observations concentrated around roughly 0.08, which implies that Collie is generally able to produce more speed per heartbeat than Hound. The activity-specific plots support this pattern: Hound’s Efficiency Factor varies more across activity types and includes several lower-efficiency periods, while Collie’s values are typically higher and more tightly clustered, especially in running and trail running. Overall, the comparison suggests that Collie is the more efficient runner, while Hound shows lower and more variable efficiency across sessions.
 
 # Our thoughts on the use of each metric for determining who is more fit:
 
