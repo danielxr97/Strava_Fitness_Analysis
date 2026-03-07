@@ -222,7 +222,7 @@ collie_data %>%
 
 Looking at the matrices, we can see that Hound shows a strong positive correlation between Efficiency Factor and both Cadence and Stride, with coefficients of 0.61 and 0.60, respectively. On the other hand, Collies show an even stronger positive correlation between Efficiency Factor and both Cadence and Stride, with coefficients of 0.88 and 0.86, respectively. The correlation strength suggests that Collie’s efficiency is more strongly associated with consistent running basics, the Cadence and Stride, which may help later explain why Collie’s overall EF is higher. In contrast, as expected, the Training Effect showed relatively weak correlations with most of the dataset, since it is a short-term measure.
 
-To determine which individual is the most fit, we will use the current performance on their metrics. However, to determine which individual we will train, we will estimate each individual's potential by forecasting their future metrics and comparing them to select the one we want to train.
+To determine which individual is the most fit, we will use the current performance on their metrics.
 
 In order to determine who is more fit we will be primarily using Efficiency Factor. Aerobic Training Effect will be a more important effect in our analysis of rate of improvement.
 
