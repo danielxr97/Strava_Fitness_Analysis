@@ -140,23 +140,6 @@ Observations from the Treadmill Running are very clear and present improvements 
 
 It seems like Hound's performance is normally distributed around an average Efficiency Factor of 0.064. The normal distribution of the Efficiency Factor suggests that Hound has approximately as many bad days asgood days, but most days his performance is in the middle at 0.064.
 
-# Collie
-
-```{r}
-collie_data %>% 
-  dplyr::select(Date, Activity.Type, Distance, Calories, Time, Aerobic.TE) %>% 
-  dplyr::group_by(Activity.Type) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = Date, y = Aerobic.TE, col = Activity.Type)) + 
-  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8) +
-  ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
-  ggplot2::labs(
-    title = "Collie's Training Effect by Activity",
-    x = "Date",
-    y = "Aerobic Training Effect"
-  ) +
-  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-```
-
 Note that for Collie:
 
 -   The correlation between EF and Cadence of 0.88 and EF and Stride of 0.86 is a strong positive correlation that suggests an improvement in performance when the running basics are also improving
@@ -183,15 +166,15 @@ Write a bullet point summary on your findings at the beginning of the document.
 
 You must use a quarto document (.qmd) and render it into `html`.
 
-# Metrics Meaning
+# What is Fitness?
 
--   Decompression: This means to use running as a personal wellness tool to decompress from stress
+According to @Cambridge_nd, the definition of fitness is "the condition of being physically strong and healthy," and @Healthlinkbc_2022 expands on that definition by adding the ability to perform physical activity. Therefore, to understand what makes an individual fit, we need to understand what enables an individual to perform physical activity and which metrics we can use to track such performance. Since our analysis focuses on fitness in running, we will focus on running performance and the specific metrics used to track it.
 
--   Max.Resp: Max.Resp = Maximum respiratory = Max rate of VO2
+## Assumptions:
 
--   Min.Resp: Min.Resp = Minimum respiratory = Min rate of VO2
+-   We are assuming that Collie mistakenly entered the "Track Run" as the title for one of his Trail Running data, primarly because he does not have any data on Track Running so we do not expect him to have only one.
 
--   Min.Temp: The weather's lowest temperature during the exercise
+## Relevant Metrics:
 
 -   <u>Stride Length:</u>
 
@@ -201,13 +184,9 @@ You must use a quarto document (.qmd) and render it into `html`.
 
     "The number of steps you take in one minute" [@Leicht_2023]. Furthermore, @Nike_2026 explains that cadence is important because it can be used to optimize an athlete's ground contact time, explain abnormal stride length, and running inefficiency. For instance, a lower cadence often means longer contact time with the ground, which in turn means a longer stride length, and that could mean pushing the foot too far ahead of the athlete's body; doing so is what causes knee injuries and results in wasted energy, or, in other words, loss of performance [@Nike_2026].
 
-# What is Fitness?
+## Performance measures:
 
-According to @Cambridge_nd, the definition of fitness is "the condition of being physically strong and healthy," and @Healthlinkbc_2022 expands on that definition by adding the ability to perform physical activity. Therefore, to understand what makes an individual fit, we need to understand what enables an individual to perform physical activity and which metrics we can use to track such performance. Since our analysis focuses on fitness in running, we will focus on running performance and the specific metrics used to track it.
-
-**The performance metrics that we will use are the following:**
-
--   <u>Aerobic Training Effect:</u>
+-   <u>Training Effect:</u>
 
     According to @Zhao_2019, Training Effect measures how each training session affects VO2 Max (Maximum Volume of Oxygen) improvement. Furthermore, @Harvard_2024 suggests that VO2 Max can indicate an individual's fitness because a high VO2 Max correlates with better physical fitness and is also associated with "a lower risk for cardiovascular disease and increased longevity." The reason VO2 Max correlates with better physical fitness and health is that it measures the amount of oxygen an athlete consumes during exercise [@Harvard_2024]. Oxygen consumption matters because, for a muscle to generate energy as ATP, it needs oxygen; therefore, the more oxygen the athlete can breathe in, the more energy the muscle can produce to perform the exercise [@Harvard_2024].
 
@@ -257,6 +236,8 @@ hound_data %>%
     )
 ```
 
+**Collie's Correlation Matrix:**
+
 ```{r}
 collie_data %>% 
   dplyr::select(c(EF, Aerobic.TE, Avg.HR, Max.HR, Avg.Cadence, Avg.Pace, Avg.Stride)) %>% 
@@ -279,7 +260,7 @@ In order to determine who is more fit we will be primarily using Efficiency Fact
 
 As we saw the importance of both factors in determining who to train we used these factors to create our own metric which we have named the "SAD" metric. The name comes from the initials of each of our names. This metric hopes to combine the strengths of both Aerobic TE and Efficiency Factor to make a definitive choice of which runner we will train.
 
-# Comparison of Aerobic Training Effect between the runners:
+# Comparison of Training Effect between the runners:
 
 ```{r}
 hound_data %>% 
@@ -438,7 +419,7 @@ hound_data %>%
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
-```{r}
+```{r, include=FALSE}
 cat("Mean:", mean(hound_data$EF), "SD:",sd(hound_data$EF))
 ```
 
@@ -473,7 +454,7 @@ collie_data %>%
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
-```{r}
+```{r, include=FALSE}
 cat("Mean:", mean(collie_data$EF), "SD:",sd(collie_data$EF))
 ```
 
@@ -623,7 +604,3 @@ Notes
 -   Collie never ran Street Running or at least he doesn't have any records of running one.
 
 -   Observations from the Treadmill Running are very clear and present improvements over time
-
-# Assumptions
-
--   We are assuming that Collie mistakenly entered the "Track Run" as the title for one of his Trail Running data, primarly because he does not have any data on Track Running so we do not expect him to have only one.
