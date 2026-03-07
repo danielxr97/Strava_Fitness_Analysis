@@ -120,8 +120,6 @@ collie_data <- clean_strava_data %>%
   dplyr::filter(Runner == "Collie")
 ```
 
-Graphs start below here
-
 # Hound
 
 Hound's correlation:
@@ -541,12 +539,22 @@ hound_roll <- hound_data %>%
       .after = 0,
       .complete = FALSE
     )
+  ) %>% 
+  tidyr::pivot_longer(
+    cols = c(SAD20, SAD200),
+    names_to = "SAD",
+    values_to = "SAD.Values"
   )
 
 hound_roll %>%
-  ggplot2::ggplot(ggplot2::aes(x = Date, y = SAD20)) +
-  ggplot2::geom_line(col="red") +
-  ggplot2::geom_line(ggplot2::aes(y = SAD200), col="blue")
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = SAD.Values, color = SAD)) +
+  ggplot2::geom_line() +
+  ggplot2::labs(
+    title = "Hound's Fitness Measure Over Time",
+    x = "Date",
+    y = "Fitness Measure (SAD)"
+  ) +
+  ggplot2::theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ```{r}
@@ -567,12 +575,22 @@ collie_roll <- collie_data %>%
       .after = 0,
       .complete = FALSE
     )
+  ) %>% 
+  tidyr::pivot_longer(
+    cols = c(SAD20, SAD200),
+    names_to = "SAD",
+    values_to = "SAD.Values"
   )
 
 collie_roll %>%
-  ggplot2::ggplot(ggplot2::aes(x = Date, y = SAD20)) +
-  ggplot2::geom_line(col="red") +
-  ggplot2::geom_line(ggplot2::aes(y = SAD200), col="blue")
+  ggplot2::ggplot(ggplot2::aes(x = Date, y = SAD.Values, color = SAD)) +
+  ggplot2::geom_line() +
+  ggplot2::labs(
+    title = "Collie's Fitness Measure Over Time",
+    x = "Date",
+    y = "Fitness Measure (SAD)"
+  ) +
+  ggplot2::theme(plot.title = element_text(hjust = 0.5))
 ```
 
 The fitness metric we developed is a custom performance measure designed to combine efficiency and aerobic training effect into a single score.
