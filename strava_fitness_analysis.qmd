@@ -185,7 +185,7 @@ According to @Cambridge_nd, the definition of fitness is "the condition of being
 
     $$ \text{Speed} = \frac{1}{\text{Pace}} $$
 
-It is important to note that Training Effect is a short-term performance measure since it only tracks the Max VO2 improvement from a single workout, the last exercise the individual performed. In contrast, the Efficiency Factor is useful for long-term performance tracking because it relates speed to heart rate, allowing us to observe improvements in running efficiency over time.
+It is important to note that Training Effect is a short-term performance measure since it only tracks the Max VO2 improvement from a single workout, the last exercise the individual performed. In contrast, the Efficiency Factor is useful for long-term performance tracking because it relates speed to heart rate, allowing us to observe improvements in running efficiency over time. Therefore, to determine who is more fit, we will primarily use the Efficiency Factor. However, Aerobic Training Effect will be a more important measurement in our analysis of the rate of improvement. Given the importance of both the Efficiency Factor (EF) and the Training Effect (TE), we decided to create our own metric. The Shelby Ali Daniel (SAD) metric aims to combine the strengths of both measures by assigning 80% to EF and 20% to TE to make a definitive decision on which runner to train.
 
 To better understand how different running metrics affect performance, we computed correlation matrices for each runner.
 
@@ -223,13 +223,9 @@ collie_data %>%
     )
 ```
 
-Looking at the matrices, we can see that Hound shows a strong positive correlation between Efficiency Factor and both Cadence and Stride, with coefficients of 0.61 and 0.60, respectively. On the other hand, Collies show an even stronger positive correlation between Efficiency Factor and both Cadence and Stride, with coefficients of 0.88 and 0.86, respectively. The correlation strength suggests that Collie’s efficiency is more strongly associated with consistent running basics, the Cadence and Stride, which may help later explain why Collie’s overall EF is higher. In contrast, as expected, the Training Effect showed relatively weak correlations with most of the dataset, since it is a short-term measure.
+Looking at the matrices, we can see that both Hound and Collie exhibit strong negative correlations with the average pace of -0.91 and -0.90, respectively. The negative correlation between Efficiency Factor and Average Pace indicates that the faster the individual runs, the more efficient they become. Hound shows a strong positive correlation between Efficiency Factor and both Cadence and Stride, with coefficients of 0.61 and 0.60, respectively. On the other hand, Collies show an even stronger positive correlation between Efficiency Factor and both Cadence and Stride, with coefficients of 0.88 and 0.86, respectively. The correlation strength suggests that Collie's efficiency is more strongly associated with consistent running basics, the Cadence and Stride, which may help later explain why Collie's overall Efficiency Factor is higher. In contrast, as expected, the Training Effect showed relatively weak correlations with most of the dataset, since it is a short-term measure.
 
-To determine which individual is the most fit, we will use the current performance on their metrics.
-
-In order to determine who is more fit we will be primarily using Efficiency Factor. Aerobic Training Effect will be a more important effect in our analysis of rate of improvement.
-
-As we saw the importance of both factors in determining who to train we used these factors to create our own metric which we have named the "SAD" metric. The name comes from the initials of each of our names. This metric hopes to combine the strengths of both Aerobic TE and Efficiency Factor to make a definitive choice of which runner we will train. We will go more in depth on this matrix later in the report.
+Overall, the correlation analysis suggests that the Efficiency Factor is closely related to running speed and running basics, particularly pace, cadence, and stride length. While both runners exhibit these relationships, Collie shows stronger correlations between efficiency and running basics, indicating a more consistent link between technique and performance. These patterns help explain why Collie tends to achieve higher overall efficiency compared with Hound.
 
 # Training Effect (TE) Analysis
 
@@ -463,7 +459,8 @@ The Efficiency Factor charts indicate that Collie demonstrates the stronger over
  hound_data %>% 
   dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type, EF) %>%
   ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
-  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
+  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8) +
+  ggplot2::geom_smooth(method = "lm", se = FALSE, color = "black") +
   ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
   ggplot2::labs(
     title = "Hound's Efficiency Factor by Activity",
@@ -476,7 +473,8 @@ The Efficiency Factor charts indicate that Collie demonstrates the stronger over
  collie_data %>% 
   dplyr::select(Date, Avg.Pace, Distance, Avg.HR, Activity.Type, EF) %>%
   ggplot2::ggplot(ggplot2::aes(x = Date, y = EF)) +  
-  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8)+
+  ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8) +
+  ggplot2::geom_smooth(method = "lm", se = FALSE, color = "black") +
   ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
   ggplot2::labs(
     title = "Collie's Efficiency Factor by Activity",
