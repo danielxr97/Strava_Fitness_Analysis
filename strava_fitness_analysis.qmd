@@ -6,8 +6,6 @@ backgroundcolor: lightblue
 format: html
 editor: visual
 embed-resources: true
-bibliography: references/references.bib
-csl: references/apa.csl
 output-file: index
 
 echo: FALSE
@@ -596,3 +594,23 @@ We used moving averages to smooth out short-term fluctuations in the custom perf
 To examine the custom metric over time, moving averages based on 20 and 200 observations were computed. The 20-observation moving average provides a short-run view of the metric and responds more quickly to recent fluctuations, whereas the 200-observation moving average provides a smoother long-run representation of the series. Plotting both moving averages helps reduce short-term noise and makes the time-series behavior of the metric easier to visualize.
 
 Our recommendation is to coach **"Collie"**. Based on the use of this custom metric and the moving-average graphs, Collie shows the stronger upward pattern in the custom metric over time, especially in the longer-run 200-observation average, which gradually rises across the sample. The shorter-run 20-observation average also spends much of the later period above the longer-run average, indicating stronger recent performance relative to Collie’s own longer-term trend. In contrast, Hound’s 200-observation average trends downward over time, and the 20-observation average is more volatile, with larger swings above and below the longer-run line. Taken together, the graphs suggest that Collie provides the clearer case for coaching support because the recent trajectory of the metric is more favorable and shows stronger momentum in the underlying performance trend.
+
+## **References**
+
+Cambridge University Press. (n.d.). *Fitness*. Cambridge Dictionary. Retrieved <https://dictionary.cambridge.org/dictionary/english/fitness>
+
+Friel, J. (n.d.). *What is running efficiency and how is it measured?* Training Peak. Retrieved <https://www.trainingpeaks.com/blog/the-efficiency-factor-in-running/>
+
+Healthwise Staff. (2022, October 10). *Fitness: Getting and staying active*. Health Link BC. <https://www.healthlinkbc.ca/healthwise/fitness-getting-and-staying-active>
+
+Leicht, L. (2023, May 4). *8 running metrics to help you track your fitness*. Runners World. <https://www.runnersworld.com/training/a43793832/running-metrics-guide/>
+
+Nike. (2026, January 9). *What is cadence running? How to find your optimal step rate and improve performance*. <https://www.nike.com/ca/a/what-is-cadence-running>
+
+Nxt Run. (2025, August 6). *What the f is ’EF’ and how can it be used in my training*. <https://www.nxtrun.ai/post/what-is-ef>
+
+Vasudevan, J. (2025, February 25). *Everything you need to know about stride length*. Runners World. <https://www.runnersworld.com/uk/training/beginners/a46820832/stride-length/>
+
+Warner, L. (2024, July 8). *VO2 max: What is it and how can you improve it?* Harvard Health Publishing. <https://www.health.harvard.edu/staying-healthy/vo2-max-what-is-it-and-how-can-you-improve-it>
+
+Zhao, X. (2019, September 8). *How should i improve my aerobic fitness?* Medium. [https://medium.com/\@xinzhao13/understanding-how-my-wearables-understands-my-workout-285699b9deda](https://medium.com/@xinzhao13/understanding-how-my-wearables-understands-my-workout-285699b9deda)
