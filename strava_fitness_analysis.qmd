@@ -486,17 +486,19 @@ The Efficiency Factor charts indicate that Collie demonstrates a stronger overal
 
 The Efficiency Factor activity-specific plots reinforce the earlier interpretation that Collie generally demonstrates higher running efficiency than Hound. Hound’s Efficiency Factor varies noticeably across activity types, with several visible downward trends over time. Although Hound occasionally records higher efficiency values, these are interspersed with lower observations, resulting in greater variability across sessions and running environments. In contrast, Collie’s Efficiency Factor values are not only higher overall but also more concentrated within a narrower range, particularly in running and trail running. The regression lines for Collie also suggest slightly improving or stable efficiency over time in most activities. Even when temporary declines appear, Collie’s efficiency levels generally remain above Hound’s typical values. Overall, the activity-specific patterns indicate that Collie maintains more consistent and higher efficiency across sessions, whereas Hound exhibits greater variability and somewhat lower average efficiency.
 
-# Our thoughts on the use of each metric for determining who is more fit:
+# Fitness Analysis
 
-Each metric captures a different aspect of running performance, so no single measure should be treated as a complete definition of fitness. Efficiency Factor (EF) is useful because it reflects how much speed is being produced for a given heart rate, making it a practical indicator of cardiovascular efficiency. Training Effect (TE) is useful for describing the physiological impact of a run, but on its own it reflects session stimulus more than underlying fitness. Our custom combined metric is useful because it incorporates both efficiency and training stimulus, giving a broader session-quality measure than either variable alone. The moving averages we use add further value by smoothing short-term fluctuations and making the metric easier to interpret over time. Taken together, these measures are better viewed as complementary indicators rather than standalone tests of fitness.
+## Current Fitness Level
 
-Since our definition of fitness emphasizes current running efficiency, Efficiency Factor is the most important metric for determining which runner is presently fitter. Training Effect is informative, but because it reflects the effect of an individual session, it is better suited to evaluating workout quality than current overall fitness. For that reason, our assessment of who is more fit is based primarily on Efficiency Factor, with the other metrics serving a supporting role.
+To assess the current fitness level of the two runners, Hound and Collie, we will primarily use the Efficiency Factor. Therefore, based on our analysis of the Efficiency Factor, we found that Hound's EF is normally distributed around an average of 0.064. In contrast, Collie's EF is left-skewed around an average of 0.081. The findings from the EF distributions suggest that Collie is clearly more fit than Hound, as his distribution is highly consistent around a higher average Efficiency Factor.
 
-# WHO IS MORE FIT GUYS
+## Best Improvement
 
-# Our thoughts on the use of each metric for determining who has improved more:
+To determine who improved the most, we initially looked at the efficiency factor over time. Based on this, we found that Hound was inconsistent in its improvement, while Collie consistently showed improvement. However, the difference was not large enough for us to make a conclusive decision based solely on the efficiency factor. For this reason, we also decided to look at both of their Training Effects.
 
-For assessing improvement, trend-based measures are more useful than single-run values. Raw EF and TE from one session may be influenced by daily conditions such as fatigue, route, weather, or workout intensity, so they are limited as direct measures of improvement on their own. Our custom combined metric is again more helpful here because it summarizes both efficiency and training quality in one score.
+## Coaching Decision
+
+For assessing improvement, trend-based measures are more useful than single-run values. Raw EF and TE from a single session may be influenced by daily factors such as fatigue, route, weather, or workout intensity, so they are limited as direct measures of improvement on their own. Our custom combined metric is again more helpful here because it summarizes both efficiency and training quality in one score.
 
 Because improvement is better understood through patterns over time rather than isolated observations, the SAD metric and its moving averages is the most useful tools for determining which runner has improved more. EF remains important because it captures efficiency, as a result it does have heavy weighting in the calculation of our metric. Additionally, the moving averages help to clarify whether the metric is trending upward, downward, or remaining stable.
 
