@@ -120,12 +120,6 @@ collie_data <- clean_strava_data %>%
   dplyr::filter(Runner == "Collie")
 ```
 
-```{r}
-collie_data %>% 
-  dplyr::filter(Activity.Type == "Trail Running") %>% 
-  dplyr::select(c(Title, Distance, Time, Avg.Pace, Best.Pace))
-```
-
 Graphs start below here
 
 # Hound
