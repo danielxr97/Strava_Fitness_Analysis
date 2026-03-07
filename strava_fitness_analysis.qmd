@@ -188,6 +188,8 @@ It is important to note that Training Effect is a short-term performance measure
 
 To better understand how different running metrics affect performance, we computed correlation matrices for each runner.
 
+# Correlation Analysis
+
 **Hound's Correlation Matrix:**
 
 ```{r}
@@ -228,7 +230,7 @@ In order to determine who is more fit we will be primarily using Efficiency Fact
 
 As we saw the importance of both factors in determining who to train we used these factors to create our own metric which we have named the "SAD" metric. The name comes from the initials of each of our names. This metric hopes to combine the strengths of both Aerobic TE and Efficiency Factor to make a definitive choice of which runner we will train. We will go more in depth on this matrix later in the report.
 
-# Comparison of Training Effect between the runners:
+# Training Effect (TE) Analysis
 
 ```{r}
 hound_TE_activity <- hound_data %>% 
@@ -374,7 +376,7 @@ collie_data %>%
 
 Hound and Collie both record generally high Aerobic Training Effect values, but their patterns differ in level, spread, and consistency. Hound’s Training Effect is distributed more broadly across activities and over time, with many observations concentrated in the moderate-to-high range around 3.0 to 4.0, along with some lower values and occasional values near 5.0. This suggests Hound’s runs produce a wider range of aerobic stimulus, from moderate sessions to very demanding ones. In contrast, Collie’s Training Effect is more concentrated at the upper end of the scale. The activity plots and distribution charts show that many of Collie’s observations lie between roughly 4.0 and 5.0, with a noticeable mass at 5.0, indicating more frequent highly improving or overreaching aerobic effects. Overall, compared with Hound, Collie appears to generate stronger aerobic stimulus more consistently, while Hound shows more variation across sessions and activity types.
 
-# Comparison of Efficiency Factor between the runners:
+# Efficiency Factor (EF) Analysis
 
 ```{r}
 hound_ef <- hound_data %>% 
