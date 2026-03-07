@@ -141,6 +141,7 @@ According to @Cambridge_nd, the definition of fitness is "the condition of being
 ## Assumptions:
 
 -   We are assuming that Collie mistakenly entered the "Track Run" as the title for one of his Trail Running data, primarly because he does not have any data on Track Running so we do not expect him to have only one.
+-   Collie does not have observations for Street Running or Track Running; therefore, we are assuming that these activities were either not performed or not recorded in the dataset.
 
 ## Relevant Metrics:
 
@@ -228,7 +229,7 @@ To determine which individual is the most fit, we will use the current performan
 
 In order to determine who is more fit we will be primarily using Efficiency Factor. Aerobic Training Effect will be a more important effect in our analysis of rate of improvement.
 
-As we saw the importance of both factors in determining who to train we used these factors to create our own metric which we have named the "SAD" metric. The name comes from the initials of each of our names. This metric hopes to combine the strengths of both Aerobic TE and Efficiency Factor to make a definitive choice of which runner we will train. We will go more in depth on this metric later in the report.
+As we saw the importance of both factors in determining who to train we used these factors to create our own metric which we have named the "SAD" metric. The name comes from the initials of each of our names. This metric hopes to combine the strengths of both Aerobic TE and Efficiency Factor to make a definitive choice of which runner we will train. We will go more in depth on this matrix later in the report.
 
 # Training Effect (TE) Analysis
 
