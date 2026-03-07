@@ -134,6 +134,13 @@ Write a bullet point summary on your findings at the beginning of the document.
 
 You must use a quarto document (.qmd) and render it into `html`.
 
+# Bullet Point Summary:
+
+-   The definition we have used for fitness is: "The condition of being physically strong and healthy"
+-   Collie is more Fit.
+-   Collie has improved more in fitness.
+-   Our choice on who we want to coach is Collie.
+
 # What is Fitness?
 
 According to @Cambridge_nd, the definition of fitness is "the condition of being physically strong and healthy," and @Healthlinkbc_2022 expands on that definition by adding the ability to perform physical activity. Therefore, to understand what makes an individual fit, we need to understand what enables an individual to perform physical activity and which metrics we can use to track such performance. Since our analysis focuses on fitness in running, we will focus on running performance and the specific metrics used to track it.
@@ -494,7 +501,7 @@ To assess the current fitness level of the two runners, Hound and Collie, we wil
 
 ## Best Improvement
 
-To determine who improved the most, we initially looked at the Efficiency Factor over time. Based on this, we found that Hound was inconsistent in his improvement, showing improvement in some activity types and a decline in others. Collie consistently showed improvement across all activity types. However, the difference in overall Efficiency Factor improvement was not large enough for us to make a conclusive decision based solely on the efficiency factor. For this reason, we also decided to look at both of their Training Effects. Our analysis of Aerobic Training Effects shows that Hound consistently maintains a TE in the 3-4 zone. While this does indicate that according to Aerobic TE scores he will be consistently improving it will be at a smaller magnitude when compared to someone who's Aerobic TE scores are higher. Looking at Collie's Aerobic TE scores we can see that he consistently has scores in the 3.5-5 range with a large amount of observations on the higher end. This indicates that according to Aerobic TE his improvement after each workout will be greater. Based on these factors **Collie has improved more in fitness.**
+To determine who improved the most, we initially looked at the Efficiency Factor over time. Based on this, we found that Hound was inconsistent in his improvement, showing improvement in some activity types and a decline in others. Collie consistently showed improvement across all activity types. However, the difference in overall Efficiency Factor improvement was not large enough for us to make a conclusive decision based solely on the efficiency factor. For this reason, we also decided to look at both of their Training Effects. Our analysis of Aerobic Training Effects shows that Hound consistently maintains a TE in the 3-4 zone with his average being 3.56. While this does indicate that according to Aerobic TE scores he will be consistently improving it will be at a smaller magnitude when compared to someone who's Aerobic TE scores are higher. Looking at Collie's Aerobic TE scores we can see that he consistently has scores in the 3.5-5 range with an average of 4.25. This indicates that according to Aerobic TE his improvement after each workout will be greater. Based on these factors **Collie has improved more in fitness.**
 
 ## Coaching Decision
 
