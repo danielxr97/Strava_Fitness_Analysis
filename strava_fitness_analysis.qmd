@@ -759,6 +759,8 @@ The final metric is therefore intended to summarize both how efficiently the run
 
 To examine the custom metric over time, moving averages based on 20 and 200 observations were computed. The 20-observation moving average provides a short-run view of the metric and responds more quickly to recent fluctuations, whereas the 200-observation moving average provides a smoother long-run representation of the series. Plotting both moving averages helps reduce short-term noise and makes the time-series behavior of the metric easier to visualize.
 
+Our recommendation is to coach Collie. Based on the moving-average graphs, Collie shows the stronger upward pattern in the custom metric over time, especially in the longer-run 200-observation average, which gradually rises across the sample. The shorter-run 20-observation average also spends much of the later period above the longer-run average, indicating stronger recent performance relative to Collie’s own longer-term trend. In contrast, Hound’s 200-observation average trends downward over time, and the 20-observation average is more volatile, with larger swings above and below the longer-run line. Taken together, the graphs suggest that Collie provides the clearer case for coaching support because the recent trajectory of the metric is more favorable and shows stronger momentum in the underlying performance trend.
+
 # Notes
 
 -   The distance for everything is in Km, but Track Running is in meters.
