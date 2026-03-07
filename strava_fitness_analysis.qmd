@@ -142,12 +142,7 @@ You must use a quarto document (.qmd) and render it into `html`.
 
 # What is Fitness?
 
-According to @Cambridge_nd, the definition of fitness is "the condition of being physically strong and healthy," and @Healthlinkbc_2022 expands on that definition by adding the ability to perform physical activity. Therefore, to understand what makes an individual fit, we need to understand what enables an individual to perform physical activity and which metrics we can use to track such performance. Since our analysis focuses on fitness in running, we will focus on running performance and the specific metrics used to track it.
-
-## Assumptions:
-
--   We are assuming that Collie mistakenly entered the "Track Run" as the title for one of his Trail Running data, primarly because he does not have any data on Track Running so we do not expect him to have only one.
--   Collie does not have observations for Street Running or Track Running; therefore, we are assuming that these activities were either not performed or not recorded in the dataset.
+According to @Cambridge_nd, the definition of fitness is "the condition of being physically strong and healthy," and @Healthlinkbc_2022 expands on that definition by adding the ability to perform physical activity. Therefore, to understand what makes an individual fit, we need to understand what enables an individual to perform physical activity and which metrics we can use to track performance. Since our analysis will focus on fitness in running, we will running specific metrics.
 
 ## Relevant Metrics:
 
