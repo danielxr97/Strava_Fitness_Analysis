@@ -3,7 +3,6 @@ title: "Strava Fitness Analysis"
 author: Shelby Cyr, Daniel Rabi, and Ali Sachwani
 date: March 7, 2026
 backgroundcolor: lightblue
-#theme: Quartz
 format: html
 editor: visual
 embed-resources: true
@@ -192,7 +191,11 @@ According to @Cambridge_nd, the definition of fitness is "the condition of being
 
     $$ \text{Speed} = \frac{1}{\text{Pace}} $$
 
-It is important to note that Training Effect is a short-term performance measure since it only tracks the Max VO2 improvement from a single workout, the last exercise the individual performed. In contrast, the Efficiency Factor is useful for long-term performance tracking because it relates speed to heart rate, allowing us to observe improvements in running efficiency over time. Therefore, to determine who is more fit, we will primarily use the Efficiency Factor. However, Aerobic Training Effect will be a more important measurement in our analysis of the rate of improvement. Given the importance of both the Efficiency Factor (EF) and the Training Effect (TE), we decided to create our own metric. The Shelby Ali Daniel (SAD) metric aims to combine the strengths of both measures by assigning 80% to EF and 20% to TE to make a definitive decision on which runner to train.
+It is important to note that Training Effect is a short-term performance measure since it only tracks the Max VO2 improvement from a single workout, the last exercise the individual performed. In contrast, the Efficiency Factor is useful for long-term performance tracking because it relates speed to heart rate, allowing us to observe improvements in running efficiency over time. Therefore, to determine who is more fit, we will primarily use the Efficiency Factor. However, Aerobic Training Effect will be a more important measurement in our analysis of the rate of improvement.
+
+-   <u>SAD:</u>
+
+Given the importance of both the Efficiency Factor (EF) and the Training Effect (TE), we decided to create our own metric. The Shelby Ali Daniel (SAD) metric aims to combine the strengths of both measures by assigning 80% to EF and 20% to TE to make a definitive decision on which runner to train. This metric will be explored in more detail later in the report.
 
 To better understand how different running metrics affect performance, we computed correlation matrices for each runner.
 
@@ -505,11 +508,7 @@ To determine who improved the most, we initially looked at the Efficiency Factor
 
 ## Coaching Decision
 
-For assessing improvement, trend-based measures are more useful than single-run values. Raw EF and TE from a single session may be influenced by daily factors such as fatigue, route, weather, or workout intensity, so they are limited as direct measures of improvement on their own. Our custom combined metric is again more helpful here because it summarizes both efficiency and training quality in one score.
-
-Because improvement is better understood through patterns over time rather than isolated observations, the SAD metric and its moving averages is the most useful tools for determining which runner has improved more. EF remains important because it captures efficiency, as a result it does have heavy weighting in the calculation of our metric. Additionally, the moving averages help to clarify whether the metric is trending upward, downward, or remaining stable.
-
-# Our recommendation on who we want to coach:
+For assessing improvement, trend-based measures are more useful than single-run values. Raw EF and TE from a single session may be influenced by daily factors such as fatigue, route, weather, or workout intensity, so they are limited as direct measures of improvement on their own. Our custom combined metric is helpful here because it summarizes both efficiency and training quality in one score.
 
 ```{r}
 hound_roll <- hound_data %>%
