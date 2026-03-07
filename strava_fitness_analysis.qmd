@@ -546,7 +546,7 @@ hound_roll <- hound_data %>%
     values_to = "SAD.Values"
   )
 
-hound_roll %>%
+hound_plot <- hound_roll %>%
   ggplot2::ggplot(ggplot2::aes(x = Date, y = SAD.Values, color = SAD)) +
   ggplot2::geom_line() +
   ggplot2::labs(
@@ -582,7 +582,7 @@ collie_roll <- collie_data %>%
     values_to = "SAD.Values"
   )
 
-collie_roll %>%
+collie_plot <- collie_roll %>%
   ggplot2::ggplot(ggplot2::aes(x = Date, y = SAD.Values, color = SAD)) +
   ggplot2::geom_line() +
   ggplot2::labs(
@@ -591,6 +591,10 @@ collie_roll %>%
     y = "Fitness Measure (SAD)"
   ) +
   ggplot2::theme(plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+hound_plot / collie_plot
 ```
 
 The fitness metric we developed is a custom performance measure designed to combine efficiency and aerobic training effect into a single score.
