@@ -238,11 +238,13 @@ hound_TE_activity <- hound_data %>%
   dplyr::group_by(Activity.Type) %>% 
   ggplot2::ggplot(ggplot2::aes(x = Date, y = Aerobic.TE, col = Activity.Type)) + 
   ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8) +
+  ggplot2::geom_smooth(method = "lm", se = FALSE, color = "black") +
   ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
   ggplot2::labs(
     title = "Hound's Training Effect by Activity",
-    x = "Date",
-    y = "Aerobic Training Effect"
+    x = "Time",
+    y = "Aerobic Training Effect",
+    color = "Activity Type"
   ) +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
@@ -253,23 +255,30 @@ collie_TE_activity <- collie_data %>%
   dplyr::group_by(Activity.Type) %>% 
   ggplot2::ggplot(ggplot2::aes(x = Date, y = Aerobic.TE, col = Activity.Type)) + 
   ggplot2::geom_line(ggplot2::aes(color = Activity.Type), size = 1, alpha = 0.8) +
+  ggplot2::geom_smooth(method = "lm", se = FALSE, color = "black") +
   ggplot2::facet_wrap(~Activity.Type, scales = "free_y", ncol = 2) +
   ggplot2::labs(
     title = "Collie's Training Effect by Activity",
-    x = "Date",
-    y = "Aerobic Training Effect"
+    x = "Time",
+    y = "Aerobic Training Effect",
+    color = "Activity Type"
   ) +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
 ```{r}
 hound_TE_activity
+```
+
+The Training Effect charts show that Hound’s aerobic improvement varies substantially across activity types and over time. Most observations fall within the moderate to high Training Effect range of approximately 3.0 to 5.0, suggesting that many sessions produce meaningful aerobic improvement. Running and Street Running frequently reach the upper portion of this range and display a slight upward trend over time. In contrast, Track Running tends to remain lower and more uneven, often fluctuating around moderate values. Trail Running exhibits the largest variability, with Training Effect values alternating between moderate and very high levels across sessions. While most activities show slight positive trends, the changes are relatively modest, indicating that Hound’s aerobic improvement remains broadly stable over time. Overall, the results suggest that Hound’s training improvement is distributed across multiple activity types and is somewhat dependent on the type of workout performed.
+
+```{r}
 collie_TE_activity
 ```
 
-The Training Effect charts show that both runners frequently achieve moderate to high aerobic stimulus, but the pattern differs meaningfully between them. Hound’s Training Effect is spread across a wider range of activity types and appears more varied over time. In Hound’s case, running and street running often sit in the upper-middle to high range, with many observations around roughly 3.0 to 5.0, while track running tends to be lower and more uneven, and trail running fluctuates noticeably between moderate and very high values. Treadmill running also shows a wider swing, including lower values earlier and stronger values later. This suggests that Hound’s aerobic stimulus is less concentrated and more dependent on the type of session being performed, with some activities generating clearly stronger training responses than others.
+First, it is important to note that Collie does not have observations for Street Running or Track Running, suggesting these activities were either not performed or not recorded in the dataset. Most of Collie’s runs occur in Trail Running, which also corresponds to the highest and most consistent Training Effect values. Trail sessions are frequently clustered between 4.0 and 5.0, indicating consistently strong aerobic stimulus. Additionally, the trend line for the Trail Running activity also shows a slight upward movement over time, suggesting gradual improvement or sustained high training intensity. Running appears less frequently in the dataset but also remains within the upper range of the Training Effect scale. Treadmill Running exhibits somewhat lower values and a downward trend, although the number of observations is limited. Overall, Collie’s training pattern appears more focused on a single activity type and consistently delivers a high aerobic stimulus.
 
-Collie’s pattern looks more concentrated at the higher end of the Training Effect scale. Trail running, which makes up a large share of Collie’s observed sessions, is frequently clustered between about 4.0 and 5.0, indicating consistently strong aerobic stimulus. Running also remains at a relatively high level, despite a brief dip, while treadmill values are somewhat lower and more variable but still generally remain in the moderate-to-high range. Compared with Hound, Collie’s Training Effect appears less dispersed across the observed activities and more consistently positioned near the upper end of the scale. Overall, the comparison suggests that Collie more regularly produces stronger aerobic training stimulus, whereas Hound shows a broader mix of moderate and high training effects depending on activity type and period.
+Ultimately, compared to Hound, Collie’s Training Effect appears less dispersed across the observed activities and more consistently positioned near the upper end of the scale. Overall, the comparison suggests that Collie produces a stronger aerobic training stimulus more regularly. In contrast, Hound shows a broader range of moderate and high training effects across activity types and periods.
 
 ```{r}
 hound_prop <- hound_data %>% 
@@ -308,15 +317,7 @@ collie_prop <- collie_data %>%
 ```
 
 ```{r}
-hound_prop | collie_prop
-```
-
-These proportional Training Effect charts reinforce the idea that Collie’s aerobic stimulus is concentrated at a higher level than Hound’s. Hound’s distribution is centered more heavily in the middle of the Training Effect scale, with the greatest mass appearing around roughly 3.0 to 4.0. This suggests that many of Hound’s sessions produce moderate to improving aerobic effects, but the distribution is more spread out, including some lower values and a smaller share of very high-end observations. In other words, Hound’s training effect profile appears broader and more mixed, with sessions ranging from relatively weak aerobic stimulus to strong stimulus, but with most observations clustered in the middle range rather than at the very top.
-
-Collie’s proportional distribution, by contrast, is shifted more toward the upper end of the scale. A substantial share of Collie’s observations falls between about 4.0 and 5.0, and there is a particularly noticeable concentration at 5.0. This indicates that Collie more frequently records highly improving or even overreaching aerobic effects compared with Hound. Relative to Hound, Collie has fewer observations in the lower and middle parts of the Training Effect range and a larger proportion in the highest zones. Taken together, these charts suggest that Collie’s runs more consistently generate stronger aerobic training stimulus, whereas Hound’s runs are distributed more evenly across moderate and high Training Effect levels.
-
-```{r}
-hound_data %>% 
+hound_te_dist <- hound_data %>% 
   ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE)) +
   ggplot2::geom_histogram(
     ggplot2::aes(y = ggplot2::after_stat(density)),
@@ -342,11 +343,10 @@ hound_data %>%
     y = "Density"
   ) +
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
-
 ```
 
 ```{r}
-collie_data %>% 
+collie_te_dist <- collie_data %>% 
   ggplot2::ggplot(ggplot2::aes(x = Aerobic.TE)) +
   ggplot2::geom_histogram(
     ggplot2::aes(y = ggplot2::after_stat(density)),
@@ -374,7 +374,15 @@ collie_data %>%
   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
 ```
 
-Hound and Collie both record generally high Aerobic Training Effect values, but their patterns differ in level, spread, and consistency. Hound’s Training Effect is distributed more broadly across activities and over time, with many observations concentrated in the moderate-to-high range around 3.0 to 4.0, along with some lower values and occasional values near 5.0. This suggests Hound’s runs produce a wider range of aerobic stimulus, from moderate sessions to very demanding ones. In contrast, Collie’s Training Effect is more concentrated at the upper end of the scale. The activity plots and distribution charts show that many of Collie’s observations lie between roughly 4.0 and 5.0, with a noticeable mass at 5.0, indicating more frequent highly improving or overreaching aerobic effects. Overall, compared with Hound, Collie appears to generate stronger aerobic stimulus more consistently, while Hound shows more variation across sessions and activity types.
+```{r}
+(hound_prop | collie_prop) / (hound_te_dist | collie_te_dist)
+```
+
+These proportional Training Effect charts reinforce the idea that Collie's aerobic stimulus is concentrated at a higher level than Hound's. Hound's distribution is centred more heavily in the middle of the Training Effect scale, with the greatest mass appearing around roughly 3.0 to 4.0. Hound's Training Effect mean suggests that many of Hound's sessions produce moderate to substantial improvements in aerobic fitness. However, Hound's distribution is more spread out, including some lower values and a smaller share of very high-end observations. In other words, Hound's training effect profile appears broader and more mixed, with sessions ranging from relatively weak to strong aerobic stimulus, but with most observations clustered in the middle range rather than at the very top.
+
+Collie's proportional distribution, by contrast, is shifted more toward the upper end of the scale. A substantial share of Collie's observations falls between about 4.0 and 5.0, and there is a particularly noticeable concentration at 5.0. Collie's higher Training Effect mean indicates that Collie more frequently records highly improving or even overreaching aerobic effects compared with Hound. Relative to Hound, Collie has fewer observations in the lower and middle parts of the Training Effect range and a larger proportion in the highest zones. Taken together, these charts suggest that Collie's runs more consistently generate stronger aerobic training stimulus, whereas Hound's runs are distributed more evenly across moderate and high Training Effect levels.
+
+Overall, both runners regularly achieve moderate to high Aerobic Training Effect values, indicating that their sessions frequently produce meaningful aerobic stimulus. However, the patterns differ in consistency and intensity. Hound's Training Effect is more widely distributed across the scale, with many observations in the moderate-to-high range and greater variation across sessions and activity types. On the other hand, Collie's Training Effect is more concentrated near the upper end of the scale, with a large share of sessions falling between roughly 4.0 and 5.0. Collie's higher mean value suggests that Collie's runs are more consistently strong, whereas Hound's training reflects a broader mix of moderate and high-intensity efforts.
 
 # Efficiency Factor (EF) Analysis
 
